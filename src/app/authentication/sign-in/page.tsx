@@ -18,7 +18,7 @@ import { signIn } from "@/firebase/auth";
 import { useAuth } from "@/app/provider/AuthContext";
 import { useRouter } from "next/navigation";
 
-export default function SignIn(props: { disableCustomTheme?: boolean }) {
+export default function SignIn() {
   const { user } = useAuth();
   const router = useRouter();
 
@@ -74,7 +74,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   }, [user]);
 
   return (
-    <AppTheme {...props}>
+    <AppTheme>
       <CssBaseline enableColorScheme />
       <AuthContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
