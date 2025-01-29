@@ -15,7 +15,7 @@ import Card from "@/app/components/Card";
 import AuthContainer from "@/app/components/AuthContainer";
 import { signUp } from "@/firebase/auth";
 
-export default function SignUp(props: { disableCustomTheme?: boolean }) {
+export default function SignUp() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
@@ -61,7 +61,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   };
 
   return (
-    <AppTheme {...props}>
+    <AppTheme>
       <CssBaseline enableColorScheme />
       <AuthContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
