@@ -149,8 +149,8 @@ function StudentListTable() {
     {
       field: "classroom",
       headerName: t("class"),
-      flex: 1.5,
-      minWidth: 80,
+      flex: 1,
+      minWidth: 150,
       sortable: false,
       filterable: true,
       disableColumnMenu: true,
@@ -189,7 +189,7 @@ function StudentListTable() {
       headerAlign: "center",
       align: "center",
       flex: 1,
-      minWidth: 80,
+      minWidth: 150,
       sortable: false,
       filterable: true,
       renderCell: (params) => {
@@ -224,8 +224,8 @@ function StudentListTable() {
       headerName: t("action"),
       headerAlign: "center",
       align: "center",
-      flex: 1.5,
-      minWidth: 100,
+      flex: 2,
+      minWidth: 200,
       renderCell: (params) => {
         return (
           <div className="flex gap-2 items-center justify-center h-full">
@@ -241,7 +241,9 @@ function StudentListTable() {
                 startIcon={<SaveOutlined />}
                 loadingPosition="start"
                 loading={
-                  mutationStatus == "saving" && params.id == studentToEdit.id
+                  (mutationStatus == "saving" ||
+                    attendanceMutationStatus == "saving") &&
+                  params.id == studentToEdit.id
                 }
                 disabled={
                   studentToEdit?.name == params.row["name"] &&
@@ -350,7 +352,7 @@ function StudentListTable() {
     <div>
       <div className="flex py-4 gap-4">
         <Search handleChange={setSearchFilter} />
-        <FormControl sx={{ minWidth: "200px", maxWidth: "250px" }}>
+        <FormControl sx={{ minWidth: "100px", maxWidth: "250px" }}>
           <Select
             value={classroomFilter || ""}
             onChange={({ target }) => setClassroomFilter(target.value)}

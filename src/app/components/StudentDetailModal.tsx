@@ -43,8 +43,8 @@ function StudentDetailModal() {
     student,
     status,
   } = useAppSelector((state) => state.studentSlice);
-  const attendances = useAppSelector(
-    (state) => state.attendanceSlice.attendances
+  const { attendances, mutationStatus } = useAppSelector(
+    (state) => state.attendanceSlice
   );
   const startDate = useAppSelector(
     (state) => state.schoolSlice.semesterStartDate
@@ -79,7 +79,10 @@ function StudentDetailModal() {
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
-      <Card className="max-h-[90vh] min-h-[40vh] min-w-[60vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+      <Card
+        sx={{ maxHeight: { xs: "95vh", md: "90vh" }, py: "2rem" }}
+        className="max-h-[90vh] min-h-[40vh] min-w-[60vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+      >
         {/* student details */}
         {status == "loading" ? (
           <Loading />
@@ -138,7 +141,7 @@ function StudentDetailModal() {
                 <Card className="p-2">
                   <ListItem dense className="gap-2" disablePadding>
                     <ListItemIcon>
-                      <HeartBeatLine />
+                      <HeartBeatLine color="white" />
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -146,6 +149,7 @@ function StudentDetailModal() {
                           component="h3"
                           variant="h6"
                           className="text-bold"
+                          sx={{ fontSize: { xs: "0.8rem", md: "1.2rem" } }}
                         >
                           {t("attendanceRate")}
                         </Typography>
@@ -162,7 +166,7 @@ function StudentDetailModal() {
                 <Card className="p-2">
                   <ListItem disablePadding className="gap-2">
                     <ListItemIcon>
-                      <Graduation />
+                      <Graduation color="white" />
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -170,6 +174,7 @@ function StudentDetailModal() {
                           component="h3"
                           variant="h6"
                           className="text-bold"
+                          sx={{ fontSize: { xs: "0.8rem", md: "1.2rem" } }}
                         >
                           {t("lastAbsent")}
                         </Typography>
@@ -275,6 +280,8 @@ function StudentDetailModal() {
                 <Button
                   variant="contained"
                   color="error"
+                  loadingPosition="start"
+                  loading={mutationStatus == "saving"}
                   disabled={
                     attendances.find((a) => a.studentId == student?.id)
                       ?.status == AttendanceStatus.ABSENT
@@ -314,7 +321,7 @@ function StudentDetailModal() {
           size="small"
           variant="outlined"
           fullWidth={false}
-          className="top-4 right-4"
+          className="top-6 md:top-4 right-4"
           sx={{
             position: "fixed",
             minWidth: "unset",

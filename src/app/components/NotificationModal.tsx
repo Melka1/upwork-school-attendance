@@ -44,7 +44,7 @@ function NotificationModal() {
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
-      <Card className="max-h-[90vh] min-h-24 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+      <Card className="max-h-[90vh] min-h-24 max-w-[90vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
         <Typography component="h2" variant="h4">
           {t("notifications")}
         </Typography>

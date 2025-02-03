@@ -154,25 +154,27 @@ function AddStudentFormModal() {
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
-      <Card className="max-h-[90vh] min-h-[40vh] min-w-[50vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+      <Card
+        sx={{ maxHeight: { xs: "95vh", md: "90vh" }, py: "2rem" }}
+        className="min-h-[40vh] min-w-[50vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+      >
         <Typography component="h2" variant="h4">
           {t("addStudent")}
         </Typography>
-
-        <div className="grid grid-cols-3 gap-4 py-2 items-center">
+        <div className="grid grid-cols-2 gap-4 py-2 items-center">
           {/* profile image */}
-          <div className="flex flex-col justify-center items-center gap-2">
+          <div className="flex flex-col col-span-2 md:col-span-1 justify-center items-center gap-2">
             <Image
               src={preview || ProfileImage}
               alt="Preview"
               width={400}
               height={400}
               style={{
-                maxWidth: "50%",
                 aspectRatio: 1,
                 objectFit: "cover",
                 borderRadius: "50%",
               }}
+              className="max-w-[25%]"
             />
             <label htmlFor="file-input">
               <Input
@@ -270,8 +272,12 @@ function AddStudentFormModal() {
           </div>
         </div>
         {/* parent information */}
-        <div className="grid grid-cols-3 gap-4">
-          <Typography component="h2" variant="h6" className="col-span-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <Typography
+            component="h2"
+            variant="h6"
+            className="col-span-2 md:col-span-3"
+          >
             {t("parentInformation")}
           </Typography>
           {/* parent name */}
@@ -302,7 +308,7 @@ function AddStudentFormModal() {
               }}
             />
           </div>
-          {/* parent name */}
+          {/* parent phone number */}
           <div className="flex flex-col gap-2">
             <Typography>{t("phoneNumber")}</Typography>
             <TextField
@@ -317,15 +323,17 @@ function AddStudentFormModal() {
             />
           </div>
         </div>
-
-        <div className="grid grid-cols-2 gap-4 py-2 items-center">
-          <Typography component="h2" variant="h6" className="col-span-2">
-            {t("emergencyInformation")}
-          </Typography>{" "}
-          {/* emergency contact */}
-          <div className="flex flex-col gap-2">
-            <Typography>{t("emergencyContact")}</Typography>
+        {/* emergency information */}
+        <Typography component="h2" variant="h6" className="col-span-2">
+          {t("emergencyInformation")}
+        </Typography>{" "}
+        <div className="grid col-span-2 grid-cols-2 gap-4 py-2 items-center">
+          <div className="flex col-span-2 md:col-span-1 md:flex-col md:items-start gap-2 items-center">
+            <Typography minWidth={"max-content"}>
+              {t("emergencyContact")}
+            </Typography>
             <TextField
+              fullWidth
               value={studentInfo?.emergencyContact || ""}
               placeholder={t("enterEmergencyContact")}
               onChange={({ target }) => {
@@ -337,10 +345,13 @@ function AddStudentFormModal() {
             />
           </div>
           {/* medical info */}
-          <div className="flex flex-col gap-2">
-            <Typography>{t("medicalInfo")}</Typography>
+          <div className="flex col-span-2 md:col-span-1 md:flex-col md:items-start gap-2 items-center">
+            <Typography noWrap minWidth={"max-content"}>
+              {t("medicalInfo")}
+            </Typography>
             <TextField
               value={studentInfo.medicalInfo}
+              fullWidth
               multiline
               placeholder={t("enterMedicalInformation")}
               onChange={({ target }) => {
@@ -352,7 +363,6 @@ function AddStudentFormModal() {
             />
           </div>
         </div>
-
         <div className="flex w-full gap-2 justify-end pt-4">
           <Button
             variant="contained"

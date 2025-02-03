@@ -22,7 +22,7 @@ export default function MainGrid() {
     <Card className="min-w-full">
       <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
         {/* cards */}
-        <div className="flex justify-between items-center">
+        <div className="flex items-start md:justify-between md:items-center flex-col md:flex-row">
           <Typography component="h2" variant="h6">
             {t("todaysStudentStatus")}
           </Typography>
@@ -34,7 +34,7 @@ export default function MainGrid() {
 
         <div className="flex py-4 gap-4">
           <Search handleChange={setSearchFilter} />
-          <FormControl sx={{ minWidth: 200 }}>
+          <FormControl sx={{ minWidth: { xs: 80, md: 200 } }} size="small">
             <Select
               value={statusFilter}
               onChange={({ target }) =>

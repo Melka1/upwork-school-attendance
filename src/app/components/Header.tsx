@@ -4,8 +4,12 @@ import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import MenuButton from "./MenuButton";
 
 import Logo from "../assets/svg/Logo";
-import { LogoutOutlined, SettingsOutlined } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import {
+  LogoutOutlined,
+  MoreVert,
+  SettingsOutlined,
+} from "@mui/icons-material";
+import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { logOut } from "@/firebase/auth";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import NotificationModal from "./NotificationModal";
@@ -20,6 +24,15 @@ export default function Header() {
   const notifications = useAppSelector(
     (state) => state.notificationSlice.notifications
   );
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Stack
@@ -36,10 +49,10 @@ export default function Header() {
     >
       <Button
         variant="text"
-        className="flex items-center gap-4"
+        className="flex items-center gap-2"
         onClick={() => router.push("/dashboard")}
+        startIcon={<Logo />}
       >
-        <Logo />
         <p className="text-lg font-bold">{t("dashboard.schoolSystem")}</p>
       </Button>
       <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
@@ -47,6 +60,7 @@ export default function Header() {
           variant="outlined"
           size="small"
           onClick={() => router.push("/dashboard/student-list")}
+          sx={{ display: { xs: "none", md: "block" } }}
         >
           {t("dashboard.studentList")}
         </Button>
@@ -54,6 +68,7 @@ export default function Header() {
           variant="outlined"
           size="small"
           startIcon={<SettingsOutlined />}
+          sx={{ display: { xs: "none", md: "flex" } }}
         >
           {t("dashboard.admin")}
         </Button>
@@ -72,9 +87,38 @@ export default function Header() {
           size="small"
           startIcon={<LogoutOutlined />}
           onClick={() => logOut()}
+          sx={{ display: { xs: "none", md: "flex" } }}
         >
           {t("auth.logOut")}
         </Button>
+        <Box sx={{ display: { xs: "block", md: "none" } }}>
+          <Button
+            id="basic-button"
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+            sx={{ minWidth: "unset" }}
+          >
+            <MoreVert />
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            sx={{ pt: "0.5rem" }}
+          >
+            <MenuItem onClick={() => router.push("/dashboard/student-list")}>
+              {t("dashboard.studentList")}
+            </MenuItem>
+            <MenuItem>{t("dashboard.admin")}</MenuItem>
+            <MenuItem onClick={() => logOut()}>{t("auth.logOut")}</MenuItem>
+          </Menu>
+        </Box>
       </Stack>
 
       <NotificationModal />

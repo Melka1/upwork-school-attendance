@@ -69,9 +69,8 @@ export default function Home() {
       spacing={2}
       sx={{
         alignItems: "center",
-        mx: 3,
-        py: 3,
-        mt: { xs: 8, md: 0 },
+        mx: { xs: "0.75rem", md: 3 },
+        py: { xs: 1, md: 3 },
       }}
     >
       <Header />

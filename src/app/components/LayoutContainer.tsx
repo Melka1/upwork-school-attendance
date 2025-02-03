@@ -22,7 +22,7 @@ function LayoutContainer({ children }: { children: React.ReactNode }) {
       <Box
         sx={{
           display: "flex",
-          maxWidth: { sm: "95%", md: "80%" },
+          maxWidth: { sm: "100%", md: "80%" },
           margin: "auto",
         }}
       >

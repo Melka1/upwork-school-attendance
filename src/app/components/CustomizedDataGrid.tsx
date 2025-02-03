@@ -64,8 +64,8 @@ export default function CustomizedDataGrid({
     {
       field: "name",
       headerName: t("student"),
-      flex: 1.5,
-      minWidth: 300,
+      flex: 2,
+      minWidth: 200,
       sortable: true,
       filterable: false,
       disableColumnMenu: true,
@@ -76,7 +76,7 @@ export default function CustomizedDataGrid({
       headerAlign: "center",
       align: "center",
       flex: 1,
-      minWidth: 80,
+      minWidth: 150,
       sortable: false,
       filterable: true,
       disableColumnMenu: true,
@@ -87,7 +87,7 @@ export default function CustomizedDataGrid({
       headerAlign: "center",
       align: "center",
       flex: 1,
-      minWidth: 80,
+      minWidth: 150,
       renderCell: (params) => renderStatus(params.value as any),
       sortable: false,
       filterable: true,
@@ -99,7 +99,7 @@ export default function CustomizedDataGrid({
       headerAlign: "center",
       align: "center",
       flex: 2,
-      minWidth: 100,
+      minWidth: 200,
       renderCell: (params) => (
         <div className="">
           <Button

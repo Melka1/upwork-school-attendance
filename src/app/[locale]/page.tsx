@@ -61,7 +61,7 @@ function StudentPage() {
 
   return (
     <div>
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-300 p-4">
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-500 p-4">
         <h1 className="text-2xl font-bold mb-4">
           {t("student.hey")} {user?.student?.name.split(" ")[0]}
         </h1>
