@@ -27,6 +27,23 @@ declare module "@mui/material/styles/createPalette" {
   }
 }
 
+declare module "@mui/material/styles" {
+  interface Palette {
+    darker: Palette["primary"];
+  }
+
+  interface PaletteOptions {
+    darker?: PaletteOptions["primary"];
+  }
+}
+
+// Extend ButtonPropsColorOverrides
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    darker: true;
+  }
+}
+
 const defaultTheme = createTheme();
 
 const customShadows: Shadows = [...defaultTheme.shadows];
