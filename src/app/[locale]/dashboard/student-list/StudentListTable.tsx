@@ -233,10 +233,9 @@ function StudentListTable() {
               <Button
                 variant="contained"
                 size="small"
+                color="darker"
                 sx={{
                   fontWeight: "bold",
-                  bgColor: "black",
-                  color: "white !important",
                 }}
                 startIcon={<SaveOutlined />}
                 loadingPosition="start"

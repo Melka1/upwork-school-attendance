@@ -19,9 +19,6 @@ function SnackBar() {
     }
     if (mutationStatus == "success") {
       setIsOpen(true);
-      setTimeout(() => {
-        setIsOpen(false);
-      }, 3000);
     }
   }, [mutationStatus]);
 
@@ -30,6 +27,7 @@ function SnackBar() {
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       open={isOpen}
       autoHideDuration={3000}
+      onClose={() => setIsOpen(false)}
     >
       <Alert
         severity="success"

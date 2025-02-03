@@ -19,7 +19,7 @@ export default function Logo({
       >
         <g
           fill="none"
-          stroke={color || "#6d6a6a"}
+          stroke={"currentColor"}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="2"

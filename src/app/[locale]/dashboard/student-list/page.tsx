@@ -11,6 +11,7 @@ import { useAppDispatch } from "@/app/lib/hooks";
 import { setIsAddStudentModalOpen } from "@/app/lib/feature/studentsSlice";
 import { useTranslations } from "next-intl";
 import Card from "@/app/components/Card";
+import SnackBar from "@/app/components/SnackBar";
 
 function StudentListPage() {
   const t = useTranslations("dashboard");
@@ -105,6 +106,7 @@ function StudentListPage() {
 
           {/* table */}
           <StudentListTable />
+          <SnackBar />
         </Box>
       </Card>
       <AddStudentFormModal />

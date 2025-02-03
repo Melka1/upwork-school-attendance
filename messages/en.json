@@ -15,7 +15,8 @@
     "password": "Password",
     "enterPassword": "Enter password",
     "don_tHaveAccount": "Don't have an account?",
-    "alreadyHaveAccount": "Already have an account?"
+    "alreadyHaveAccount": "Already have an account?",
+    "successfullyLoggedIn": "Logged in Successfully "
   },
   "dashboard": {
     "schoolSystem": "School System",

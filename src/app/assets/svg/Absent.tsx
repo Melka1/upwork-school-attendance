@@ -13,7 +13,7 @@ export default function Absent({ fontSize = 24 }: { fontSize?: number }) {
       >
         <path
           fill="none"
-          stroke="white"
+          stroke="currentColor"
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="2"

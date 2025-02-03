@@ -17,6 +17,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   logout: () => Promise<void>;
+  setLoading: (value: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,11 +30,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [previousPage, setPreviousPage] = useState("")
-  console.log(user, loading);
+  const [previousPage, setPreviousPage] = useState("");
 
   useEffect(() => {
-    setPreviousPage(window.location.href)
+    setPreviousPage(window.location.href);
     if (user) return;
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -60,9 +60,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (userFromDB.userType == UserType.STUDENT) {
       router.push("/");
     } else {
-      if(previousPage.includes("student-list")){
-        router.push("/dashboard/student-list")
-        return
+      if (previousPage.includes("student-list")) {
+        router.push("/dashboard/student-list");
+        return;
       }
       router.push("/dashboard");
     }
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, logout }}>
+    <AuthContext.Provider value={{ user, loading, logout, setLoading }}>
       {children}
     </AuthContext.Provider>
   );

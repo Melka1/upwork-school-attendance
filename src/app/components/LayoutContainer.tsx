@@ -9,6 +9,7 @@ import {
 } from "./../theme/customizations";
 import StoreProvider from "../provider/StoreProvider";
 import { AuthProvider } from "../provider/AuthContext";
+import AlertMessage from "./AlertMessage";
 
 const xThemeComponents = {
   ...dataGridCustomizations,
@@ -38,6 +39,7 @@ function LayoutContainer({ children }: { children: React.ReactNode }) {
         >
           <StoreProvider>
             <AuthProvider>{children}</AuthProvider>
+            <AlertMessage />
           </StoreProvider>
         </Box>
       </Box>

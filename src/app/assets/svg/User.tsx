@@ -19,7 +19,7 @@ export default function User({
       >
         <g
           fill="none"
-          stroke={color || "#6d6a6a"}
+          stroke={"currentColor"}
           strokeLinecap="round"
           strokeWidth="2"
         >

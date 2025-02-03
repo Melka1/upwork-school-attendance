@@ -56,13 +56,17 @@ function NotificationModal() {
             </Typography>
           </div>
         ) : (
-          notifications.map((n) => (
-            <NotificationCard
-              key={n.id}
-              notification={n}
-              action={() => handleMarkNotificationAsRead(n)}
-            />
-          ))
+          [...notifications]
+            .sort((b, a) => {
+              return new Date(a.date).getTime() - new Date(b.date).getTime();
+            })
+            .map((n) => (
+              <NotificationCard
+                key={n.id}
+                notification={n}
+                action={() => handleMarkNotificationAsRead(n)}
+              />
+            ))
         )}
 
         <Button

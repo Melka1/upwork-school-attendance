@@ -6,7 +6,13 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { AttendanceStatus, UserType } from "@prisma/client";
 import Loading from "../components/Loading";
-import { Card, CardContent, CircularProgress, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import {
   createAttendance,
@@ -77,17 +83,17 @@ function StudentPage() {
                   <p className="mt-2">{t("student.callSickSubmitted")}</p>
                 </div>
               ) : (
-                <button
-                  disabled={attendances.length > 0}
+                <Button
+                  fullWidth
+                  size="small"
                   onClick={handleSickCall}
-                  className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-md disabled:bg-black disabled:cursor-not-allowed"
+                  loading={mutationStatus == "saving"}
+                  variant="contained"
+                  disabled={attendances.length > 0}
+                  color="error"
                 >
-                  {mutationStatus == "saving" ? (
-                    <CircularProgress size="1.5rem" sx={{ color: "white" }} />
-                  ) : (
-                    t("student.callInSick")
-                  )}
-                </button>
+                  {t("student.callInSick")}
+                </Button>
               )}
             </CardContent>
           ) : (

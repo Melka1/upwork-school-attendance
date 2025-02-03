@@ -21,12 +21,13 @@ import { createUsers } from "@/app/lib/feature/userSlice";
 import { UserType } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import Loading from "@/app/components/Loading";
+import { setMessageAlert } from "@/app/lib/feature/pageSlice";
 
 export default function SignUp() {
   const t = useTranslations("auth");
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { user: authUser, loading } = useAuth();
+  const { user: authUser, loading, setLoading } = useAuth();
   const { user, mutationStatus } = useAppSelector((state) => state.userSlice);
 
   const [email, setEmail] = useState("");
@@ -67,9 +68,24 @@ export default function SignUp() {
     });
 
     try {
+      setLoading(true);
       await signUp(email, password);
+      dispatch(
+        setMessageAlert({
+          alertType: "success",
+          message: t("successfullyLoggedIn"),
+        })
+      );
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false)
+      dispatch(
+        setMessageAlert({
+          alertType: "error",
+          message: error?.message || error,
+        })
+      );
     }
   };
 
@@ -171,9 +187,8 @@ export default function SignUp() {
             </Typography>
           </Box>
         </Card>
+        {(loading || mutationStatus == "saving") && <Loading />}
       </AuthContainer>
-
-      {(loading || mutationStatus == "saving") && <Loading />}
     </>
   );
 }

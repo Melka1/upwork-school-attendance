@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
@@ -15,14 +15,16 @@ import Card from "@/app/components/Card";
 import { signIn } from "@/firebase/auth";
 import { useAuth } from "@/app/provider/AuthContext";
 import { useRouter } from "next/navigation";
-import { CircularProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { useTranslations } from "next-intl";
+import { setMessageAlert } from "@/app/lib/feature/pageSlice";
+import Loading from "@/app/components/Loading";
 
 export default function SignIn() {
+  const dispatch = useAppDispatch();
   const t = useTranslations("auth");
   const router = useRouter();
-  const { user: authUser, loading } = useAuth();
+  const { user: authUser, loading, setLoading } = useAuth();
   const { user, queryStatus } = useAppSelector((state) => state.userSlice);
 
   const [email, setEmail] = useState("");
@@ -39,9 +41,24 @@ export default function SignIn() {
     });
 
     try {
+      setLoading(true);
       await signIn(email, password);
+      dispatch(
+        setMessageAlert({
+          alertType: "success",
+          message: t("successfullyLoggedIn"),
+        })
+      );
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
+      dispatch(
+        setMessageAlert({
+          alertType: "error",
+          message: error?.message || error,
+        })
+      );
     }
   };
 
@@ -157,27 +174,8 @@ export default function SignIn() {
             </Typography>
           </Box>
         </Card>
+        {(loading || queryStatus == "loading") && <Loading />}
       </AuthContainer>
-
-      {loading && (
-        <Box
-          sx={{
-            display: "flex",
-            width: "100vw",
-            height: "100vh",
-            overflow: "hidden",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-            zIndex: 10000,
-            position: "absolute",
-            top: 0,
-            left: 0,
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
     </>
   );
 }

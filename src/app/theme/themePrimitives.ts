@@ -117,6 +117,14 @@ export const getDesignTokens = (mode: PaletteMode) => {
           dark: brand[700],
         }),
       },
+      darker: {
+        main: gray[400],
+        contrastText: gray[900],
+        ...(mode === "dark" && {
+          main: gray[800],
+          contrastText: gray[100],
+        }),
+      },
       info: {
         light: brand[100],
         main: brand[300],
@@ -141,7 +149,7 @@ export const getDesignTokens = (mode: PaletteMode) => {
       },
       error: {
         light: red[300],
-        main: red[400],
+        main: red[600],
         dark: red[800],
         ...(mode === "dark" && {
           light: red[400],
@@ -254,6 +262,12 @@ export const colorSchemes = {
         dark: brand[700],
         contrastText: brand[50],
       },
+      darker: {
+        // light: gray[500],
+        main: gray[800],
+        // dark: gray[900],
+        contrastText: gray[50],
+      },
       info: {
         light: brand[100],
         main: brand[300],
@@ -304,6 +318,10 @@ export const colorSchemes = {
         main: brand[400],
         dark: brand[700],
       },
+      darker: {
+        main: gray[400],
+        contrastText: gray[900],
+      },
       info: {
         contrastText: brand[300],
         light: brand[500],
@@ -316,7 +334,7 @@ export const colorSchemes = {
         dark: orange[700],
       },
       error: {
-        light: red[400],
+        light: red[300],
         main: red[500],
         dark: red[700],
       },
