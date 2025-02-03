@@ -1,7 +1,13 @@
 import * as React from "react";
 import SvgIcon from "@mui/material/SvgIcon";
 
-export default function Logo({ fontSize = 24 }: { fontSize?: number }) {
+export default function Logo({
+  fontSize = 24,
+  color,
+}: {
+  fontSize?: number;
+  color?: string;
+}) {
   return (
     <SvgIcon sx={{ fontSize }}>
       {/* credit: cog icon from https://heroicons.com */}
@@ -13,7 +19,7 @@ export default function Logo({ fontSize = 24 }: { fontSize?: number }) {
       >
         <g
           fill="none"
-          stroke="#6d6a6a"
+          stroke={color || "#6d6a6a"}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="2"

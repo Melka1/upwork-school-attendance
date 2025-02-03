@@ -1,0 +1,52 @@
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import studentSlice from "./feature/studentsSlice";
+import attendanceSlice from "./feature/attendanceSlice";
+import schoolSlice from "./feature/schoolSlice";
+import classroomSlice from "./feature/classroomSlice";
+import notificationSlice from "./feature/notificationSlice";
+import userSlice from "./feature/userSlice";
+import storage from "redux-persist/lib/storage";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const rootReducer = combineReducers({
+  studentSlice: studentSlice,
+  classroomSlice: classroomSlice,
+  notificationSlice: notificationSlice,
+  attendanceSlice: attendanceSlice,
+  schoolSlice: schoolSlice,
+  userSlice: userSlice,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const makeStore = () => {
+  return configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+      }),
+  });
+};
+
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];
+
+export const persister = persistStore(makeStore());

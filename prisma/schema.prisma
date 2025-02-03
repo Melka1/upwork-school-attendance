@@ -5,59 +5,93 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 datasource db {
-  provider = "mongodb"
-  url      = env("MONGODB_URI")
+  provider  = "postgresql"
+  // url      = env("POSTGRES_URL")
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-model Student {
-  id                 String           @id @default(uuid()) @map("_id") @db.ObjectId
-  name               String
-  email              String           @unique
-  phoneNumber        String           @unique
-  location           String
-  parent             Parent           @relation(fields: [parentId], references: [id])
-  parentId           String           @db.ObjectId
-  medicalInfo        String[]
-  emergencyContact   String[]
-  attendance         Attendance[]
-  notifications      Notification[]
+model User {
+  id       String   @id @default(uuid()) @map("_id")
+  email    String   @unique
+  userType UserType
+  student  Student?
+  teacher  Teacher?
 }
 
-model Parent {
-  id                 String           @id @default(uuid()) @map("_id") @db.ObjectId
-  name               String
-  email              String           @unique
-  phoneNumber        String           @unique
-  students           Student[]
-  notifications      Notification[]
+model Student {
+  id               String       @id @default(uuid()) @map("_id")
+  userId           String       @unique
+  user             User         @relation(fields: [userId], references: [id])
+  name             String
+  imageUrl         String?
+  email            String       @unique
+  phoneNumber      String
+  classroom        Classroom    @relation(fields: [classroomId], references: [id])
+  classroomId      String
+  location         String
+  parent           Json
+  medicalInfo      String[]
+  emergencyContact String[]
+  attendance       Attendance[]
+}
+
+model Teacher {
+  id     String @id @default(uuid()) @map("_id")
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+  name   String
+  email  String @unique
 }
 
 model Attendance {
-  id                 String           @id @default(uuid()) @map("_id")
-  student            Student          @relation(fields: [studentId], references: [id])
-  studentId          String           @db.ObjectId
-  date               DateTime         @default(now())
-  status             AttendanceStatus
+  id        String           @id @default(uuid()) @map("_id")
+  student   Student          @relation(fields: [studentId], references: [id])
+  studentId String
+  date      Int
+  month     Int
+  year      Int
+  status    AttendanceStatus
+  createdAt DateTime         @default(now())
+}
+
+model Recipient {
+  id             String       @id @default(uuid()) @map("_id")
+  email          String
+  userType       UserType
+  userId         String
+  isRead         Boolean      @default(false)
+  notificationId String
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, notificationId])
 }
 
 model Notification {
-  id                 String           @id @default(uuid()) @map("_id")
-  title              String
-  message            String
-  date               DateTime         @default(now())
-  student            Student          @relation(fields: [studentId], references: [id])
-  studentId          String           @db.ObjectId
-  parent             Parent           @relation(fields: [parentId], references: [id])
-  parentId           String           @db.ObjectId
+  id      String      @id @default(uuid()) @map("_id")
+  title   String
+  message String
+  date    DateTime
+  users   Recipient[]
+}
+
+model Classroom {
+  id       String    @id @default(uuid()) @map("_id")
+  name     String    @unique
+  students Student[]
 }
 
 enum AttendanceStatus {
   PRESENT
   ABSENT
   MISSING
-  LATE
+}
+
+enum UserType {
+  STUDENT
+  TEACHER
 }

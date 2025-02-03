@@ -1,7 +1,7 @@
 import { alpha, Theme, Components } from "@mui/material/styles";
 import { gray } from "../themePrimitives";
 
-export const surfacesCustomizations: Components<Theme> = {
+export const surfacesCustomizations: Components<Theme & { vars: any }> = {
   MuiAccordion: {
     defaultProps: {
       elevation: 0,

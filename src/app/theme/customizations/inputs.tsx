@@ -9,7 +9,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
 import { gray, brand } from "../themePrimitives";
 
-export const inputsCustomizations: Components<Theme> = {
+export const inputsCustomizations: Components<Theme & { vars: any }> = {
   MuiButtonBase: {
     defaultProps: {
       disableTouchRipple: true,

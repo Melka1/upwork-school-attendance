@@ -3,24 +3,27 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import AppTheme from "@/app/theme/AppTheme";
 import Logo from "@/app/assets/svg/Logo";
 import AuthContainer from "@/app/components/AuthContainer";
 import Card from "@/app/components/Card";
 import { signIn } from "@/firebase/auth";
 import { useAuth } from "@/app/provider/AuthContext";
 import { useRouter } from "next/navigation";
+import { CircularProgress } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
+import { useTranslations } from "next-intl";
 
 export default function SignIn() {
-  const { user } = useAuth();
+  const t = useTranslations("auth");
   const router = useRouter();
+  const { user: authUser, loading } = useAuth();
+  const { user, queryStatus } = useAppSelector((state) => state.userSlice);
 
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -66,16 +69,8 @@ export default function SignIn() {
     return isValid;
   };
 
-  useEffect(() => {
-    if (user) {
-      router.push("/");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
   return (
-    <AppTheme>
-      <CssBaseline enableColorScheme />
+    <>
       <AuthContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <div className="flex justify-center items-center mx-auto gap-4">
@@ -85,7 +80,7 @@ export default function SignIn() {
               variant="h4"
               sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
             >
-              Welcome Back
+              {t("welcomeBack")}
             </Typography>
           </div>
           <Box
@@ -99,7 +94,7 @@ export default function SignIn() {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="email">{t("email")}</FormLabel>
               <TextField
                 error={emailError}
                 helperText={emailErrorMessage}
@@ -118,12 +113,12 @@ export default function SignIn() {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">{t("password")}</FormLabel>
               <TextField
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 name="password"
-                placeholder="Enter password"
+                placeholder={t("enterPassword")}
                 type="password"
                 value={password}
                 id="password"
@@ -145,24 +140,44 @@ export default function SignIn() {
                 }
               }}
             >
-              Sign in
+              {t("signIn")}
             </Button>
           </Box>
           <Divider>or</Divider>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Typography sx={{ textAlign: "center" }}>
-              Don&apos;t have an account?{" "}
+              {t("don_tHaveAccount")}{" "}
               <Link
                 href="/authentication/sign-up/"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >
-                Sign up
+                {t("signUp")}
               </Link>
             </Typography>
           </Box>
         </Card>
       </AuthContainer>
-    </AppTheme>
+
+      {loading && (
+        <Box
+          sx={{
+            display: "flex",
+            width: "100vw",
+            height: "100vh",
+            overflow: "hidden",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            zIndex: 10000,
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+    </>
   );
 }

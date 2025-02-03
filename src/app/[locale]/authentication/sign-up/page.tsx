@@ -1,21 +1,34 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import AppTheme from "@/app/theme/AppTheme";
 import Card from "@/app/components/Card";
 import AuthContainer from "@/app/components/AuthContainer";
 import { signUp } from "@/firebase/auth";
+import { useAuth } from "@/app/provider/AuthContext";
+import { useRouter } from "next/navigation";
+import { CircularProgress } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
+import { createUsers } from "@/app/lib/feature/userSlice";
+import { UserType } from "@prisma/client";
+import { useTranslations } from "next-intl";
+import Loading from "@/app/components/Loading";
 
 export default function SignUp() {
+  const t = useTranslations("auth");
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { user: authUser, loading } = useAuth();
+  const { user, mutationStatus } = useAppSelector((state) => state.userSlice);
+
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
@@ -60,9 +73,23 @@ export default function SignUp() {
     }
   };
 
+  useEffect(() => {
+    if (authUser) {
+      dispatch(createUsers({ email: authUser.email }));
+    }
+  }, [authUser]);
+
+  useEffect(() => {
+    if (mutationStatus != "success") return;
+    if (user.userType == UserType.STUDENT) {
+      router.push("/");
+    } else {
+      router.push("/dashboard");
+    }
+  }, [mutationStatus]);
+
   return (
-    <AppTheme>
-      <CssBaseline enableColorScheme />
+    <>
       <AuthContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <Typography
@@ -74,14 +101,14 @@ export default function SignUp() {
               textAlign: "center",
             }}
           >
-            Welcome
+            {t("welcome")}
           </Typography>
           <Box
             component="form"
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="email">{t("email")}</FormLabel>
               <TextField
                 required
                 fullWidth
@@ -98,12 +125,12 @@ export default function SignUp() {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">{t("password")}</FormLabel>
               <TextField
                 required
                 fullWidth
                 name="password"
-                placeholder="Enter password"
+                placeholder={t("enterPassword")}
                 value={password}
                 type="password"
                 id="password"
@@ -125,7 +152,7 @@ export default function SignUp() {
                 }
               }}
             >
-              Sign up
+              {t("signUp")}
             </Button>
           </Box>
           <Divider>
@@ -133,18 +160,20 @@ export default function SignUp() {
           </Divider>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Typography sx={{ textAlign: "center" }}>
-              Already have an account?{" "}
+              {t("alreadyHaveAccount")}{" "}
               <Link
                 href="/authentication/sign-in/"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >
-                Sign in
+                {t("signIn")}
               </Link>
             </Typography>
           </Box>
         </Card>
       </AuthContainer>
-    </AppTheme>
+
+      {(loading || mutationStatus == "saving") && <Loading />}
+    </>
   );
 }

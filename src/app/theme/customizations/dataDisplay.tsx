@@ -6,7 +6,7 @@ import { chipClasses } from "@mui/material/Chip";
 import { iconButtonClasses } from "@mui/material/IconButton";
 import { gray, red, green } from "../themePrimitives";
 
-export const dataDisplayCustomizations: Components<Theme> = {
+export const dataDisplayCustomizations: Components<Theme & { vars: any }> = {
   MuiList: {
     styleOverrides: {
       root: {

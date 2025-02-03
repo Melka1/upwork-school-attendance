@@ -13,7 +13,7 @@ export const signUp = async (
   try {
     return await createUserWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    throw error; // You can enhance this to return custom error messages
+    throw error;
   }
 };
 
