@@ -73,7 +73,7 @@ export default function Header() {
           startIcon={<LogoutOutlined />}
           onClick={() => logOut()}
         >
-          {t("auth.signUp")}
+          {t("auth.logOut")}
         </Button>
       </Stack>
 
