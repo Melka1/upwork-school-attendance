@@ -17,6 +17,7 @@ import { CheckCircle } from "@mui/icons-material";
 import {
   createAttendance,
   fetchAttendances,
+  resetAttendanceState,
 } from "../lib/feature/attendanceSlice";
 import { useTranslations } from "next-intl";
 import { createNotifications } from "../lib/feature/notificationSlice";
@@ -31,6 +32,9 @@ function StudentPage() {
   );
 
   useEffect(() => {
+    if (mutationStatus == "success") {
+      dispatch(resetAttendanceState());
+    }
     if (!user?.student?.id || user.userType != UserType.STUDENT) return;
 
     const { date, month, year } = getDate();
@@ -61,7 +65,11 @@ function StudentPage() {
     });
   };
 
-  if (queryStatus == "loading" || queryStatus == "initial") {
+  if (
+    queryStatus == "loading" ||
+    queryStatus == "initial" ||
+    user.userType != UserType.STUDENT
+  ) {
     return <Loading />;
   }
 

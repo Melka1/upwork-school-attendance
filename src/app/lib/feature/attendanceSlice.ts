@@ -108,8 +108,9 @@ const AttendanceSlice = createSlice({
   name: "AttendanceSlice",
   initialState,
   reducers: {
-    resetAttendanceList(state) {
+    resetAttendanceState(state) {
       state.attendances = [];
+      state.mutationStatus = "initial";
     },
   },
   extraReducers(builder) {
@@ -145,6 +146,6 @@ const AttendanceSlice = createSlice({
   },
 });
 
-export const { resetAttendanceList } = AttendanceSlice.actions;
+export const { resetAttendanceState } = AttendanceSlice.actions;
 
 export default AttendanceSlice.reducer;
