@@ -25,11 +25,12 @@ export default async function LocaleLayout({
   params?: { locale: string };
 }) {
   const { locale } = await params;
+  console.log("locale: ", locale, routing.locales.includes(locale as any));
   if (!routing.locales.includes(locale as any)) {
     notFound();
   }
 
-  const messages = await getMessages();
+  const messages = await getMessages({ locale });
 
   return (
     <html lang={locale}>

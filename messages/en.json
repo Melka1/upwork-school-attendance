@@ -68,6 +68,8 @@
     "enterMedicalInformation": "Enter medical information",
     "name": "Name",
     "enterName": "Enter name",
-    "chooseImage": "Choose Image"
+    "chooseImage": "Choose Image",
+    "hasCalledSick": "has called sick.",
+    "absentAlert":"Absent alert!"
   }
 }

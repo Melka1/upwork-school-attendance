@@ -68,7 +68,7 @@ function StudentPage() {
   if (
     queryStatus == "loading" ||
     queryStatus == "initial" ||
-    user.userType != UserType.STUDENT
+    user?.userType != UserType.STUDENT
   ) {
     return <Loading />;
   }
