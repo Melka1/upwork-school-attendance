@@ -54,7 +54,7 @@ export const createUsers = createAsyncThunk(
         }
       );
 
-      const user = response.data;
+      const user = response.data.user;
       return user;
     } catch (error) {
       throw error;

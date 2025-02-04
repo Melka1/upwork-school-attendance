@@ -8,8 +8,8 @@ export async function POST(request: Request) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (user) {
       return NextResponse.json(
-        { message: "User by this email already exists!" },
-        { status: 400 }
+        { user, message: "User by this email already exists!" },
+        { status: 200 }
       );
     }
 
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json(response, { status: 200 });
+    return NextResponse.json({ user: response }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to crete user", message: error?.message || error },

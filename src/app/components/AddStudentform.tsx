@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   Button,
-  CircularProgress,
   FormControl,
   Input,
   MenuItem,
@@ -51,7 +50,6 @@ function AddStudentFormModal() {
 
   useEffect(() => {
     const isValidated = validateInput();
-    console.log(isValidated);
 
     setIsDisabled(!isValidated);
   }, [
@@ -136,6 +134,7 @@ function AddStudentFormModal() {
         medicalInfo: [medicalInfo],
       })
     ).then(() => {
+      setStudentInfo({});
       dispatch(setIsAddStudentModalOpen(false));
     });
   };
@@ -216,6 +215,7 @@ function AddStudentFormModal() {
           <div className="flex flex-col gap-2">
             <Typography>{t("phoneNumber")}</Typography>
             <TextField
+              type="tel"
               value={studentInfo?.phoneNumber || ""}
               placeholder={t("enterPhoneNumber")}
               onChange={({ target }) => {
@@ -298,6 +298,7 @@ function AddStudentFormModal() {
           <div className="flex flex-col gap-2">
             <Typography>{t("email")}</Typography>
             <TextField
+              type="email"
               value={studentInfo?.parentEmail || ""}
               placeholder={t("enterEmail")}
               onChange={({ target }) => {
@@ -312,6 +313,7 @@ function AddStudentFormModal() {
           <div className="flex flex-col gap-2">
             <Typography>{t("phoneNumber")}</Typography>
             <TextField
+              type="tel"
               value={studentInfo?.parentPhoneNumber || ""}
               placeholder={t("enterPhoneNumber")}
               onChange={({ target }) => {
@@ -334,6 +336,7 @@ function AddStudentFormModal() {
             </Typography>
             <TextField
               fullWidth
+              type={"tel"}
               value={studentInfo?.emergencyContact || ""}
               placeholder={t("enterEmergencyContact")}
               onChange={({ target }) => {

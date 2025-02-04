@@ -49,25 +49,27 @@ function NotificationModal() {
           {t("notifications")}
         </Typography>
 
-        {notifications.length == 0 ? (
-          <div className="flex min-h-20 min-w-full items-center justify-center">
-            <Typography sx={{ fontSize: "1.1rem" }}>
-              {t("noNewNotifications")}
-            </Typography>
-          </div>
-        ) : (
-          [...notifications]
-            .sort((b, a) => {
-              return new Date(a.date).getTime() - new Date(b.date).getTime();
-            })
-            .map((n) => (
-              <NotificationCard
-                key={n.id}
-                notification={n}
-                action={() => handleMarkNotificationAsRead(n)}
-              />
-            ))
-        )}
+        <div className="flex flex-col gap-4 overflow-y-auto">
+          {notifications.length == 0 ? (
+            <div className="flex min-h-20 min-w-full items-center justify-center">
+              <Typography sx={{ fontSize: "1.1rem" }}>
+                {t("noNewNotifications")}
+              </Typography>
+            </div>
+          ) : (
+            [...notifications]
+              .sort((b, a) => {
+                return new Date(a.date).getTime() - new Date(b.date).getTime();
+              })
+              .map((n) => (
+                <NotificationCard
+                  key={n.id}
+                  notification={n}
+                  action={() => handleMarkNotificationAsRead(n)}
+                />
+              ))
+          )}
+        </div>
 
         <Button
           size="small"
@@ -99,8 +101,15 @@ const NotificationCard = ({
 }) => {
   const t = useTranslations("dashboard");
   return (
-    <Card variant="outlined" sx={{ width: "100% !important", padding: "1rem" }}>
-      <CardContent>
+    <Card
+      variant="outlined"
+      sx={{
+        width: "100% !important",
+        padding: "1rem",
+        minHeight: "max-content",
+      }}
+    >
+      <CardContent sx={{}}>
         <div className="flex justify-between ">
           <Typography
             gutterBottom

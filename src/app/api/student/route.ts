@@ -48,15 +48,14 @@ export async function POST(request: Request) {
   };
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.upsert({
       where: { email, userType: UserType.STUDENT },
+      update: {},
+      create: {
+        email,
+        userType: UserType.STUDENT,
+      },
     });
-    if (!user) {
-      return NextResponse.json(
-        { message: "This email does not exist, signup first" },
-        { status: 404 }
-      );
-    }
 
     const response = await prisma.student.create({
       data: {
