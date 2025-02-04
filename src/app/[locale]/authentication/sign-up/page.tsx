@@ -76,16 +76,16 @@ export default function SignUp() {
           message: t("successfullyLoggedIn"),
         })
       );
-      setLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(false)
       dispatch(
         setMessageAlert({
           alertType: "error",
           message: error?.message || error,
         })
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -126,6 +126,7 @@ export default function SignUp() {
             <FormControl>
               <FormLabel htmlFor="email">{t("email")}</FormLabel>
               <TextField
+                type="email"
                 required
                 fullWidth
                 id="email"

@@ -157,7 +157,7 @@ function AddStudentFormModal() {
         sx={{ maxHeight: { xs: "95vh", md: "90vh" }, py: "2rem" }}
         className="min-h-[40vh] min-w-[50vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
       >
-        <Typography component="h2" variant="h4">
+        <Typography component="h2" variant="h4" textAlign={"center"}>
           {t("addStudent")}
         </Typography>
         <div className="grid grid-cols-2 gap-4 py-2 items-center">
@@ -187,7 +187,6 @@ function AddStudentFormModal() {
               </Button>
             </label>
           </div>
-
           {/* name */}
           <div className="flex flex-col gap-2">
             <Typography>{t("fullName")}</Typography>

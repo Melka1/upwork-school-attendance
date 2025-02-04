@@ -2,7 +2,7 @@
 
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
-import StudentListTable from "./StudentListTable";
+import StudentListTable from "./StudentAbsenceListTable";
 import AddStudentFormModal from "@/app/components/AddStudentform";
 import { useTranslations } from "next-intl";
 import Card from "@/app/components/Card";
@@ -10,7 +10,7 @@ import SnackBar from "@/app/components/SnackBar";
 import AddTeacherFormModal from "@/app/components/AddTeacherForm";
 import Header from "./Header";
 
-function StudentListPage() {
+function AbsenceListPage() {
   const t = useTranslations("dashboard");
   return (
     <Stack
@@ -27,7 +27,7 @@ function StudentListPage() {
         <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
           <div className="flex justify-between items-center">
             <Typography component="h2" variant="h6">
-              {t("studentList")}
+              {t("studentsAbsenceList")}
             </Typography>
           </div>
 
@@ -41,4 +41,4 @@ function StudentListPage() {
   );
 }
 
-export default StudentListPage;
+export default AbsenceListPage;

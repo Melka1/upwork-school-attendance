@@ -1,7 +1,6 @@
 import { UserType } from "@prisma/client";
 import { prisma } from "../../../../prisma";
 import { NextResponse } from "next/server";
-import User from "@/app/assets/svg/User";
 
 export async function GET() {
   try {

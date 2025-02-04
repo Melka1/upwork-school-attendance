@@ -49,16 +49,16 @@ export default function SignIn() {
           message: t("successfullyLoggedIn"),
         })
       );
-      setLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(false);
       dispatch(
         setMessageAlert({
           alertType: "error",
           message: error?.message || error,
         })
       );
+    } finally {
+      setLoading(false);
     }
   };
 

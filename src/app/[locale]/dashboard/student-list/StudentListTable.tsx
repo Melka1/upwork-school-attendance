@@ -37,6 +37,7 @@ import {
 import { fetchClassrooms } from "../../../lib/feature/classroomSlice";
 import { AttendanceStatus } from "@prisma/client";
 import { useTranslations } from "next-intl";
+import { getDate } from "@/app/lib/utils";
 
 interface EditStudentInput {
   id: string;
@@ -62,12 +63,8 @@ function StudentListTable() {
     null
   );
 
-  const today = new Date();
-  const date = today.getDate().toString();
-  const month = today.getMonth().toString();
-  const year = today.getFullYear().toString();
-
   useEffect(() => {
+    const { date, month, year } = getDate();
     dispatch(fetchStudents({}));
     dispatch(fetchAttendances({ date, month, year }));
     dispatch(fetchClassrooms({}));
@@ -79,6 +76,7 @@ function StudentListTable() {
   }, [mutationStatus]);
 
   useEffect(() => {
+    const { date, month, year } = getDate();
     if (attendanceMutationStatus != "success") return;
     dispatch(fetchAttendances({ date, month, year }));
   }, [attendanceMutationStatus]);

@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { fetchUsers, resetUserState } from "../lib/feature/userSlice";
 import { UserType } from "@prisma/client";
+import { setCurrentPage } from "../lib/feature/pageSlice";
 
 interface AuthContextType {
   user: User | null;
@@ -28,12 +29,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { user: userFromDB, queryStatus } = useAppSelector(
     (state) => state.userSlice
   );
+  const currentPage = useAppSelector((state) => state.pageSlice.currentPage);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [previousPage, setPreviousPage] = useState("");
 
   useEffect(() => {
-    setPreviousPage(window.location.href);
+    dispatch(setCurrentPage(window?.location.pathname));
     if (user) return;
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -60,11 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (userFromDB.userType == UserType.STUDENT) {
       router.push("/");
     } else {
-      if (previousPage.includes("student-list")) {
-        router.push("/dashboard/student-list");
-        return;
-      }
-      router.push("/dashboard");
+      router.push(currentPage);
     }
   }, [queryStatus]);
 

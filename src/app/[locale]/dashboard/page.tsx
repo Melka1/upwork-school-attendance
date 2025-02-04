@@ -4,7 +4,7 @@
 import type {} from "@mui/x-date-pickers/themeAugmentation";
 import type {} from "@mui/x-data-grid/themeAugmentation";
 import Stack from "@mui/material/Stack";
-import Header from "../../components/Header";
+import Header from "./Header";
 import MainGrid from "../../components/MainGrid";
 
 import { useAuth } from "../../provider/AuthContext";

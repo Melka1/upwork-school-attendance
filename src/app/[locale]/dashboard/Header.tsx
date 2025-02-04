@@ -1,9 +1,9 @@
 import * as React from "react";
 import Stack from "@mui/material/Stack";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
-import MenuButton from "./MenuButton";
+import MenuButton from "../../components/MenuButton";
 
-import Logo from "../assets/svg/Logo";
+import Logo from "../../assets/svg/Logo";
 import {
   LogoutOutlined,
   MoreVert,
@@ -11,9 +11,9 @@ import {
 } from "@mui/icons-material";
 import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { logOut } from "@/firebase/auth";
-import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import NotificationModal from "./NotificationModal";
-import { setIsNotificationModalOpen } from "../lib/feature/notificationSlice";
+import { useAppDispatch, useAppSelector } from "../../lib/hooks";
+import NotificationModal from "../../components/NotificationModal";
+import { setIsNotificationModalOpen } from "../../lib/feature/notificationSlice";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -67,6 +67,14 @@ export default function Header() {
         <Button
           variant="outlined"
           size="small"
+          onClick={() => router.push("/dashboard/absence-list")}
+          sx={{ display: { xs: "none", md: "block" } }}
+        >
+          {t("dashboard.studentsAbsenceList")}
+        </Button>
+        <Button
+          variant="outlined"
+          size="small"
           startIcon={<SettingsOutlined />}
           sx={{ display: { xs: "none", md: "flex" } }}
         >
@@ -112,11 +120,37 @@ export default function Header() {
             }}
             sx={{ pt: "0.5rem" }}
           >
-            <MenuItem onClick={() => router.push("/dashboard/student-list")}>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                router.push("/dashboard/student-list");
+              }}
+            >
               {t("dashboard.studentList")}
             </MenuItem>
-            <MenuItem>{t("dashboard.admin")}</MenuItem>
-            <MenuItem onClick={() => logOut()}>{t("auth.logOut")}</MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                router.push("/dashboard/absence-list");
+              }}
+            >
+              {t("dashboard.studentsAbsenceList")}
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              {t("dashboard.admin")}
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                logOut();
+              }}
+            >
+              {t("auth.logOut")}
+            </MenuItem>
           </Menu>
         </Box>
       </Stack>

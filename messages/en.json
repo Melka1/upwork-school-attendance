@@ -70,6 +70,10 @@
     "enterName": "Enter name",
     "chooseImage": "Choose Image",
     "hasCalledSick": "has called sick.",
-    "absentAlert":"Absent alert!"
+    "absentAlert": "Absent alert!",
+    "addTeacher": "Add Teacher",
+    "addNewTeacher": "Add New Teacher",
+    "studentsAbsenceList": "Absence list",
+    "absentCount": "Absent Count"
   }
 }

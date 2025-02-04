@@ -41,11 +41,13 @@ model Student {
 }
 
 model Teacher {
-  id     String @id @default(uuid()) @map("_id")
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
-  name   String
-  email  String @unique
+  id          String  @id @default(uuid()) @map("_id")
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id])
+  name        String
+  email       String  @unique
+  phoneNumber String
+  imageUrl    String?
 }
 
 model Attendance {
