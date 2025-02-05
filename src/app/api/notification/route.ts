@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { UserType } from "@prisma/client";
 
 export async function POST(request: Request) {
-  const { title, name } = await request.json();
+  const { title, content } = await request.json();
 
   try {
     const users = await prisma.user.findMany({
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const response = await prisma.notification.create({
       data: {
         title,
-        message: name + " has called sick.",
+        message: content,
         date: new Date(),
         users: {
           create: [

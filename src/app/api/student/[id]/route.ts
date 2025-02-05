@@ -43,7 +43,6 @@ export async function PUT(
     phoneNumber,
     classroomId,
     location,
-    parent,
     medicalInfo,
     emergencyContact,
   } = await request.json();
@@ -54,7 +53,6 @@ export async function PUT(
     !email &&
     !phoneNumber &&
     !location &&
-    !parent &&
     !medicalInfo &&
     !emergencyContact
   ) {
@@ -71,7 +69,6 @@ export async function PUT(
   if (email) data["email"] = email;
   if (phoneNumber) data["phoneNumber"] = phoneNumber;
   if (location) data["location"] = location;
-  if (parent) data["parent"] = parent;
   if (medicalInfo) data["medicalInfo"] = medicalInfo;
   if (emergencyContact) data["emergencyContact"] = emergencyContact;
 

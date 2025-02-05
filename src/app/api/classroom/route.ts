@@ -2,7 +2,9 @@ import { prisma } from "../../../../prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { name } = await request.json();
+  const { grade, section } = await request.json();
+
+  const name = grade + section;
 
   try {
     const classroom = await prisma.classroom.findUnique({ where: { name } });
@@ -16,6 +18,8 @@ export async function POST(request: Request) {
     const response = await prisma.classroom.create({
       data: {
         name,
+        grade,
+        section,
       },
     });
 

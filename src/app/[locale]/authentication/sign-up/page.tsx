@@ -97,7 +97,7 @@ export default function SignUp() {
 
   useEffect(() => {
     if (mutationStatus != "success") return;
-    if (user.userType == UserType.STUDENT) {
+    if (user.userType != UserType.TEACHER) {
       router.push("/");
     } else {
       router.push("/dashboard");

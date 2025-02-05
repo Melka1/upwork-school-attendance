@@ -3,7 +3,7 @@ import httpRequest from "../httpRequest";
 import { User, UserType } from "@prisma/client";
 import { EMutationStatus, EQueryStatus } from "../enums";
 
-type TUser = User & {
+export type TUser = User & {
   student: {
     id: string;
     name: string;
@@ -11,6 +11,14 @@ type TUser = User & {
   teacher: {
     id: string;
     name: string;
+  };
+  parent: {
+    id: string;
+    name: string;
+    students: {
+      id: string;
+      name: string;
+    }[];
   };
 };
 

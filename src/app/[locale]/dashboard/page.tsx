@@ -15,6 +15,7 @@ import { useAppSelector, useAppDispatch } from "../../lib/hooks";
 import { fetchAttendances } from "../../lib/feature/attendanceSlice";
 import { fetchStudents } from "../../lib/feature/studentsSlice";
 import { fetchNotifications } from "@/app/lib/feature/notificationSlice";
+import { getDate } from "@/app/lib/utils";
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -32,18 +33,16 @@ export default function Home() {
     }
   }, [user]);
 
-  const today = new Date();
-  const date = today.getDate().toString();
-  const month = today.getMonth().toString();
-  const year = today.getFullYear().toString();
-
   useEffect(() => {
+    const { date, month, year } = getDate();
     dispatch(fetchAttendances({ date, month, year, startDate }));
     dispatch(fetchStudents({}));
     dispatch(fetchNotifications({ userId: id, isRead: false }));
   }, []);
 
   useEffect(() => {
+    const { date, month, year } = getDate();
+
     if (mutationStatus !== "success") return;
     dispatch(fetchAttendances({ date, month, year }));
   }, [mutationStatus]);

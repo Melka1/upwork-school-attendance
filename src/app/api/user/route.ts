@@ -76,6 +76,18 @@ export async function GET(request: NextRequest) {
             name: true,
           },
         },
+        parent: {
+          select: {
+            id: true,
+            name: true,
+            students: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
     if (!user) {

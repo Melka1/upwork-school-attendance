@@ -121,19 +121,11 @@ export default function CustomizedDataGrid({
               );
               console.log(params.row["status"]);
               if (params.row["status"] == AttendanceStatus.ABSENT) return;
-              if (previousAttendance) {
-                dispatch(
-                  updateAttendances({
-                    id: previousAttendance.id,
-                    status: AttendanceStatus.ABSENT,
-                  })
-                );
-                return;
-              }
               dispatch(
                 createAttendance({
                   studentId: params.id as string,
                   status: AttendanceStatus.ABSENT,
+                  attendanceId: previousAttendance?.id || (params.id as string),
                 })
               );
             }}

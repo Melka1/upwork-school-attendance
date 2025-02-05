@@ -75,16 +75,14 @@ export const fetchStudents = createAsyncThunk(
 
 interface CreateStudentsInput {
   name: string;
-  email: string;
+  email?: string;
   imageUrl?: string;
   phoneNumber: string;
   classroom: string;
   location: string;
-  parent: {
-    name: string;
-    email: string;
-    phoneNumber: string;
-  };
+  parentName: string;
+  parentEmail: string;
+  parentPhoneNumber: string;
   medicalInfo: string[];
   emergencyContact: string[];
 }

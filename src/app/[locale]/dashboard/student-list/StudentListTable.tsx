@@ -274,25 +274,16 @@ function StudentListTable() {
                     const previousAttendance = attendances.find(
                       (a) => a.studentId == params.id
                     );
-                    if (previousAttendance) {
-                      promises.push(
-                        dispatch(
-                          updateAttendances({
-                            id: previousAttendance.id,
-                            status,
-                          })
-                        )
-                      );
-                    } else {
-                      promises.push(
-                        dispatch(
-                          createAttendance({
-                            studentId: params.id as string,
-                            status,
-                          })
-                        )
-                      );
-                    }
+                    promises.push(
+                      dispatch(
+                        createAttendance({
+                          studentId: params.id as string,
+                          status,
+                          attendanceId:
+                            previousAttendance?.id || (params.id as string),
+                        })
+                      )
+                    );
                   }
 
                   Promise.all(promises).then(() => {

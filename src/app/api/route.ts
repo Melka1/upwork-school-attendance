@@ -31,16 +31,25 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  // const { id, userType } = await request.json();
-
   try {
-    // const user = await prisma.user.findUnique({ where: { id } });
-    // if (!user) {
-    //   return NextResponse.json({ message: "User not found!" }, { status: 404 });
-    // }
+    // const grade = 8;
+    // const section = "A";
+    // const name = grade + section;
+    // const isParentAssistanceNeeded = false;
+    // const response = await prisma.classroom.create({
+    //   data: {
+    //     name,
+    //     grade,
+    //     section,
+    //     isParentAssistanceNeeded,
+    //   },
+    // });
 
-    const response = await prisma.classroom.create({
-      data: { name: "10B" },
+    const response = await prisma.user.create({
+      data: {
+        email: "admin@gmail.com",
+        userType: UserType.TEACHER,
+      },
     });
 
     return NextResponse.json(response, { status: 200 });

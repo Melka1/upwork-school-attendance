@@ -7,6 +7,7 @@ import notificationSlice from "./feature/notificationSlice";
 import userSlice from "./feature/userSlice";
 import pageSlice from "./feature/pageSlice";
 import teacherSlice from "./feature/teacherSlice";
+import parentSlice from "./feature/parentSlice";
 import storage from "redux-persist/lib/storage";
 import {
   persistStore,
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   userSlice: userSlice,
   pageSlice: pageSlice,
   teacherSlice: teacherSlice,
+  parentSlice: parentSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

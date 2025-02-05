@@ -43,7 +43,7 @@ export const fetchNotifications = createAsyncThunk(
 
 interface CreateNotificationInput {
   title: string;
-  name: string;
+  content: string;
 }
 
 export const createNotifications = createAsyncThunk(

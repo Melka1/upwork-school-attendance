@@ -4,24 +4,16 @@
 import { logOut } from "@/firebase/auth";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import { AttendanceStatus, UserType } from "@prisma/client";
+import { UserType } from "@prisma/client";
 import Loading from "../components/Loading";
+import { Card, Stack } from "@mui/material";
 import {
-  Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  Typography,
-} from "@mui/material";
-import { CheckCircle } from "@mui/icons-material";
-import {
-  createAttendance,
   fetchAttendances,
   resetAttendanceState,
 } from "../lib/feature/attendanceSlice";
 import { useTranslations } from "next-intl";
-import { createNotifications } from "../lib/feature/notificationSlice";
 import { getDate } from "../lib/utils";
+import CallInSickCard from "../components/CallAndSickCard";
 
 function StudentPage() {
   const t = useTranslations();
@@ -33,90 +25,61 @@ function StudentPage() {
 
   useEffect(() => {
     if (mutationStatus == "success") {
-      dispatch(resetAttendanceState());
+      setTimeout(() => {
+        dispatch(resetAttendanceState());
+      }, 1000);
     }
-    if (!user?.student?.id || user.userType != UserType.STUDENT) return;
+    if (user?.userType == UserType.TEACHER) return;
 
     const { date, month, year } = getDate();
 
     dispatch(
       fetchAttendances({
-        studentId: user.student.id,
+        studentId: user?.student?.id,
+        studentIds: user?.parent?.students.map((s) => s.id),
         date,
         month,
         year,
       })
     );
-  }, [user]);
-
-  const handleSickCall = () => {
-    dispatch(
-      createAttendance({
-        studentId: user.student?.id,
-        status: AttendanceStatus.ABSENT,
-      })
-    ).then(() => {
-      dispatch(
-        createNotifications({
-          title: "Absent alert!",
-          name: user?.student?.name,
-        })
-      );
-    });
-  };
+  }, [user, mutationStatus]);
 
   if (
     queryStatus == "loading" ||
     queryStatus == "initial" ||
-    user?.userType != UserType.STUDENT
+    user?.userType == UserType.TEACHER
   ) {
     return <Loading />;
   }
 
   return (
-    <div>
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-500 p-4">
-        <h1 className="text-2xl font-bold mb-4">
-          {t("student.hey")} {user?.student?.name.split(" ")[0]}
-        </h1>
-        <Card className="w-full max-w-sm p-6 bg-white shadow-xl rounded-2xl">
-          {user?.student?.id ? (
-            <CardContent className="text-center">
-              <h2 className="text-xl font-semibold mb-4">
-                {t("student.callInSick")}
-              </h2>
-              {mutationStatus == "success" ? (
-                <div className="text-green-600 flex flex-col items-center">
-                  <CheckCircle fontSize={"large"} />
-                  <p className="mt-2">{t("student.callSickSubmitted")}</p>
-                </div>
-              ) : (
-                <Button
-                  fullWidth
-                  size="small"
-                  onClick={handleSickCall}
-                  loading={mutationStatus == "saving"}
-                  variant="contained"
-                  disabled={attendances.length > 0}
-                  color="error"
-                >
-                  {t("student.callInSick")}
-                </Button>
-              )}
-            </CardContent>
-          ) : (
-            <Typography textAlign={"center"}>
-              {t("student.contactYourTeacher")}
-            </Typography>
-          )}
-        </Card>
-        <button
-          onClick={() => logOut()}
-          className="mt-4 bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg"
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-500 p-4">
+      <Card className="w-full max-w-sm p-6 bg-white shadow-xl rounded-2xl">
+        <Stack
+          direction={"row"}
+          sx={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: "1rem",
+          }}
         >
-          {t("auth.logOut")}
-        </button>
-      </div>
+          <h1 className="text-2xl font-bold">
+            {t("student.hey")}{" "}
+            {user?.student?.name.split(" ")[0] || user?.parent?.name}
+          </h1>
+          <button
+            onClick={() => logOut()}
+            className=" bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg"
+          >
+            {t("auth.logOut")}
+          </button>
+        </Stack>
+        <CallInSickCard
+          user={user}
+          attendances={attendances}
+          status={mutationStatus}
+        />
+      </Card>
     </div>
   );
 }

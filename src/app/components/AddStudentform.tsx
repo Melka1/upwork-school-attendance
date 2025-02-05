@@ -83,8 +83,8 @@ function AddStudentFormModal() {
 
     if (
       !name ||
-      !email ||
-      !phoneNumber ||
+      // !email ||
+      // !phoneNumber ||
       !classroom ||
       !location ||
       !parentName ||
@@ -125,16 +125,14 @@ function AddStudentFormModal() {
         phoneNumber,
         location,
         classroom: classrooms.find((c) => c.name == classroom).id,
-        parent: {
-          name: parentName,
-          email: parentEmail,
-          phoneNumber: parentPhoneNumber,
-        },
+        parentName,
+        parentEmail,
+        parentPhoneNumber,
         emergencyContact: [emergencyContact],
         medicalInfo: [medicalInfo],
       })
     ).then(() => {
-      setStudentInfo({});
+      // setStudentInfo({});
       dispatch(setIsAddStudentModalOpen(false));
     });
   };
@@ -186,6 +184,36 @@ function AddStudentFormModal() {
                 {t("chooseImage")}
               </Button>
             </label>
+          </div>{" "}
+          {/* Classroom */}
+          <div className="flex flex-col gap-2">
+            <Typography>{t("classroom")}</Typography>
+            <FormControl fullWidth>
+              <Select
+                value={studentInfo.classroom || ""}
+                onChange={({ target }) => {
+                  setStudentInfo((prev) => ({
+                    ...prev,
+                    classroom: target.value,
+                  }));
+                }}
+                inputProps={{ "aria-label": "Without label" }}
+                label="Classroom"
+                renderValue={(selected) => {
+                  if (selected?.length == 0) {
+                    return <em>{t("selectClassroom")}</em>;
+                  }
+                  return selected;
+                }}
+                displayEmpty
+              >
+                {classrooms.map((c) => (
+                  <MenuItem key={c.id} value={c.name}>
+                    {t("class")} {c.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
           {/* name */}
           <div className="flex flex-col gap-2">
@@ -224,36 +252,6 @@ function AddStudentFormModal() {
                 }));
               }}
             />
-          </div>
-          {/* Classroom */}
-          <div className="flex flex-col gap-2">
-            <Typography>{t("classroom")}</Typography>
-            <FormControl fullWidth>
-              <Select
-                value={studentInfo.classroom || ""}
-                onChange={({ target }) => {
-                  setStudentInfo((prev) => ({
-                    ...prev,
-                    classroom: target.value,
-                  }));
-                }}
-                inputProps={{ "aria-label": "Without label" }}
-                label="Classroom"
-                renderValue={(selected) => {
-                  if (selected?.length == 0) {
-                    return <em>{t("selectClassroom")}</em>;
-                  }
-                  return selected;
-                }}
-                displayEmpty
-              >
-                {classrooms.map((c) => (
-                  <MenuItem key={c.id} value={c.name}>
-                    {t("class")} {c.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
           </div>
           {/* location */}
           <div className="flex flex-col gap-2">

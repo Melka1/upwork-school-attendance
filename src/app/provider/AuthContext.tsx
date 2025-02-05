@@ -32,9 +32,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const currentPage = useAppSelector((state) => state.pageSlice.currentPage);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const isAuthPage = window?.location.href.includes("authentication");
+  const isDashboard = window?.location.href.includes("dashboard");
+
+  console.log(currentPage);
 
   useEffect(() => {
-    dispatch(setCurrentPage(window?.location.pathname));
+    if (isDashboard) {
+      dispatch(setCurrentPage(window?.location.pathname));
+    }
     if (user) return;
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -57,11 +63,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [user, loading]);
 
   useEffect(() => {
+    if (queryStatus == "error") {
+      router.push("/authentication/sign-in");
+    }
     if (queryStatus != "success") return;
-    if (userFromDB.userType == UserType.STUDENT) {
+    if (userFromDB.userType != UserType.TEACHER) {
       router.push("/");
     } else {
-      router.push(currentPage);
+      router.push(currentPage || "/dashboard");
     }
   }, [queryStatus]);
 

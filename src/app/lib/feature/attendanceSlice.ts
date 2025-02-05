@@ -8,15 +8,16 @@ interface CreateAttendanceProps {
   date?: string;
   status: EAttendanceStatus;
   studentId: string;
+  attendanceId?: string;
 }
 
 export const createAttendance = createAsyncThunk(
   "createAttendance",
-  async ({ date, status, studentId }: CreateAttendanceProps) => {
+  async ({ date, status, studentId, attendanceId }: CreateAttendanceProps) => {
     try {
       await httpRequest(`${process.env.NEXT_PUBLIC_API_URL}/attendance`, {
         method: "POST",
-        body: { dateTime: date, status, studentId },
+        body: { dateTime: date, status, studentId, attendanceId },
       });
 
       logger.info("created attendance list");
@@ -50,6 +51,7 @@ export const updateAttendances = createAsyncThunk(
 
 interface FetchAttendanceFilter {
   studentId?: string;
+  studentIds?: string[];
   status?: AttendanceStatus;
   date?: string;
   month?: string;
@@ -66,9 +68,11 @@ export const fetchAttendances = createAsyncThunk(
     month,
     year,
     startDate,
+    studentIds,
   }: FetchAttendanceFilter): Promise<Attendance[]> => {
     const params = new URLSearchParams({
       ...(studentId && { studentId }),
+      ...(studentIds && { studentIds: JSON.stringify(studentIds) }),
       ...(status && { status: status.toString() }),
       ...(date && { date }),
       ...(month && { month }),
