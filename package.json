@@ -30,7 +30,6 @@
     "mongoose": "^8.9.5",
     "next": "15.1.6",
     "next-intl": "^3.26.3",
-    "node-cron": "^3.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
@@ -40,7 +39,6 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
-    "@types/node-cron": "^3.0.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/attendance/initialize",
-      "schedule": "7 3 * * *"
+      "schedule": "0 1 * * *"
     }
   ]
 }
