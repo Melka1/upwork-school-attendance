@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "../../../../../prisma";
 import { AttendanceStatus } from "@prisma/client";
 
-export async function POST() {
+export async function GET() {
   try {
     const students = await prisma.student.findMany({
       select: {
