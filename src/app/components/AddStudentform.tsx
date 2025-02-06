@@ -16,11 +16,12 @@ import {
   createStudents,
   setIsAddStudentModalOpen,
 } from "../lib/feature/studentsSlice";
-import Loading from "./Loading";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import ProfileImage from "../assets/images/Profile.png";
 import { uploadImage } from "@/firebase/storage";
+import { fetchAttendances } from "../lib/feature/attendanceSlice";
+import { getDate } from "../lib/utils";
 
 interface StudentInput {
   name?: string;
@@ -68,8 +69,6 @@ function AddStudentFormModal() {
   const validateInput = () => {
     const {
       name,
-      email,
-      phoneNumber,
       classroom,
       location,
       parentName,
@@ -83,8 +82,6 @@ function AddStudentFormModal() {
 
     if (
       !name ||
-      // !email ||
-      // !phoneNumber ||
       !classroom ||
       !location ||
       !parentName ||
@@ -132,8 +129,10 @@ function AddStudentFormModal() {
         medicalInfo: [medicalInfo],
       })
     ).then(() => {
-      // setStudentInfo({});
+      setStudentInfo({});
       dispatch(setIsAddStudentModalOpen(false));
+      const { date, month, year } = getDate();
+      dispatch(fetchAttendances({ date, month, year }));
     });
   };
 
