@@ -115,7 +115,7 @@ function StudentDetailModal() {
                 <ListItemIcon>
                   <MailOutlined />
                 </ListItemIcon>
-                <ListItemText primary={student?.email || "-"} />
+                <ListItemText primary={student?.user?.email || "-"} />
               </ListItem>
               <ListItem disablePadding className="gap-2">
                 <ListItemIcon>
@@ -220,7 +220,9 @@ function StudentDetailModal() {
                     <ListItemIcon>
                       <MailOutlined />
                     </ListItemIcon>
-                    <ListItemText primary={student?.parent?.email || "-"} />
+                    <ListItemText
+                      primary={student?.parent?.user?.email || "-"}
+                    />
                   </ListItem>
                   <ListItem disablePadding className="gap-2">
                     <ListItemIcon>

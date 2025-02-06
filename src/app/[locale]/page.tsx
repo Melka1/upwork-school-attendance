@@ -14,6 +14,7 @@ import {
 import { useTranslations } from "next-intl";
 import { getDate } from "../lib/utils";
 import CallInSickCard from "../components/CallAndSickCard";
+import ColorModeSelect from "../theme/ColorModeSelect";
 
 function StudentPage() {
   const t = useTranslations();
@@ -80,6 +81,7 @@ function StudentPage() {
           status={mutationStatus}
         />
       </Card>
+      <ColorModeSelect className="top-4 left-4" sx={{ position: "absolute" }} />
     </div>
   );
 }

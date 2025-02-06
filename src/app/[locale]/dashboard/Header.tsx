@@ -16,6 +16,7 @@ import NotificationModal from "../../components/NotificationModal";
 import { setIsNotificationModalOpen } from "../../lib/feature/notificationSlice";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import ColorModeSelect from "@/app/theme/ColorModeSelect";
 
 export default function Header() {
   const t = useTranslations();
@@ -151,6 +152,7 @@ export default function Header() {
             >
               {t("auth.logOut")}
             </MenuItem>
+            <ColorModeSelect />
           </Menu>
         </Box>
       </Stack>

@@ -16,6 +16,7 @@ import { fetchAttendances } from "../../lib/feature/attendanceSlice";
 import { fetchStudents } from "../../lib/feature/studentsSlice";
 import { fetchNotifications } from "@/app/lib/feature/notificationSlice";
 import { getDate } from "@/app/lib/utils";
+import ColorModeSelect from "@/app/theme/ColorModeSelect";
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -64,16 +65,9 @@ export default function Home() {
     );
   }
   return (
-    <Stack
-      spacing={2}
-      sx={{
-        alignItems: "center",
-        mx: { xs: "0.75rem", md: 3 },
-        py: { xs: 1, md: 3 },
-      }}
-    >
+    <>
       <Header />
       <MainGrid />
-    </Stack>
+    </>
   );
 }

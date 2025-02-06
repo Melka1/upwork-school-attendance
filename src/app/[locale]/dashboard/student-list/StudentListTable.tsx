@@ -340,7 +340,9 @@ function StudentListTable() {
     <div>
       <div className="flex py-4 gap-4">
         <Search handleChange={setSearchFilter} />
-        <FormControl sx={{ minWidth: "100px", maxWidth: "250px" }}>
+        <FormControl
+          sx={{ minWidth: { xs: "100px", md: "200px" }, maxWidth: "250px" }}
+        >
           <Select
             value={classroomFilter || ""}
             onChange={({ target }) => setClassroomFilter(target.value)}

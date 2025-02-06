@@ -6,7 +6,9 @@ import { Attendance } from "@prisma/client";
 export type Student = {
   id: string;
   name: string;
-  email: string;
+  user: {
+    email: string;
+  };
   imageUrl?: string;
   phoneNumber: string;
   classroom: {
@@ -15,7 +17,9 @@ export type Student = {
   location: string;
   parent: {
     name: string;
-    email: string;
+    user: {
+      email: string;
+    };
     phoneNumber: string;
   };
   medicalInfo: string[];

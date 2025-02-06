@@ -13,14 +13,7 @@ import Header from "./Header";
 function AbsenceListPage() {
   const t = useTranslations("dashboard");
   return (
-    <Stack
-      spacing={2}
-      sx={{
-        alignItems: "center",
-        mx: { xs: "0.75rem", md: 3 },
-        py: { xs: 1, md: 3 },
-      }}
-    >
+    <>
       <Header />
 
       <Card className="min-w-full">
@@ -37,7 +30,7 @@ function AbsenceListPage() {
       </Card>
       <AddStudentFormModal />
       <AddTeacherFormModal />
-    </Stack>
+    </>
   );
 }
 

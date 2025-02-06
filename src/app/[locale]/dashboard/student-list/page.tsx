@@ -13,16 +13,8 @@ import Header from "./Header";
 function StudentListPage() {
   const t = useTranslations("dashboard");
   return (
-    <Stack
-      spacing={2}
-      sx={{
-        alignItems: "center",
-        mx: { xs: "0.75rem", md: 3 },
-        py: { xs: 1, md: 3 },
-      }}
-    >
+    <>
       <Header />
-
       <Card className="min-w-full">
         <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
           <div className="flex justify-between items-center">
@@ -37,7 +29,7 @@ function StudentListPage() {
       </Card>
       <AddStudentFormModal />
       <AddTeacherFormModal />
-    </Stack>
+    </>
   );
 }
 

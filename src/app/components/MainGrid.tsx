@@ -12,6 +12,7 @@ import StudentDetailModal from "./StudentDetailModal";
 import SnackBar from "./SnackBar";
 import { AttendanceStatus } from "@prisma/client";
 import { useTranslations } from "next-intl";
+import { format } from "date-fns";
 
 export default function MainGrid() {
   const t = useTranslations("dashboard");
@@ -27,8 +28,8 @@ export default function MainGrid() {
             {t("todaysStudentStatus")}
           </Typography>
 
-          <Typography component="p">
-            {new Date().toDateString()} - {new Date().toLocaleTimeString()}
+          <Typography component="p" suppressHydrationWarning>
+            {format(new Date(), "EEE MMM dd yyyy - h:mm a")}
           </Typography>
         </div>
 

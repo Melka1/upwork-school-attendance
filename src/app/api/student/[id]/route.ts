@@ -11,8 +11,24 @@ export async function GET(_, { params }: { params: Promise<{ id: string }> }) {
         id: studentId,
       },
       include: {
+        user: {
+          select: {
+            email: true,
+          },
+        },
         classroom: true,
         attendance: true,
+        parent: {
+          select: {
+            name: true,
+            phoneNumber: true,
+            user: {
+              select: {
+                email: true,
+              },
+            },
+          },
+        },
       },
     });
 
