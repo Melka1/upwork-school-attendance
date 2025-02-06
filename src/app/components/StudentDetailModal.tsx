@@ -80,7 +80,7 @@ function StudentDetailModal() {
       aria-describedby="parent-modal-description"
     >
       <Card
-        sx={{ maxHeight: { xs: "95vh", md: "90vh" }, py: "2rem" }}
+        sx={{ maxHeight: { xs: "95vh", sm: "90vh" }, py: "2rem" }}
         className="max-h-[90vh] min-h-[40vh] min-w-[60vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
       >
         {/* student details */}
@@ -309,7 +309,7 @@ function StudentDetailModal() {
                   {t("markAsAbsent")}
                 </Button>
                 <Button
-                  variant="text"
+                  variant="outlined"
                   onClick={() => dispatch(setIsStudentDetailModalOpen(false))}
                 >
                   {t("cancel")}

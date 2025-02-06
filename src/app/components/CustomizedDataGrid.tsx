@@ -87,8 +87,8 @@ export default function CustomizedDataGrid({
       headerAlign: "center",
       align: "center",
       flex: 1,
-      minWidth: 100,
-      renderCell: (params) => renderStatus(params.value as any),
+      minWidth: 150,
+      renderCell: (params) => RenderStatus(params.value as any),
       sortable: false,
       filterable: true,
       disableColumnMenu: true,
@@ -99,7 +99,7 @@ export default function CustomizedDataGrid({
       headerAlign: "center",
       align: "center",
       flex: 2,
-      minWidth: 200,
+      minWidth: 300,
       renderCell: (params) => (
         <div className="">
           <Button
@@ -182,15 +182,22 @@ export default function CustomizedDataGrid({
   );
 }
 
-export function renderStatus(status?: EAttendanceStatus) {
+export function RenderStatus(status?: EAttendanceStatus) {
+  const t = useTranslations("dashboard");
   const colors: { [index: string]: "success" | "warning" | "error" } = {
     PRESENT: "success",
     MISSING: "warning",
     ABSENT: "error",
   };
+  const attendanceTranslation =
+    status == "PRESENT"
+      ? t("present").toUpperCase()
+      : status == "ABSENT"
+      ? t("absent").toUpperCase()
+      : t("missing").toUpperCase();
 
   return status ? (
-    <Chip label={status} color={colors[status]} size="small" />
+    <Chip label={attendanceTranslation} color={colors[status]} size="small" />
   ) : (
     "-"
   );

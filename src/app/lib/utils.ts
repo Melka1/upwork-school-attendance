@@ -33,3 +33,20 @@ export function getDate(dateStr?: string) {
 
   return { date, month, year };
 }
+
+export const formatDateTime = (date: string, locale?: string) => {
+  return (
+    new Date(date).toLocaleDateString(locale || "en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }) +
+    " - " +
+    new Date(date).toLocaleTimeString(locale, {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })
+  );
+};

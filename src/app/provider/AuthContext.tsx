@@ -13,6 +13,9 @@ import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { fetchUsers, resetUserState } from "../lib/feature/userSlice";
 import { UserType } from "@prisma/client";
 import { setCurrentPage } from "../lib/feature/pageSlice";
+import { resetAttendanceState } from "../lib/feature/attendanceSlice";
+import { reInitializeState } from "../lib/feature/studentsSlice";
+import { resetNotificationList } from "../lib/feature/notificationSlice";
 
 interface AuthContextType {
   user: User | null;
@@ -38,6 +41,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   console.log(currentPage);
 
   useEffect(() => {
+    dispatch(resetAttendanceState());
+    dispatch(reInitializeState());
+    dispatch(resetUserState());
+    dispatch(resetNotificationList())
     if (isDashboard) {
       dispatch(setCurrentPage(window?.location.pathname));
     }

@@ -151,7 +151,7 @@ function AddStudentFormModal() {
       aria-describedby="parent-modal-description"
     >
       <Card
-        sx={{ maxHeight: { xs: "95vh", md: "90vh" }, py: "2rem" }}
+        sx={{ maxHeight: { xs: "95vh", sm: "90vh" }, py: "2rem" }}
         className="min-h-[40vh] min-w-[50vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
       >
         <Typography component="h2" variant="h4" textAlign={"center"}>

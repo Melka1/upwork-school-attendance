@@ -27,7 +27,7 @@ import {
   updateStudents,
 } from "../../../lib/feature/studentsSlice";
 import Delete from "../../../assets/svg/Delete";
-import { renderStatus } from "../../../components/CustomizedDataGrid";
+import { RenderStatus } from "../../../components/CustomizedDataGrid";
 import { SaveOutlined } from "@mui/icons-material";
 import {
   createAttendance,
@@ -106,7 +106,15 @@ function StudentListTable() {
     id: s.id,
     name: s.name,
     classroom: s.classroom.name,
-    status: attendances.find((a) => a.studentId == s.id)?.status,
+    status: attendances.find((a) => a.studentId == s.id)?.status as string,
+    // if (!attendanceStatus) return "-";
+    // let attendanceTranslation =
+    //   attendanceStatus == "PRESENT"
+    //     ? t("present").toUpperCase()
+    //     : attendanceStatus == "ABSENT"
+    //     ? t("absent").toUpperCase()
+    //     : t("missing").toUpperCase();
+    // return attendanceTranslation as string;
   }));
 
   const columns: GridColDef[] = [
@@ -214,7 +222,7 @@ function StudentListTable() {
             </div>
           );
         }
-        return renderStatus(params.value as any);
+        return RenderStatus(params.value as any);
       },
     },
     {

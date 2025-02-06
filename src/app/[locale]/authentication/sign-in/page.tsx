@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { useTranslations } from "next-intl";
 import { setMessageAlert } from "@/app/lib/feature/pageSlice";
 import Loading from "@/app/components/Loading";
+import LocaleSwitcher from "@/app/components/LanguageSelect";
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
@@ -87,95 +88,94 @@ export default function SignIn() {
   };
 
   return (
-    <>
-      <AuthContainer direction="column" justifyContent="space-between">
-        <Card variant="outlined">
-          <div className="flex justify-center items-center mx-auto gap-4">
-            <Logo fontSize={32} />
-            <Typography
-              component="h3"
-              variant="h4"
-              sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
-            >
-              {t("welcomeBack")}
-            </Typography>
-          </div>
-          <Box
-            component="form"
-            noValidate
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              gap: 2,
+    <AuthContainer direction="column" justifyContent="space-between">
+      <Card variant="outlined">
+        <div className="flex justify-center items-center mx-auto gap-4">
+          <Logo fontSize={32} />
+          <Typography
+            component="h3"
+            variant="h4"
+            sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+          >
+            {t("welcomeBack")}
+          </Typography>
+        </div>
+        <Box
+          component="form"
+          noValidate
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            gap: 2,
+          }}
+        >
+          <FormControl>
+            <FormLabel htmlFor="email">{t("email")}</FormLabel>
+            <TextField
+              error={emailError}
+              helperText={emailErrorMessage}
+              id="email"
+              type="email"
+              name="email"
+              value={email}
+              placeholder="your@email.com"
+              autoComplete="email"
+              autoFocus
+              required
+              fullWidth
+              variant="outlined"
+              color={emailError ? "error" : "primary"}
+              onChange={({ target }) => setEmail(target.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">{t("password")}</FormLabel>
+            <TextField
+              error={passwordError}
+              helperText={passwordErrorMessage}
+              name="password"
+              placeholder={t("enterPassword")}
+              type="password"
+              value={password}
+              id="password"
+              autoComplete="current-password"
+              autoFocus
+              required
+              fullWidth
+              variant="outlined"
+              color={passwordError ? "error" : "primary"}
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </FormControl>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => {
+              if (validateInputs()) {
+                handleSignIn();
+              }
             }}
           >
-            <FormControl>
-              <FormLabel htmlFor="email">{t("email")}</FormLabel>
-              <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                value={email}
-                placeholder="your@email.com"
-                autoComplete="email"
-                autoFocus
-                required
-                fullWidth
-                variant="outlined"
-                color={emailError ? "error" : "primary"}
-                onChange={({ target }) => setEmail(target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">{t("password")}</FormLabel>
-              <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                name="password"
-                placeholder={t("enterPassword")}
-                type="password"
-                value={password}
-                id="password"
-                autoComplete="current-password"
-                autoFocus
-                required
-                fullWidth
-                variant="outlined"
-                color={passwordError ? "error" : "primary"}
-                onChange={({ target }) => setPassword(target.value)}
-              />
-            </FormControl>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => {
-                if (validateInputs()) {
-                  handleSignIn();
-                }
-              }}
+            {t("signIn")}
+          </Button>
+        </Box>
+        <Divider>or</Divider>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Typography sx={{ textAlign: "center" }}>
+            {t("don_tHaveAccount")}{" "}
+            <Link
+              href="/authentication/sign-up/"
+              variant="body2"
+              sx={{ alignSelf: "center" }}
             >
-              {t("signIn")}
-            </Button>
-          </Box>
-          <Divider>or</Divider>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography sx={{ textAlign: "center" }}>
-              {t("don_tHaveAccount")}{" "}
-              <Link
-                href="/authentication/sign-up/"
-                variant="body2"
-                sx={{ alignSelf: "center" }}
-              >
-                {t("signUp")}
-              </Link>
-            </Typography>
-          </Box>
-        </Card>
-        {(loading || queryStatus == "loading") && <Loading />}
-      </AuthContainer>
-    </>
+              {t("signUp")}
+            </Link>
+          </Typography>
+        </Box>
+        <LocaleSwitcher />
+      </Card>
+      {(loading || queryStatus == "loading") && <Loading />}
+    </AuthContainer>
   );
 }

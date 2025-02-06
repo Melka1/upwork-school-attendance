@@ -156,6 +156,10 @@ const StudentSlice = createSlice({
     setIsAddStudentModalOpen(state, action) {
       state.isAddStudentModalOpen = action.payload;
     },
+    reInitializeState(state) {
+      state.mutationStatus = "initial";
+      state.status = "initial";
+    },
   },
   extraReducers(builder) {
     builder
@@ -204,6 +208,7 @@ export const {
   resetStudentList,
   setIsStudentDetailModalOpen,
   setIsAddStudentModalOpen,
+  reInitializeState,
 } = StudentSlice.actions;
 
 export default StudentSlice.reducer;

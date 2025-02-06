@@ -74,6 +74,13 @@
     "addTeacher": "Add Teacher",
     "addNewTeacher": "Add New Teacher",
     "studentsAbsenceList": "Absence list",
-    "absentCount": "Absent Count"
+    "absentCount": "Absent Count",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "LocaleSwitcher": {
+    "label": "Change language",
+    "locale": "{locale, select, de {🇩🇪 Deutsch} en {🇺🇸 English} other {Unknown}}"
   }
 }

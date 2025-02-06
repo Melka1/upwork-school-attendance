@@ -22,6 +22,7 @@ import { UserType } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import Loading from "@/app/components/Loading";
 import { setMessageAlert } from "@/app/lib/feature/pageSlice";
+import LocaleSwitcher from "@/app/components/LanguageSelect";
 
 export default function SignUp() {
   const t = useTranslations("auth");
@@ -105,91 +106,90 @@ export default function SignUp() {
   }, [mutationStatus]);
 
   return (
-    <>
-      <AuthContainer direction="column" justifyContent="space-between">
-        <Card variant="outlined">
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{
-              width: "100%",
-              fontSize: "clamp(2rem, 10vw, 2.15rem)",
-              textAlign: "center",
+    <AuthContainer direction="column" justifyContent="space-between">
+      <Card variant="outlined">
+        <Typography
+          component="h1"
+          variant="h4"
+          sx={{
+            width: "100%",
+            fontSize: "clamp(2rem, 10vw, 2.15rem)",
+            textAlign: "center",
+          }}
+        >
+          {t("welcome")}
+        </Typography>
+        <Box
+          component="form"
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+        >
+          <FormControl>
+            <FormLabel htmlFor="email">{t("email")}</FormLabel>
+            <TextField
+              type="email"
+              required
+              fullWidth
+              id="email"
+              placeholder="your@email.com"
+              name="email"
+              autoComplete="email"
+              value={email}
+              variant="outlined"
+              error={emailError}
+              helperText={emailErrorMessage}
+              color={passwordError ? "error" : "primary"}
+              onChange={({ target }) => setEmail(target.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">{t("password")}</FormLabel>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              placeholder={t("enterPassword")}
+              value={password}
+              type="password"
+              id="password"
+              autoComplete="new-password"
+              variant="outlined"
+              error={passwordError}
+              helperText={passwordErrorMessage}
+              color={passwordError ? "error" : "primary"}
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </FormControl>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            onClick={() => {
+              if (validateInputs()) {
+                handleSignUp();
+              }
             }}
           >
-            {t("welcome")}
-          </Typography>
-          <Box
-            component="form"
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-          >
-            <FormControl>
-              <FormLabel htmlFor="email">{t("email")}</FormLabel>
-              <TextField
-                type="email"
-                required
-                fullWidth
-                id="email"
-                placeholder="your@email.com"
-                name="email"
-                autoComplete="email"
-                value={email}
-                variant="outlined"
-                error={emailError}
-                helperText={emailErrorMessage}
-                color={passwordError ? "error" : "primary"}
-                onChange={({ target }) => setEmail(target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">{t("password")}</FormLabel>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                placeholder={t("enterPassword")}
-                value={password}
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                variant="outlined"
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                color={passwordError ? "error" : "primary"}
-                onChange={({ target }) => setPassword(target.value)}
-              />
-            </FormControl>
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              onClick={() => {
-                if (validateInputs()) {
-                  handleSignUp();
-                }
-              }}
+            {t("signUp")}
+          </Button>
+        </Box>
+        <Divider>
+          <Typography sx={{ color: "text.secondary" }}>or</Typography>
+        </Divider>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Typography sx={{ textAlign: "center" }}>
+            {t("alreadyHaveAccount")}{" "}
+            <Link
+              href="/authentication/sign-in/"
+              variant="body2"
+              sx={{ alignSelf: "center" }}
             >
-              {t("signUp")}
-            </Button>
-          </Box>
-          <Divider>
-            <Typography sx={{ color: "text.secondary" }}>or</Typography>
-          </Divider>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography sx={{ textAlign: "center" }}>
-              {t("alreadyHaveAccount")}{" "}
-              <Link
-                href="/authentication/sign-in/"
-                variant="body2"
-                sx={{ alignSelf: "center" }}
-              >
-                {t("signIn")}
-              </Link>
-            </Typography>
-          </Box>
-        </Card>
-        {(loading || mutationStatus == "saving") && <Loading />}
-      </AuthContainer>
-    </>
+              {t("signIn")}
+            </Link>
+          </Typography>
+        </Box>
+        <LocaleSwitcher />
+      </Card>
+      {(loading || mutationStatus == "saving") && <Loading />}
+    </AuthContainer>
   );
 }

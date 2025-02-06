@@ -11,11 +11,13 @@ import { FormControl, MenuItem, Select } from "@mui/material";
 import StudentDetailModal from "./StudentDetailModal";
 import SnackBar from "./SnackBar";
 import { AttendanceStatus } from "@prisma/client";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { format } from "date-fns";
+import { formatDateTime } from "../lib/utils";
 
 export default function MainGrid() {
   const t = useTranslations("dashboard");
+  const locale = useLocale();
   const [statusFilter, setStatusFilter] = useState<AttendanceStatus | "">("");
   const [searchFilter, setSearchFilter] = useState("");
 
@@ -29,7 +31,8 @@ export default function MainGrid() {
           </Typography>
 
           <Typography component="p" suppressHydrationWarning>
-            {format(new Date(), "EEE MMM dd yyyy - h:mm a")}
+            {/* {format(new Date(), "EEE MMM dd yyyy - h:mm a")} */}
+            {formatDateTime(new Date().toUTCString(), locale)}
           </Typography>
         </div>
 

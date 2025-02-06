@@ -70,6 +70,17 @@
     "enterName": "Namen eingeben",
     "chooseImage": "Bild auswählen",
     "hasCalledSick": "hat sich krankgemeldet.",
-    "absentAlert": "Abwesenheitswarnung!"
+    "absentAlert": "Abwesenheitswarnung!",
+    "addTeacher": "Lehrer hinzufügen",
+    "addNewTeacher": "Neuen Lehrer hinzufügen",
+    "studentsAbsenceList": "Abwesenheitsliste",
+    "absentCount": "Anzahl der Abwesenheiten",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System"
+  },
+  "LocaleSwitcher": {
+    "label": "Sprache ändern",
+    "locale": "{locale, select, de {🇩🇪 Deutsch} en {🇺🇸 English} other {Unbekannt}}"
   }
 }

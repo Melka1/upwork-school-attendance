@@ -101,6 +101,7 @@ const NotificationSlice = createSlice({
   reducers: {
     resetNotificationList(state) {
       state.notifications = [];
+      state.mutationStatus = "initial";
     },
     setIsNotificationModalOpen(state, action) {
       state.isNotificationModalOpen = action.payload;

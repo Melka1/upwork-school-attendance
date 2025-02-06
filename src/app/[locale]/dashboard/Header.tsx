@@ -17,6 +17,7 @@ import { setIsNotificationModalOpen } from "../../lib/feature/notificationSlice"
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import ColorModeSelect from "@/app/theme/ColorModeSelect";
+import LocaleSwitcher from "@/app/components/LanguageSelect";
 
 export default function Header() {
   const t = useTranslations();
@@ -57,31 +58,6 @@ export default function Header() {
         <p className="text-lg font-bold">{t("dashboard.schoolSystem")}</p>
       </Button>
       <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={() => router.push("/dashboard/student-list")}
-          sx={{ display: { xs: "none", md: "block" } }}
-        >
-          {t("dashboard.studentList")}
-        </Button>
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={() => router.push("/dashboard/absence-list")}
-          sx={{ display: { xs: "none", md: "block" } }}
-        >
-          {t("dashboard.studentsAbsenceList")}
-        </Button>
-        <Button
-          variant="outlined"
-          size="small"
-          startIcon={<SettingsOutlined />}
-          sx={{ display: { xs: "none", md: "flex" } }}
-        >
-          {t("dashboard.admin")}
-        </Button>
-
         <MenuButton
           showBadge={notifications.length > 0}
           badgeContent={notifications.length.toString()}
@@ -90,13 +66,44 @@ export default function Header() {
         >
           <NotificationsRoundedIcon />
         </MenuButton>
-
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => router.push("/dashboard/student-list")}
+          sx={{ display: { xs: "none", md: "flex" }, minWidth: "max-content" }}
+        >
+          {t("dashboard.studentList")}
+        </Button>
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => router.push("/dashboard/absence-list")}
+          sx={{ display: { xs: "none", md: "flex" }, minWidth: "max-content" }}
+        >
+          {t("dashboard.studentsAbsenceList")}
+        </Button>
+        {/* <Button
+          variant="outlined"
+          size="small"
+          startIcon={<SettingsOutlined />}
+          sx={{ display: { xs: "none", md: "flex" } }}
+        >
+          {t("dashboard.admin")}
+        </Button> */}
+        <Stack
+          direction={"row"}
+          gap={1}
+          sx={{ display: { xs: "none", sm: "flex" } }}
+        >
+          <ColorModeSelect />
+          <LocaleSwitcher />
+        </Stack>
         <Button
           variant="outlined"
           size="small"
           startIcon={<LogoutOutlined />}
           onClick={() => logOut()}
-          sx={{ display: { xs: "none", md: "flex" } }}
+          sx={{ display: { xs: "none", md: "flex" }, minWidth: "max-content" }}
         >
           {t("auth.logOut")}
         </Button>
@@ -107,7 +114,7 @@ export default function Header() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
-            sx={{ minWidth: "unset" }}
+            sx={{ minWidth: "unset", "&>li": { minHeight: "unset" } }}
           >
             <MoreVert />
           </Button>
@@ -144,6 +151,12 @@ export default function Header() {
             >
               {t("dashboard.admin")}
             </MenuItem>
+            <MenuItem sx={{ display: { xs: "flex", sm: "none" } }}>
+              <ColorModeSelect />
+            </MenuItem>
+            <MenuItem sx={{ display: { xs: "flex", sm: "none" } }}>
+              <LocaleSwitcher />
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 handleClose();
@@ -152,7 +165,6 @@ export default function Header() {
             >
               {t("auth.logOut")}
             </MenuItem>
-            <ColorModeSelect />
           </Menu>
         </Box>
       </Stack>

@@ -30,10 +30,13 @@ export default function DashboardLayout({
       >
         {children}
       </Stack>
-      <ColorModeSelect
+      {/* <ColorModeSelect
         className="top-2 left-2"
-        sx={{ position: "absolute", display: { xs: "none", md: "flex" } }}
-      />
+        sx={{
+          position: "absolute",
+          display: { xs: "none", md: "flex", maxWidth: "120px" },
+        }}
+      /> */}
     </>
   );
 }
