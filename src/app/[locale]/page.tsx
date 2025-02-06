@@ -83,7 +83,7 @@ function StudentPage() {
       </Card>
       <ColorModeSelect
         className="top-4 left-4"
-        sx={{ position: "absolute", maxWidth: "100px" }}
+        sx={{ position: "absolute", maxWidth: "max-content" }}
       />
     </div>
   );
