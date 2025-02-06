@@ -81,7 +81,10 @@ function StudentPage() {
           status={mutationStatus}
         />
       </Card>
-      <ColorModeSelect className="top-4 left-4" sx={{ position: "absolute" }} />
+      <ColorModeSelect
+        className="top-4 left-4"
+        sx={{ position: "absolute", maxWidth: "100px" }}
+      />
     </div>
   );
 }
