@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     dispatch(resetAttendanceState());
     dispatch(reInitializeState());
     dispatch(resetUserState());
-    dispatch(resetNotificationList())
+    dispatch(resetNotificationList());
     if (isDashboard) {
       dispatch(setCurrentPage(window?.location.pathname));
     }
@@ -83,6 +83,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     await signOut(auth);
+    dispatch(resetUserState());
   };
 
   return (

@@ -21,7 +21,7 @@ function NotificationModal() {
     notifications,
     mutationStatus,
   } = useAppSelector((state) => state.notificationSlice);
-  const { id } = useAppSelector((state) => state.userSlice.user);
+  const id = useAppSelector((state) => state.userSlice.user?.id);
 
   useEffect(() => {
     if (mutationStatus !== "success") return;
@@ -44,7 +44,7 @@ function NotificationModal() {
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
-      <Card className="max-h-[90vh] min-h-24 max-w-[90vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+      <Card className="max-h-[90vh] min-h-24 max-w-[450px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
         <Typography component="h2" variant="h4">
           {t("notifications")}
         </Typography>

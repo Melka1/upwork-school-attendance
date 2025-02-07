@@ -4,18 +4,17 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid2";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import CustomizedDataGrid from "./CustomizedDataGrid";
-import Card from "./Card";
-import Search from "./Search";
+import CustomizedDataGrid from "@/app/components/CustomizedDataGrid";
 import { FormControl, MenuItem, Select } from "@mui/material";
-import StudentDetailModal from "./StudentDetailModal";
-import SnackBar from "./SnackBar";
 import { AttendanceStatus } from "@prisma/client";
 import { useLocale, useTranslations } from "next-intl";
-import { format } from "date-fns";
-import { formatDateTime } from "../lib/utils";
+import Card from "@/app/components/Card";
+import Search from "@/app/components/Search";
+import { formatDateTime } from "@/app/lib/utils";
+import StudentDetailModal from "@/app/components/StudentDetailModal";
+import SnackBar from "@/app/components/SnackBar";
 
-export default function MainGrid() {
+export default function TodaysStudentStatusTable() {
   const t = useTranslations("dashboard");
   const locale = useLocale();
   const [statusFilter, setStatusFilter] = useState<AttendanceStatus | "">("");
@@ -31,7 +30,6 @@ export default function MainGrid() {
           </Typography>
 
           <Typography component="p" suppressHydrationWarning>
-            {/* {format(new Date(), "EEE MMM dd yyyy - h:mm a")} */}
             {formatDateTime(new Date().toUTCString(), locale)}
           </Typography>
         </div>

@@ -236,7 +236,7 @@ function StudentDetailModal() {
               </Card>
 
               {/* emergency information  */}
-              <Card className="p-6 min-w-full">
+              <Card className="p-6 max-w-full">
                 <ListItem
                   disablePadding
                   className="gap-2"

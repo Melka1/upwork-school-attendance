@@ -15,14 +15,12 @@ import AuthContainer from "@/app/components/AuthContainer";
 import { signUp } from "@/firebase/auth";
 import { useAuth } from "@/app/provider/AuthContext";
 import { useRouter } from "next/navigation";
-import { CircularProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { createUsers } from "@/app/lib/feature/userSlice";
 import { UserType } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import Loading from "@/app/components/Loading";
 import { setMessageAlert } from "@/app/lib/feature/pageSlice";
-import LocaleSwitcher from "@/app/components/LanguageSelect";
 
 export default function SignUp() {
   const t = useTranslations("auth");
@@ -37,6 +35,21 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (authUser) {
+      dispatch(createUsers({ email: authUser.email }));
+    }
+  }, [authUser]);
+
+  useEffect(() => {
+    if (mutationStatus != "success") return;
+    if (user.userType != UserType.TEACHER) {
+      router.push("/");
+    } else {
+      router.push("/dashboard");
+    }
+  }, [mutationStatus]);
 
   const validateInputs = () => {
     let isValid = true;
@@ -89,21 +102,6 @@ export default function SignUp() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (authUser) {
-      dispatch(createUsers({ email: authUser.email }));
-    }
-  }, [authUser]);
-
-  useEffect(() => {
-    if (mutationStatus != "success") return;
-    if (user.userType != UserType.TEACHER) {
-      router.push("/");
-    } else {
-      router.push("/dashboard");
-    }
-  }, [mutationStatus]);
 
   return (
     <AuthContainer direction="column" justifyContent="space-between">
@@ -181,13 +179,12 @@ export default function SignUp() {
             <Link
               href="/authentication/sign-in/"
               variant="body2"
-              sx={{ alignSelf: "center" }}
+              sx={{ alignSelf: "center", color: "blue" }}
             >
               {t("signIn")}
             </Link>
           </Typography>
         </Box>
-        <LocaleSwitcher />
       </Card>
       {(loading || mutationStatus == "saving") && <Loading />}
     </AuthContainer>

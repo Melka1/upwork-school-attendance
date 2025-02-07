@@ -54,7 +54,7 @@ function StudentPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-500 p-4">
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-400 p-4 flex-1">
       <Card className="w-full max-w-sm p-6 bg-white shadow-xl rounded-2xl">
         <Stack
           direction={"row"}
@@ -68,12 +68,12 @@ function StudentPage() {
             {t("student.hey")}{" "}
             {user?.student?.name.split(" ")[0] || user?.parent?.name}
           </h1>
-          <button
+          {/* <button
             onClick={() => logOut()}
             className=" bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg"
           >
             {t("auth.logOut")}
-          </button>
+          </button> */}
         </Stack>
         <CallInSickCard
           user={user}
@@ -81,10 +81,10 @@ function StudentPage() {
           status={mutationStatus}
         />
       </Card>
-      <ColorModeSelect
+      {/* <ColorModeSelect
         className="top-4 left-4"
         sx={{ position: "absolute", maxWidth: "max-content" }}
-      />
+      /> */}
     </div>
   );
 }

@@ -8,13 +8,11 @@ import { useTranslations } from "next-intl";
 import Card from "@/app/components/Card";
 import SnackBar from "@/app/components/SnackBar";
 import AddTeacherFormModal from "@/app/components/AddTeacherForm";
-import Header from "./Header";
 
 function StudentListPage() {
   const t = useTranslations("dashboard");
   return (
     <>
-      <Header />
       <Card className="min-w-full">
         <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
           <div className="flex justify-between items-center">

@@ -19,6 +19,7 @@
     "successfullyLoggedIn": "Erfolgreich eingeloggt"
   },
   "dashboard": {
+    "self": "Armaturenbrett",
     "schoolSystem": "Schulsystem",
     "studentList": "Schülerliste",
     "admin": "Administrator",

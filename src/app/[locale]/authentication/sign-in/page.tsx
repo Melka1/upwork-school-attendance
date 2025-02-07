@@ -167,13 +167,12 @@ export default function SignIn() {
             <Link
               href="/authentication/sign-up/"
               variant="body2"
-              sx={{ alignSelf: "center" }}
+              sx={{ alignSelf: "center", color: "blue" }}
             >
               {t("signUp")}
             </Link>
           </Typography>
         </Box>
-        <LocaleSwitcher />
       </Card>
       {(loading || queryStatus == "loading") && <Loading />}
     </AuthContainer>

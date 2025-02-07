@@ -19,6 +19,7 @@
     "successfullyLoggedIn": "Logged in Successfully "
   },
   "dashboard": {
+    "self":"Dashboard",
     "schoolSystem": "School System",
     "studentList": "Student List",
     "admin": "Admin",
