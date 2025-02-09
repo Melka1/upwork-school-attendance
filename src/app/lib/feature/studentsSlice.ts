@@ -109,15 +109,37 @@ interface UpdateStudentProps {
   id: string;
   name: string;
   classroomId: string;
+  location?: string;
+  phoneNumber?: string;
+  emergencyContact?: string[];
+  medicalInfo?: string[];
+  imageUrl?: string;
 }
 
 export const updateStudents = createAsyncThunk(
   "updateStudents",
-  async ({ name, classroomId, id }: UpdateStudentProps): Promise<void> => {
+  async ({
+    name,
+    classroomId,
+    id,
+    location,
+    phoneNumber,
+    emergencyContact,
+    medicalInfo,
+    imageUrl,
+  }: UpdateStudentProps): Promise<void> => {
     try {
       await httpRequest(`${process.env.NEXT_PUBLIC_API_URL}/student/${id}`, {
         method: "PUT",
-        body: { name, classroomId },
+        body: {
+          name,
+          classroomId,
+          location,
+          phoneNumber,
+          emergencyContact,
+          medicalInfo,
+          imageUrl,
+        },
       });
     } catch (error) {
       throw error;
@@ -132,6 +154,7 @@ type StudentState = {
   student: Student | null;
   isStudentDetailModalOpen: boolean;
   isAddStudentModalOpen: boolean;
+  isEditing: boolean;
 };
 
 const initialState: StudentState = {
@@ -141,6 +164,7 @@ const initialState: StudentState = {
   student: null,
   isStudentDetailModalOpen: false,
   isAddStudentModalOpen: false,
+  isEditing: false,
 };
 
 const StudentSlice = createSlice({
@@ -159,6 +183,9 @@ const StudentSlice = createSlice({
     reInitializeState(state) {
       state.mutationStatus = "initial";
       state.status = "initial";
+    },
+    setIsEditing(state, action) {
+      state.isEditing = action.payload;
     },
   },
   extraReducers(builder) {
@@ -209,6 +236,7 @@ export const {
   setIsStudentDetailModalOpen,
   setIsAddStudentModalOpen,
   reInitializeState,
+  setIsEditing,
 } = StudentSlice.actions;
 
 export default StudentSlice.reducer;

@@ -88,7 +88,11 @@ export default function SignIn() {
   };
 
   return (
-    <AuthContainer direction="column" justifyContent="space-between">
+    <AuthContainer
+      direction="column"
+      justifyContent="space-between"
+      sx={{ maxWidth: "500px", margin: "auto" }}
+    >
       <Card variant="outlined">
         <div className="flex justify-center items-center mx-auto gap-4">
           <Logo fontSize={32} />

@@ -78,7 +78,8 @@
     "absentCount": "Anzahl der Abwesenheiten",
     "light": "Hell",
     "dark": "Dunkel",
-    "system": "System"
+    "system": "System",
+    "editStudent": "Student bearbeiten"
   },
   "LocaleSwitcher": {
     "label": "Sprache ändern",

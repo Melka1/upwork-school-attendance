@@ -55,6 +55,7 @@ export async function PUT(
   const studentId = (await params).id;
   const {
     name,
+    imageUrl,
     email,
     phoneNumber,
     classroomId,
@@ -65,6 +66,7 @@ export async function PUT(
 
   if (
     !name &&
+    !imageUrl &&
     !classroomId &&
     !email &&
     !phoneNumber &&
@@ -81,6 +83,7 @@ export async function PUT(
   // eslint-disable-next-line prefer-const
   let data = {};
   if (name) data["name"] = name;
+  if (imageUrl) data["imageUrl"] = imageUrl;
   if (classroomId) data["classroomId"] = classroomId;
   if (email) data["email"] = email;
   if (phoneNumber) data["phoneNumber"] = phoneNumber;

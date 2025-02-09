@@ -19,7 +19,7 @@
     "successfullyLoggedIn": "Logged in Successfully "
   },
   "dashboard": {
-    "self":"Dashboard",
+    "self": "Dashboard",
     "schoolSystem": "School System",
     "studentList": "Student List",
     "admin": "Admin",
@@ -78,7 +78,8 @@
     "absentCount": "Absent Count",
     "light": "Light",
     "dark": "Dark",
-    "system": "System"
+    "system": "System",
+    "editStudent": "Edit Student"
   },
   "LocaleSwitcher": {
     "label": "Change language",

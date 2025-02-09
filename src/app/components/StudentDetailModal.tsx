@@ -80,8 +80,8 @@ function StudentDetailModal() {
       aria-describedby="parent-modal-description"
     >
       <Card
-        sx={{ maxHeight: { xs: "95vh", sm: "90vh" }, py: "2rem" }}
-        className="max-h-[90vh] min-h-[40vh] min-w-[60vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+        sx={{ py: "2rem", maxHeight: "100vh" }}
+        className="min-w-[400px] min-h-[40vh] md:max-w-[40vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
       >
         {/* student details */}
         {status == "loading" ? (
@@ -191,7 +191,7 @@ function StudentDetailModal() {
                 </Card>
               </div>
               {/* parent information  */}
-              <Card className="p-6 min-w-full">
+              <Card sx={{ minWidth: "100%" }} className="p-6">
                 <ListItem
                   disablePadding
                   className="gap-2"

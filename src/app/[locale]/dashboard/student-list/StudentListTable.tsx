@@ -7,6 +7,7 @@ import {
   Button,
   FormControl,
   Grid2 as Grid,
+  IconButton,
   MenuItem,
   Select,
   TextField,
@@ -23,21 +24,22 @@ import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
 import {
   fetchStudent,
   fetchStudents,
-  setIsStudentDetailModalOpen,
+  setIsAddStudentModalOpen,
+  setIsEditing,
   updateStudents,
 } from "../../../lib/feature/studentsSlice";
 import Delete from "../../../assets/svg/Delete";
 import { RenderStatus } from "../../../components/CustomizedDataGrid";
-import { SaveOutlined } from "@mui/icons-material";
+import { OpenInFull, SaveOutlined } from "@mui/icons-material";
 import {
   createAttendance,
   fetchAttendances,
-  updateAttendances,
 } from "../../../lib/feature/attendanceSlice";
 import { fetchClassrooms } from "../../../lib/feature/classroomSlice";
 import { AttendanceStatus } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import { getDate } from "@/app/lib/utils";
+import ClassroomsDropdown from "@/app/components/ClassroomsDropdown";
 
 interface EditStudentInput {
   id: string;
@@ -49,7 +51,7 @@ interface EditStudentInput {
 function StudentListTable() {
   const t = useTranslations("dashboard");
   const dispatch = useAppDispatch();
-  const { students, mutationStatus } = useAppSelector(
+  const { students, mutationStatus, isEditing } = useAppSelector(
     (state) => state.studentSlice
   );
   const { attendances, mutationStatus: attendanceMutationStatus } =
@@ -58,7 +60,6 @@ function StudentListTable() {
   const [classroomFilter, setClassroomFilter] = useState("");
   const [searchFilter, setSearchFilter] = useState("");
 
-  const [isEditing, setIsEditing] = useState(false);
   const [studentToEdit, setStudentToEdit] = useState<EditStudentInput | null>(
     null
   );
@@ -158,25 +159,15 @@ function StudentListTable() {
         if (isEditing && studentToEdit?.id == params.id) {
           return (
             <div className="flex h-full min-w-full items-center">
-              <FormControl sx={{ minWidth: "100%", maxWidth: "250px" }}>
-                <Select
-                  value={studentToEdit?.classroomName || ""}
-                  onChange={({ target }) =>
-                    setStudentToEdit((prev) => ({
-                      ...prev,
-                      classroomName: target.value,
-                    }))
-                  }
-                  displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
-                >
-                  {classrooms.map((c) => (
-                    <MenuItem key={c.id} value={c.name}>
-                      {t("class")} {c.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <ClassroomsDropdown
+                value={studentToEdit?.classroomName || ""}
+                setValue={({ target }) =>
+                  setStudentToEdit((prev) => ({
+                    ...prev,
+                    classroomName: target.value,
+                  }))
+                }
+              />
             </div>
           );
         }
@@ -236,76 +227,103 @@ function StudentListTable() {
       headerAlign: "center",
       align: "center",
       flex: 2,
-      minWidth: 200,
+      minWidth: 250,
+      filterable: false,
+      sortable: false,
       renderCell: (params) => {
         return (
           <div className="flex gap-2 items-center justify-center h-full">
             {isEditing && studentToEdit?.id == params.id ? (
-              <Button
-                variant="contained"
-                size="small"
-                color="darker"
-                sx={{
-                  fontWeight: "bold",
-                }}
-                startIcon={<SaveOutlined />}
-                loadingPosition="start"
-                loading={
-                  (mutationStatus == "saving" ||
-                    attendanceMutationStatus == "saving") &&
-                  params.id == studentToEdit?.id
-                }
-                disabled={
-                  studentToEdit?.name == params.row["name"] &&
-                  studentToEdit?.status == params.row["status"] &&
-                  studentToEdit?.classroomName == params.row["classroom"]
-                }
-                onClick={() => {
-                  const { id, name, classroomName, status } = studentToEdit;
-
-                  let promises = [];
-
-                  if (
-                    name != params.row["name"] ||
-                    classroomName != params.row["classroom"]
-                  ) {
-                    promises.push(
-                      dispatch(
-                        updateStudents({
-                          id,
-                          classroomId: classrooms.find(
-                            (c) => c.name == classroomName
-                          )?.id,
-                          name,
-                        })
-                      )
-                    );
+              <>
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="darker"
+                  sx={{
+                    fontWeight: "bold",
+                  }}
+                  startIcon={<SaveOutlined />}
+                  loadingPosition="start"
+                  loading={
+                    (mutationStatus == "saving" ||
+                      attendanceMutationStatus == "saving") &&
+                    params.id == studentToEdit?.id
                   }
-
-                  if (status != params.row["status"]) {
-                    const previousAttendance = attendances.find(
-                      (a) => a.studentId == params.id
-                    );
-                    promises.push(
-                      dispatch(
-                        createAttendance({
-                          studentId: params.id as string,
-                          status,
-                          attendanceId:
-                            previousAttendance?.id || (params.id as string),
-                        })
-                      )
-                    );
+                  disabled={
+                    studentToEdit?.name == params.row["name"] &&
+                    studentToEdit?.status == params.row["status"] &&
+                    studentToEdit?.classroomName == params.row["classroom"]
                   }
+                  onClick={() => {
+                    const { id, name, classroomName, status } = studentToEdit;
 
-                  Promise.all(promises).then(() => {
-                    setIsEditing(false);
+                    let promises = [];
+
+                    if (
+                      name != params.row["name"] ||
+                      classroomName != params.row["classroom"]
+                    ) {
+                      promises.push(
+                        dispatch(
+                          updateStudents({
+                            id,
+                            classroomId: classrooms.find(
+                              (c) => c.name == classroomName
+                            )?.id,
+                            name,
+                          })
+                        )
+                      );
+                    }
+
+                    if (status != params.row["status"]) {
+                      const previousAttendance = attendances.find(
+                        (a) => a.studentId == params.id
+                      );
+                      promises.push(
+                        dispatch(
+                          createAttendance({
+                            studentId: params.id as string,
+                            status,
+                            attendanceId:
+                              previousAttendance?.id || (params.id as string),
+                          })
+                        )
+                      );
+                    }
+
+                    Promise.all(promises).then(() => {
+                      setIsEditing(false);
+                      setStudentToEdit(null);
+                    });
+                  }}
+                >
+                  {t("save")}
+                </Button>
+                <IconButton
+                  color="primary"
+                  size="small"
+                  onClick={() => {
+                    dispatch(fetchStudent({ id: params.id as string }));
+                    dispatch(setIsAddStudentModalOpen(true));
+                  }}
+                  sx={{ minWidth: "unset" }}
+                >
+                  <OpenInFull color="inherit" fontSize="small" />
+                </IconButton>
+                <Button
+                  variant="contained"
+                  color="error"
+                  size="small"
+                  onClick={() => {
                     setStudentToEdit(null);
-                  });
-                }}
-              >
-                {t("save")}
-              </Button>
+                    setIsEditing(false);
+                  }}
+                  sx={{ minWidth: "unset" }}
+                >
+                  <Delete color="white" fontSize={16} />
+                </Button>
+              </>
             ) : (
               <Button
                 variant="outlined"
@@ -319,32 +337,15 @@ function StudentListTable() {
                     classroomName: params.row["classroom"],
                     status: params.row["status"],
                   });
-                  setIsEditing(true);
+                  dispatch(setIsEditing(true));
                 }}
               >
                 {t("edit")}
               </Button>
             )}
-
-            {studentToEdit?.id == params.id && (
-              <Button
-                variant="contained"
-                color="error"
-                size="small"
-                onClick={() => {
-                  setStudentToEdit(null);
-                  setIsEditing(false);
-                }}
-                sx={{ minWidth: "unset" }}
-              >
-                <Delete color="white" fontSize={16} />
-              </Button>
-            )}
           </div>
         );
       },
-      filterable: false,
-      sortable: false,
     },
   ];
 
@@ -352,23 +353,11 @@ function StudentListTable() {
     <div>
       <div className="flex py-4 gap-4">
         <Search handleChange={setSearchFilter} />
-        <FormControl
-          sx={{ minWidth: { xs: "100px", md: "200px" }, maxWidth: "250px" }}
-        >
-          <Select
-            value={classroomFilter || ""}
-            onChange={({ target }) => setClassroomFilter(target.value)}
-            displayEmpty
-            inputProps={{ "aria-label": "Without label" }}
-          >
-            <MenuItem value="">{t("allClasses")}</MenuItem>
-            {classrooms.map((c) => (
-              <MenuItem key={c.id} value={c.name}>
-                {t("class")} {c.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <ClassroomsDropdown
+          value={classroomFilter || ""}
+          setValue={({ target }) => setClassroomFilter(target.value)}
+          includeAllAsChoice
+        />
       </div>
 
       <Grid container spacing={2} columns={12}>

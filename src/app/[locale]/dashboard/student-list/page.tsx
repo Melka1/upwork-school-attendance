@@ -3,7 +3,7 @@
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import React from "react";
 import StudentListTable from "./StudentListTable";
-import AddStudentFormModal from "@/app/components/AddStudentform";
+import AddOrEditStudentFormModal from "@/app/components/AddOrEditStudentform";
 import { useTranslations } from "next-intl";
 import Card from "@/app/components/Card";
 import SnackBar from "@/app/components/SnackBar";
@@ -53,7 +53,7 @@ function StudentListPage() {
           <SnackBar />
         </Box>
       </Card>
-      <AddStudentFormModal />
+      <AddOrEditStudentFormModal />
       <AddTeacherFormModal />
     </>
   );

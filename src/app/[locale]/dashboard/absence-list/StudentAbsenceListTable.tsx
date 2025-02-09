@@ -3,14 +3,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Search from "../../../components/Search";
-import {
-  Button,
-  FormControl,
-  Grid2 as Grid,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Grid2 as Grid } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
@@ -26,6 +19,7 @@ import { fetchClassrooms } from "../../../lib/feature/classroomSlice";
 import { AttendanceStatus } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import { getDate } from "@/app/lib/utils";
+import ClassroomsDropdown from "@/app/components/ClassroomsDropdown";
 
 function StudentAbsenceListTable() {
   const t = useTranslations("dashboard");
@@ -117,23 +111,11 @@ function StudentAbsenceListTable() {
     <div>
       <div className="flex py-4 gap-4">
         <Search handleChange={setSearchFilter} />
-        <FormControl
-          sx={{ minWidth: { xs: "100px", md: "200px" }, maxWidth: "250px" }}
-        >
-          <Select
-            value={classroomFilter || ""}
-            onChange={({ target }) => setClassroomFilter(target.value)}
-            displayEmpty
-            inputProps={{ "aria-label": "Without label" }}
-          >
-            <MenuItem value="">{t("allClasses")}</MenuItem>
-            {classrooms.map((c) => (
-              <MenuItem key={c.id} value={c.name}>
-                {t("class")} {c.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <ClassroomsDropdown
+          value={classroomFilter || ""}
+          setValue={({ target }) => setClassroomFilter(target.value)}
+          includeAllAsChoice
+        />
       </div>
 
       <Grid container spacing={2} columns={12}>

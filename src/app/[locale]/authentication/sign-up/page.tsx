@@ -104,7 +104,11 @@ export default function SignUp() {
   };
 
   return (
-    <AuthContainer direction="column" justifyContent="space-between">
+    <AuthContainer
+      direction="column"
+      justifyContent="space-between"
+      sx={{ maxWidth: "500px", margin: "auto" }}
+    >
       <Card variant="outlined">
         <Typography
           component="h1"
