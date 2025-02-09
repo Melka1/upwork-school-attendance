@@ -105,7 +105,7 @@ function StudentAbsenceListTable() {
       headerAlign: "center",
       align: "center",
       flex: 1,
-      minWidth: 150,
+      minWidth: 200,
       sortable: false,
       renderCell: (params) => {
         return params.value;

@@ -88,7 +88,18 @@ export default function CustomizedDataGrid({
       align: "center",
       flex: 1,
       minWidth: 150,
-      renderCell: (params) => RenderStatus(params.value as any),
+      renderCell: (params) => {
+        const attendanceTranslation =
+          params.value == "PRESENT"
+            ? t("present").toUpperCase()
+            : params.value == "ABSENT"
+            ? t("absent").toUpperCase()
+            : t("missing").toUpperCase();
+        return RenderStatus({
+          status: params.value as any,
+          label: attendanceTranslation,
+        });
+      },
       sortable: false,
       filterable: true,
       disableColumnMenu: true,
@@ -182,22 +193,21 @@ export default function CustomizedDataGrid({
   );
 }
 
-export function RenderStatus(status?: EAttendanceStatus) {
-  const t = useTranslations("dashboard");
+export function RenderStatus({
+  status,
+  label,
+}: {
+  status?: AttendanceStatus;
+  label: string;
+}) {
   const colors: { [index: string]: "success" | "warning" | "error" } = {
     PRESENT: "success",
     MISSING: "warning",
     ABSENT: "error",
   };
-  const attendanceTranslation =
-    status == "PRESENT"
-      ? t("present").toUpperCase()
-      : status == "ABSENT"
-      ? t("absent").toUpperCase()
-      : t("missing").toUpperCase();
 
   return status ? (
-    <Chip label={attendanceTranslation} color={colors[status]} size="small" />
+    <Chip label={label} color={colors[status]} size="small" />
   ) : (
     "-"
   );

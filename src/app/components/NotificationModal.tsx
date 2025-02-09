@@ -44,7 +44,7 @@ function NotificationModal() {
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
-      <Card className="max-h-[90vh] min-h-24 max-w-[450px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+      <Card className="max-h-[90vh] min-h-24 max-w-[90vw] md:max-w-[450px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
         <Typography component="h2" variant="h4">
           {t("notifications")}
         </Typography>
@@ -128,7 +128,7 @@ const NotificationCard = ({
           {notification.message}
         </Typography>
         <div className="flex justify-end pt-2" onClick={action}>
-          <button className="flex items-center gap-2 px-2 py-1 text-xs font-medium text-white bg-blue-600 rounded-full shadow-md hover:bg-blue-700 active:scale-95 transition-all duration-200">
+          <button className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-white bg-blue-600 rounded-full shadow-md hover:bg-blue-700 active:scale-95 transition-all duration-200">
             {t("markAsRead")}
           </button>
         </div>

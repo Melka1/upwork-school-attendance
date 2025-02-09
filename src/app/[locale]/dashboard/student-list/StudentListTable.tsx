@@ -42,7 +42,7 @@ import { getDate } from "@/app/lib/utils";
 interface EditStudentInput {
   id: string;
   name: string;
-  classroom: string;
+  classroomName: string;
   status: AttendanceStatus;
 }
 
@@ -62,6 +62,8 @@ function StudentListTable() {
   const [studentToEdit, setStudentToEdit] = useState<EditStudentInput | null>(
     null
   );
+
+  console.log(studentToEdit);
 
   useEffect(() => {
     const { date, month, year } = getDate();
@@ -107,14 +109,6 @@ function StudentListTable() {
     name: s.name,
     classroom: s.classroom.name,
     status: attendances.find((a) => a.studentId == s.id)?.status as string,
-    // if (!attendanceStatus) return "-";
-    // let attendanceTranslation =
-    //   attendanceStatus == "PRESENT"
-    //     ? t("present").toUpperCase()
-    //     : attendanceStatus == "ABSENT"
-    //     ? t("absent").toUpperCase()
-    //     : t("missing").toUpperCase();
-    // return attendanceTranslation as string;
   }));
 
   const columns: GridColDef[] = [
@@ -126,14 +120,14 @@ function StudentListTable() {
       sortable: true,
       filterable: false,
       renderCell: (params) => {
-        if (isEditing && studentToEdit.id == params.id) {
+        if (isEditing && studentToEdit?.id == params.id) {
           return (
             <div className="flex h-full items-center">
               <TextField
                 variant="outlined"
                 fullWidth
                 size="small"
-                value={studentToEdit.name}
+                value={studentToEdit?.name}
                 onKeyDown={(event) => {
                   if (event.key === " ") {
                     event.stopPropagation();
@@ -161,23 +155,23 @@ function StudentListTable() {
       filterable: true,
       disableColumnMenu: true,
       renderCell: (params) => {
-        if (isEditing && studentToEdit.id == params.id) {
+        if (isEditing && studentToEdit?.id == params.id) {
           return (
             <div className="flex h-full min-w-full items-center">
               <FormControl sx={{ minWidth: "100%", maxWidth: "250px" }}>
                 <Select
-                  value={studentToEdit?.classroom || ""}
+                  value={studentToEdit?.classroomName || ""}
                   onChange={({ target }) =>
                     setStudentToEdit((prev) => ({
                       ...prev,
-                      classroom: target.value,
+                      classroomName: target.value,
                     }))
                   }
                   displayEmpty
                   inputProps={{ "aria-label": "Without label" }}
                 >
                   {classrooms.map((c) => (
-                    <MenuItem key={c.id} value={c.id}>
+                    <MenuItem key={c.id} value={c.name}>
                       {t("class")} {c.name}
                     </MenuItem>
                   ))}
@@ -199,12 +193,12 @@ function StudentListTable() {
       sortable: false,
       filterable: true,
       renderCell: (params) => {
-        if (isEditing && studentToEdit.id == params.id) {
+        if (isEditing && studentToEdit?.id == params.id) {
           return (
             <div className="flex h-full min-w-full items-center">
               <FormControl sx={{ minWidth: "100%" }}>
                 <Select
-                  value={studentToEdit?.status || ""}
+                  value={studentToEdit?.status || AttendanceStatus.PRESENT}
                   onChange={({ target }) =>
                     setStudentToEdit((prev) => ({
                       ...prev,
@@ -222,7 +216,18 @@ function StudentListTable() {
             </div>
           );
         }
-        return RenderStatus(params.value as any);
+
+        const attendanceTranslation =
+          params.value == "PRESENT"
+            ? t("present").toUpperCase()
+            : params.value == "ABSENT"
+            ? t("absent").toUpperCase()
+            : t("missing").toUpperCase();
+
+        return RenderStatus({
+          status: params.value as AttendanceStatus,
+          label: attendanceTranslation,
+        });
       },
     },
     {
@@ -235,7 +240,7 @@ function StudentListTable() {
       renderCell: (params) => {
         return (
           <div className="flex gap-2 items-center justify-center h-full">
-            {isEditing && studentToEdit.id == params.id ? (
+            {isEditing && studentToEdit?.id == params.id ? (
               <Button
                 variant="contained"
                 size="small"
@@ -248,30 +253,29 @@ function StudentListTable() {
                 loading={
                   (mutationStatus == "saving" ||
                     attendanceMutationStatus == "saving") &&
-                  params.id == studentToEdit.id
+                  params.id == studentToEdit?.id
                 }
                 disabled={
                   studentToEdit?.name == params.row["name"] &&
                   studentToEdit?.status == params.row["status"] &&
-                  studentToEdit?.classroom ==
-                    classrooms.find((c) => c.name == params.row["classroom"]).id
+                  studentToEdit?.classroomName == params.row["classroom"]
                 }
                 onClick={() => {
-                  const { id, name, classroom, status } = studentToEdit;
+                  const { id, name, classroomName, status } = studentToEdit;
 
                   let promises = [];
 
                   if (
-                    studentToEdit?.name != params.row["name"] ||
-                    studentToEdit?.classroom !=
-                      classrooms.find((c) => c.name == params.row["classroom"])
-                        .id
+                    name != params.row["name"] ||
+                    classroomName != params.row["classroom"]
                   ) {
                     promises.push(
                       dispatch(
                         updateStudents({
                           id,
-                          classroomId: classroom,
+                          classroomId: classrooms.find(
+                            (c) => c.name == classroomName
+                          )?.id,
                           name,
                         })
                       )
@@ -312,9 +316,7 @@ function StudentListTable() {
                   setStudentToEdit({
                     id: params.id as string,
                     name: params.row["name"],
-                    classroom: classrooms.find(
-                      (c) => c.name == params.row["classroom"]
-                    ).id,
+                    classroomName: params.row["classroom"],
                     status: params.row["status"],
                   });
                   setIsEditing(true);
@@ -324,18 +326,20 @@ function StudentListTable() {
               </Button>
             )}
 
-            <Button
-              variant="contained"
-              color="error"
-              size="small"
-              onClick={() => {
-                setStudentToEdit(null);
-                setIsEditing(false);
-              }}
-              sx={{ minWidth: "unset" }}
-            >
-              <Delete color="white" fontSize={16} />
-            </Button>
+            {studentToEdit?.id == params.id && (
+              <Button
+                variant="contained"
+                color="error"
+                size="small"
+                onClick={() => {
+                  setStudentToEdit(null);
+                  setIsEditing(false);
+                }}
+                sx={{ minWidth: "unset" }}
+              >
+                <Delete color="white" fontSize={16} />
+              </Button>
+            )}
           </div>
         );
       },

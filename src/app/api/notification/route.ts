@@ -11,7 +11,7 @@ export async function POST(request: Request) {
       where: { userType: UserType.TEACHER },
     });
 
-    console.log(users, title, name);
+    console.log(users, title);
 
     const response = await prisma.notification.create({
       data: {

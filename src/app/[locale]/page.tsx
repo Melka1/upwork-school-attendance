@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { logOut } from "@/firebase/auth";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { UserType } from "@prisma/client";
@@ -14,7 +13,6 @@ import {
 import { useTranslations } from "next-intl";
 import { getDate } from "../lib/utils";
 import CallInSickCard from "../components/CallAndSickCard";
-import ColorModeSelect from "../theme/ColorModeSelect";
 
 function StudentPage() {
   const t = useTranslations();
@@ -68,12 +66,6 @@ function StudentPage() {
             {t("student.hey")}{" "}
             {user?.student?.name.split(" ")[0] || user?.parent?.name}
           </h1>
-          {/* <button
-            onClick={() => logOut()}
-            className=" bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg"
-          >
-            {t("auth.logOut")}
-          </button> */}
         </Stack>
         <CallInSickCard
           user={user}
@@ -81,10 +73,6 @@ function StudentPage() {
           status={mutationStatus}
         />
       </Card>
-      {/* <ColorModeSelect
-        className="top-4 left-4"
-        sx={{ position: "absolute", maxWidth: "max-content" }}
-      /> */}
     </div>
   );
 }
