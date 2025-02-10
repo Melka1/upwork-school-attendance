@@ -81,7 +81,7 @@ function StudentDetailModal() {
     >
       <Card
         sx={{ py: "2rem", maxHeight: "100vh",px:"1.5rem" }}
-        className="min-w-[400px] min-h-[40vh] md:max-w-[40vw] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+        className="min-w-[400px] min-h-[40vh] md:max-w-[40vw] h-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
       >
         {/* student details */}
         {status == "loading" ? (
