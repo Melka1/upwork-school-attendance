@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import { setIsStudentDetailModalOpen } from "../lib/feature/studentsSlice";
+import { setIsStudentDetailModalOpen, resetStudent } from "../lib/feature/studentsSlice";
 import Card from "./Card";
 import {
   Close,
@@ -310,7 +310,9 @@ function StudentDetailModal() {
                 </Button>
                 <Button
                   variant="outlined"
-                  onClick={() => dispatch(setIsStudentDetailModalOpen(false))}
+                  onClick={() => {
+resetStudent()
+dispatch(setIsStudentDetailModalOpen(false))}}
                 >
                   {t("cancel")}
                 </Button>
@@ -329,7 +331,9 @@ function StudentDetailModal() {
             minWidth: "unset",
             lineHeight: 1,
           }}
-          onClick={() => dispatch(setIsStudentDetailModalOpen(false))}
+          onClick={() => {
+            resetStudent()
+            dispatch(setIsStudentDetailModalOpen(false))}}
         >
           <Close fontSize={"small"} />
         </Button>
