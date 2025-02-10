@@ -9,7 +9,7 @@ import Card from "@/app/components/Card";
 import SnackBar from "@/app/components/SnackBar";
 import AddTeacherFormModal from "@/app/components/AddTeacherForm";
 import { useAppDispatch } from "@/app/lib/hooks";
-import { setIsAddStudentModalOpen } from "@/app/lib/feature/studentsSlice";
+import { setIsAddStudentModalOpen, resetStudent } from "@/app/lib/feature/studentsSlice";
 import { PersonAddAlt } from "@mui/icons-material";
 
 function StudentListPage() {
@@ -32,12 +32,16 @@ function StudentListPage() {
                   sm: "flex",
                 },
               }}
-              onClick={() => dispatch(setIsAddStudentModalOpen(true))}
+              onClick={() => {
+                resetStudent()
+                dispatch(setIsAddStudentModalOpen(true))}}
             >
               {t("addNewStudent")}
             </Button>
             <IconButton
-              onClick={() => dispatch(setIsAddStudentModalOpen(true))}
+              onClick={() => {
+                resetStudent()
+                dispatch(setIsAddStudentModalOpen(true))}}
               sx={{
                 display: {
                   xs: "flex",
