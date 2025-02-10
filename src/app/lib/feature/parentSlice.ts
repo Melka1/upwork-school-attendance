@@ -3,6 +3,13 @@ import { EMutationStatus, EQueryStatus } from "../enums";
 import httpRequest from "../httpRequest";
 import { Parent } from "@prisma/client";
 
+export type TParent = Parent & {
+  students: {
+    id: string;
+    name: string;
+  }[];
+};
+
 interface FetchParentProps {
   id: string;
 }

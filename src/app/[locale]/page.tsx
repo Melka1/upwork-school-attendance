@@ -5,14 +5,14 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { UserType } from "@prisma/client";
 import Loading from "../components/Loading";
-import { Card, Stack } from "@mui/material";
 import {
   fetchAttendances,
   resetAttendanceState,
 } from "../lib/feature/attendanceSlice";
 import { useTranslations } from "next-intl";
 import { getDate } from "../lib/utils";
-import CallInSickCard from "../components/CallAndSickCard";
+import ParentCallInSickCard from "../components/ParentCallInSickCard";
+import StudentCallInSickCard from "../components/StudentCallInSickCard";
 
 function StudentPage() {
   const t = useTranslations();
@@ -52,27 +52,20 @@ function StudentPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-400 p-4 flex-1">
-      <Card className="w-full max-w-sm p-6 bg-white shadow-xl rounded-2xl">
-        <Stack
-          direction={"row"}
-          sx={{
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: "1rem",
-          }}
-        >
-          <h1 className="text-2xl font-bold">
-            {t("student.hey")}{" "}
-            {user?.student?.name.split(" ")[0] || user?.parent?.name}
-          </h1>
-        </Stack>
-        <CallInSickCard
-          user={user}
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-200 p-4 flex-1">
+      {user.userType == "PARENT" ? (
+        <ParentCallInSickCard
           attendances={attendances}
           status={mutationStatus}
+          parent={user?.parent}
         />
-      </Card>
+      ) : (
+        <StudentCallInSickCard
+          attendances={attendances}
+          status={mutationStatus}
+          student={user?.student}
+        />
+      )}
     </div>
   );
 }

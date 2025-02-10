@@ -9,12 +9,14 @@ import Card from "@/app/components/Card";
 import SnackBar from "@/app/components/SnackBar";
 import AddTeacherFormModal from "@/app/components/AddTeacherForm";
 import { useAppDispatch } from "@/app/lib/hooks";
-import { setIsAddStudentModalOpen, resetStudent } from "@/app/lib/feature/studentsSlice";
+import {
+  setIsAddStudentModalOpen,
+  resetStudent,
+} from "@/app/lib/feature/studentsSlice";
 import { PersonAddAlt } from "@mui/icons-material";
 
 function StudentListPage() {
   const t = useTranslations("dashboard");
-  const dispatch = useAppDispatch();
   return (
     <>
       <Card className="min-w-full">
@@ -24,33 +26,7 @@ function StudentListPage() {
               {t("studentList")}
             </Typography>
 
-            <Button
-              variant="outlined"
-              sx={{
-                display: {
-                  xs: "none",
-                  sm: "flex",
-                },
-              }}
-              onClick={() => {
-                resetStudent()
-                dispatch(setIsAddStudentModalOpen(true))}}
-            >
-              {t("addNewStudent")}
-            </Button>
-            <IconButton
-              onClick={() => {
-                resetStudent()
-                dispatch(setIsAddStudentModalOpen(true))}}
-              sx={{
-                display: {
-                  xs: "flex",
-                  sm: "none",
-                },
-              }}
-            >
-              <PersonAddAlt />
-            </IconButton>
+            <OpenAddStudentButton label={t("addStudent")} />
           </div>
 
           <StudentListTable />
@@ -64,3 +40,40 @@ function StudentListPage() {
 }
 
 export default StudentListPage;
+
+const OpenAddStudentButton = ({ label }: { label: string }) => {
+  const dispatch = useAppDispatch();
+  return (
+    <>
+      <Button
+        variant="outlined"
+        sx={{
+          display: {
+            xs: "none",
+            sm: "flex",
+          },
+        }}
+        onClick={() => {
+          resetStudent();
+          dispatch(setIsAddStudentModalOpen(true));
+        }}
+      >
+        {label}
+      </Button>
+      <IconButton
+        onClick={() => {
+          resetStudent();
+          dispatch(setIsAddStudentModalOpen(true));
+        }}
+        sx={{
+          display: {
+            xs: "flex",
+            sm: "none",
+          },
+        }}
+      >
+        <PersonAddAlt />
+      </IconButton>
+    </>
+  );
+};

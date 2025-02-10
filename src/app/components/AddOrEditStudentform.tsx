@@ -240,257 +240,297 @@ function AddOrEditStudentFormModal() {
   };
 
   return (
-    <Modal
-      open={isModalOpen}
-      aria-labelledby="parent-modal-title"
-      aria-describedby="parent-modal-description"
-    >
-      <Card
-        sx={{ maxHeight: "100vh", py: "2rem", px: "1.5rem" }}
-        className="min-w-[400px] min-h-[40vh] md:max-w-[40vw] h-full md:h-auto absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+    <>
+      <Modal
+        open={isModalOpen}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
       >
-        {status == "loading" ? (
-          <Loading />
-        ) : status == "error" ? (
-          <Error errorText={t("somethingWentWrong")} />
-        ) : (
-          <>
-            <Typography component="h2" variant="h4" textAlign={"center"}>
-              {isEditing ? t("editStudent") : t("addStudent")}
-            </Typography>
-            <div className="grid grid-cols-2 gap-4 py-2 items-center">
-              {/* profile image */}
-              <div className="flex flex-col col-span-2 md:col-span-1 justify-center items-center gap-2">
-                <Image
-                  src={preview || ProfileImage}
-                  alt="Preview"
-                  width={400}
-                  height={400}
-                  style={{
-                    aspectRatio: 1,
-                    objectFit: "cover",
-                    borderRadius: "50%",
-                  }}
-                  className="max-w-[25%]"
-                />
-                <label htmlFor="file-input">
-                  <Input
-                    id="file-input"
-                    type="file"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
+        <Card
+          sx={{ maxHeight: "100vh", py: "2rem", px: "1.5rem" }}
+          className="min-w-[400px] min-h-[40vh] md:max-w-[40vw] h-full md:h-auto absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+        >
+          {status == "loading" ? (
+            <Loading />
+          ) : status == "error" ? (
+            <Error errorText={t("somethingWentWrong")} />
+          ) : (
+            <>
+              <Typography component="h2" variant="h4" textAlign={"center"}>
+                {isEditing ? t("editStudent") : t("addStudent")}
+              </Typography>
+              <div className="grid grid-cols-2 gap-4 py-2 items-center">
+                {/* profile image */}
+                <div className="flex flex-col col-span-2 md:col-span-1 justify-center items-center gap-2">
+                  <Image
+                    src={preview || ProfileImage}
+                    alt="Preview"
+                    width={400}
+                    height={400}
+                    style={{
+                      aspectRatio: 1,
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                    }}
+                    className="max-w-[25%]"
                   />
-                  <Button variant="outlined" component="span" color="secondary">
-                    {t("chooseImage")}
-                  </Button>
-                </label>
-              </div>
-              {/* Classroom */}
-              <div className="flex flex-col gap-2">
-                <Typography>{t("classroom")}</Typography>
-                <ClassroomsDropdown
-                  fullWidth
-                  value={studentInfo?.classroom || ""}
-                  setValue={(e) => {
-                    setStudentInfo((prev) => ({
-                      ...prev,
-                      classroom: e.target.value,
-                    }));
-                    console.log(e.target.value);
-                  }}
-                />
-              </div>
-              {/* name */}
-              <div className="flex flex-col gap-2">
-                <Typography>{t("fullName")}</Typography>
-                <TextField
-                  value={studentInfo?.name || ""}
-                  placeholder={t("enterFullName")}
-                  onChange={({ target }) => {
-                    setStudentInfo((prev) => ({ ...prev, name: target.value }));
-                  }}
-                />
-              </div>
-              {/* email */}
-              {!isEditing && (
+                  <label htmlFor="file-input">
+                    <Input
+                      id="file-input"
+                      type="file"
+                      onChange={handleFileChange}
+                      style={{ display: "none" }}
+                    />
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color="secondary"
+                    >
+                      {t("chooseImage")}
+                    </Button>
+                  </label>
+                </div>
+                {/* Classroom */}
                 <div className="flex flex-col gap-2">
-                  <Typography>{t("email")}</Typography>
+                  <InputLabel label={t("classroom")} required />
+                  <ClassroomsDropdown
+                    fullWidth
+                    value={studentInfo?.classroom || ""}
+                    setValue={(e) => {
+                      setStudentInfo((prev) => ({
+                        ...prev,
+                        classroom: e.target.value,
+                      }));
+                      console.log(e.target.value);
+                    }}
+                  />
+                </div>
+                {/* name */}
+                <div className="flex flex-col gap-2">
+                  <InputLabel label={t("fullName")} required />
                   <TextField
-                    value={studentInfo?.email || ""}
-                    type="email"
-                    placeholder={t("enterEmail")}
+                    value={studentInfo?.name || ""}
+                    placeholder={t("enterFullName")}
                     onChange={({ target }) => {
                       setStudentInfo((prev) => ({
                         ...prev,
-                        email: target.value,
+                        name: target.value,
                       }));
                     }}
                   />
                 </div>
-              )}
-              {/* phone number */}
-              <div className="flex flex-col gap-2">
-                <Typography>{t("phoneNumber")}</Typography>
-                <TextField
-                  type="tel"
-                  value={studentInfo?.phoneNumber || ""}
-                  placeholder={t("enterPhoneNumber")}
-                  onChange={({ target }) => {
-                    setStudentInfo((prev) => ({
-                      ...prev,
-                      phoneNumber: target.value,
-                    }));
-                  }}
-                />
-              </div>
-              {/* location */}
-              <div className="flex flex-col gap-2">
-                <Typography>{t("location")}</Typography>
-                <TextField
-                  value={studentInfo?.location || ""}
-                  placeholder={t("location")}
-                  onChange={({ target }) => {
-                    setStudentInfo((prev) => ({
-                      ...prev,
-                      location: target.value,
-                    }));
-                  }}
-                />
-              </div>
-            </div>
-            {/* parent information */}
-            {!isEditing && (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <Typography
-                  component="h2"
-                  variant="h6"
-                  className="col-span-2 md:col-span-3"
-                >
-                  {t("parentInformation")}
-                </Typography>
-                {/* parent name */}
+                {/* email */}
+                {!isEditing && (
+                  <div className="flex flex-col gap-2">
+                    <InputLabel label={t("email")} />
+                    <TextField
+                      value={studentInfo?.email || ""}
+                      type="email"
+                      placeholder={t("enterEmail")}
+                      onChange={({ target }) => {
+                        setStudentInfo((prev) => ({
+                          ...prev,
+                          email: target.value,
+                        }));
+                      }}
+                    />
+                  </div>
+                )}
+                {/* phone number */}
                 <div className="flex flex-col gap-2">
-                  <Typography>{t("name")}</Typography>
-                  <TextField
-                    value={studentInfo?.parentName || ""}
-                    placeholder={t("enterName")}
-                    onChange={({ target }) => {
-                      setStudentInfo((prev) => ({
-                        ...prev,
-                        parentName: target.value,
-                      }));
-                    }}
-                  />
-                </div>
-                {/* parent email */}
-                <div className="flex flex-col gap-2">
-                  <Typography>{t("email")}</Typography>
-                  <TextField
-                    type="email"
-                    value={studentInfo?.parentEmail || ""}
-                    placeholder={t("enterEmail")}
-                    onChange={({ target }) => {
-                      setStudentInfo((prev) => ({
-                        ...prev,
-                        parentEmail: target.value,
-                      }));
-                    }}
-                  />
-                </div>
-                {/* parent phone number */}
-                <div className="flex flex-col gap-2">
-                  <Typography>{t("phoneNumber")}</Typography>
+                  <InputLabel label={t("phoneNumber")} />
                   <TextField
                     type="tel"
-                    value={studentInfo?.parentPhoneNumber || ""}
+                    value={studentInfo?.phoneNumber || ""}
                     placeholder={t("enterPhoneNumber")}
                     onChange={({ target }) => {
                       setStudentInfo((prev) => ({
                         ...prev,
-                        parentPhoneNumber: target.value,
+                        phoneNumber: target.value,
+                      }));
+                    }}
+                  />
+                </div>
+                {/* location */}
+                <div className="flex flex-col gap-2">
+                  <InputLabel label={t("location")} required />
+                  <TextField
+                    value={studentInfo?.location || ""}
+                    placeholder={t("location")}
+                    onChange={({ target }) => {
+                      setStudentInfo((prev) => ({
+                        ...prev,
+                        location: target.value,
                       }));
                     }}
                   />
                 </div>
               </div>
-            )}
-            {/* emergency information */}
-            <Typography component="h2" variant="h6" className="col-span-2">
-              {t("emergencyInformation")}
-            </Typography>{" "}
-            <div className="grid col-span-2 grid-cols-2 gap-4 py-2 items-center">
-              <div className="flex col-span-2 md:col-span-1 md:flex-col md:items-start gap-2 items-center">
-                <Typography minWidth={"max-content"}>
-                  {t("emergencyContact")}
-                </Typography>
-                <TextField
-                  fullWidth
-                  type={"tel"}
-                  value={studentInfo?.emergencyContact || ""}
-                  placeholder={t("enterEmergencyContact")}
-                  onChange={({ target }) => {
-                    setStudentInfo((prev) => ({
-                      ...prev,
-                      emergencyContact: target.value,
-                    }));
-                  }}
-                />
+              {/* parent information */}
+              {!isEditing && (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <Typography
+                    component="h2"
+                    variant="h6"
+                    className="col-span-2 md:col-span-3"
+                  >
+                    {t("parentInformation")}
+                  </Typography>
+                  {/* parent name */}
+                  <div className="flex flex-col gap-2">
+                    <InputLabel label={t("name")} required />
+                    <TextField
+                      value={studentInfo?.parentName || ""}
+                      placeholder={t("enterName")}
+                      onChange={({ target }) => {
+                        setStudentInfo((prev) => ({
+                          ...prev,
+                          parentName: target.value,
+                        }));
+                      }}
+                    />
+                  </div>
+                  {/* parent email */}
+                  <div className="flex flex-col gap-2">
+                    <InputLabel label={t("email")} required />
+                    <TextField
+                      type="email"
+                      value={studentInfo?.parentEmail || ""}
+                      placeholder={t("enterEmail")}
+                      onChange={({ target }) => {
+                        setStudentInfo((prev) => ({
+                          ...prev,
+                          parentEmail: target.value,
+                        }));
+                      }}
+                    />
+                  </div>
+                  {/* parent phone number */}
+                  <div className="flex flex-col gap-2">
+                    <InputLabel label={t("phoneNumber")} required />
+                    <TextField
+                      type="tel"
+                      value={studentInfo?.parentPhoneNumber || ""}
+                      placeholder={t("enterPhoneNumber")}
+                      onChange={({ target }) => {
+                        setStudentInfo((prev) => ({
+                          ...prev,
+                          parentPhoneNumber: target.value,
+                        }));
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+              {/* emergency information */}
+              <Typography component="h2" variant="h6" className="col-span-2">
+                {t("emergencyInformation")}
+              </Typography>{" "}
+              <div className="grid col-span-2 grid-cols-2 gap-4 py-2 items-center">
+                {/* emergency contact */}
+                <div className="flex col-span-2 sm:col-span-1 flex-col items-start gap-2 sm:gap-4">
+                  <InputLabel label={t("emergencyContact")} required />
+                  <TextField
+                    fullWidth
+                    type={"tel"}
+                    value={studentInfo?.emergencyContact || ""}
+                    placeholder={t("enterEmergencyContact")}
+                    onChange={({ target }) => {
+                      setStudentInfo((prev) => ({
+                        ...prev,
+                        emergencyContact: target.value,
+                      }));
+                    }}
+                  />
+                </div>
+                {/* medical info */}
+                <div className="flex col-span-2 sm:col-span-1 flex-col items-start gap-2 sm:gap-4">
+                  <InputLabel label={t("medicalInfo")} required />
+                  <TextField
+                    value={studentInfo?.medicalInfo}
+                    fullWidth
+                    multiline
+                    placeholder={t("enterMedicalInformation")}
+                    onChange={({ target }) => {
+                      setStudentInfo((prev) => ({
+                        ...prev,
+                        medicalInfo: target.value,
+                      }));
+                    }}
+                  />
+                </div>
               </div>
-              {/* medical info */}
-              <div className="flex col-span-2 md:col-span-1 md:flex-col md:items-start gap-2 items-center">
-                <Typography noWrap minWidth={"max-content"}>
-                  {t("medicalInfo")}
-                </Typography>
-                <TextField
-                  value={studentInfo?.medicalInfo}
-                  fullWidth
-                  multiline
-                  placeholder={t("enterMedicalInformation")}
-                  onChange={({ target }) => {
-                    setStudentInfo((prev) => ({
-                      ...prev,
-                      medicalInfo: target.value,
-                    }));
+              <div className="flex w-full gap-2 justify-end pt-4">
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => {
+                    isEditing ? handleEditStudent() : handleAddStudent();
                   }}
-                />
+                  disabled={isDisabled}
+                  loadingPosition="start"
+                  loading={mutationStatus == "saving"}
+                >
+                  {isEditing ? t("editStudent") : t("addStudent")}
+                </Button>
+                <Button variant="outlined" onClick={() => handleCloseModal()}>
+                  {t("cancel")}
+                </Button>
               </div>
-            </div>
-            <div className="flex w-full gap-2 justify-end pt-4">
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => {
-                  isEditing ? handleEditStudent() : handleAddStudent();
-                }}
-                disabled={isDisabled}
-                loadingPosition="start"
-                loading={mutationStatus == "saving"}
-              >
-                {isEditing ? t("editStudent") : t("addStudent")}
-              </Button>
-              <Button variant="outlined" onClick={() => handleCloseModal()}>
-                {t("cancel")}
-              </Button>
-            </div>
-          </>
-        )}
-        <Button
-          size="small"
-          variant="outlined"
-          fullWidth={false}
-          className="top-6 md:top-4 right-4"
-          sx={{
-            position: "fixed",
-            minWidth: "unset",
-            lineHeight: 1,
-          }}
-          onClick={() => handleCloseModal()}
-        >
-          <Close fontSize={"small"} />
-        </Button>
-      </Card>
-    </Modal>
+            </>
+          )}
+          <Button
+            size="small"
+            variant="outlined"
+            fullWidth={false}
+            className="top-6 md:top-4 right-4"
+            sx={{
+              position: "fixed",
+              minWidth: "unset",
+              lineHeight: 1,
+            }}
+            onClick={() => handleCloseModal()}
+          >
+            <Close fontSize={"small"} />
+          </Button>
+        </Card>
+      </Modal>
+      {mutationStatus == "saving" && <Loading />}
+    </>
   );
 }
 
 export default AddOrEditStudentFormModal;
+
+const InputLabel = ({
+  label,
+  required,
+}: {
+  label: string;
+  required?: boolean;
+}) => {
+  return (
+    <Typography
+      minWidth={"max-content"}
+      sx={{
+        position: "relative",
+        alignSelf: "start",
+        justifySelf: "start",
+      }}
+    >
+      {label}
+      {required && (
+        <span
+          style={{
+            color: "red",
+            position: "absolute",
+            top: 0,
+            right: -8,
+          }}
+        >
+          *
+        </span>
+      )}
+    </Typography>
+  );
+};

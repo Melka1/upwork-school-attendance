@@ -18,7 +18,6 @@ export default function DashboardLayout({
 
   return (
     <Stack
-      spacing={2}
       sx={{
         maxWidth: { sm: "100%", md: "80%" },
         alignItems: "center",
