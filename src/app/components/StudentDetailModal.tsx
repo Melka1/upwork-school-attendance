@@ -10,7 +10,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import { setIsStudentDetailModalOpen, resetStudent } from "../lib/feature/studentsSlice";
+import {
+  setIsStudentDetailModalOpen,
+  resetStudent,
+} from "../lib/feature/studentsSlice";
 import Card from "./Card";
 import {
   Close,
@@ -72,15 +75,20 @@ function StudentDetailModal() {
   const lastAbsentAttendance = orderedAbsentList[0];
   const todaysAttendance = attendances.find((a) => a.studentId == student?.id);
 
+  const handleCloseModal = () => {
+    dispatch(resetStudent());
+    dispatch(setIsStudentDetailModalOpen(false));
+  };
+
   return (
     <Modal
       open={isOpen}
-      onClose={() => dispatch(setIsStudentDetailModalOpen(false))}
+      onClose={() => handleCloseModal()}
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
       <Card
-        sx={{ py: "2rem", maxHeight: "100vh",px:"1.5rem" }}
+        sx={{ py: "2rem", maxHeight: "100vh", px: "1.5rem" }}
         className="min-w-[400px] min-h-[40vh] md:max-w-[40vw] h-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
       >
         {/* student details */}
@@ -308,12 +316,7 @@ function StudentDetailModal() {
                 >
                   {t("markAsAbsent")}
                 </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-resetStudent()
-dispatch(setIsStudentDetailModalOpen(false))}}
-                >
+                <Button variant="outlined" onClick={() => handleCloseModal()}>
                   {t("cancel")}
                 </Button>
               </div>
@@ -331,9 +334,7 @@ dispatch(setIsStudentDetailModalOpen(false))}}
             minWidth: "unset",
             lineHeight: 1,
           }}
-          onClick={() => {
-            resetStudent()
-            dispatch(setIsStudentDetailModalOpen(false))}}
+          onClick={() => handleCloseModal()}
         >
           <Close fontSize={"small"} />
         </Button>

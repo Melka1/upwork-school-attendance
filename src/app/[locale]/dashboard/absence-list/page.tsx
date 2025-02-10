@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import StudentListTable from "./StudentAbsenceListTable";
 import AddStudentFormModal from "@/app/components/AddOrEditStudentform";

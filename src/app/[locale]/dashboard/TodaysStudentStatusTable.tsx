@@ -21,50 +21,52 @@ export default function TodaysStudentStatusTable() {
   const [searchFilter, setSearchFilter] = useState("");
 
   return (
-    <Card className="min-w-full">
-      <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
-        {/* cards */}
-        <div className="flex items-start md:justify-between md:items-center flex-col md:flex-row">
-          <Typography component="h2" variant="h6">
-            {t("todaysStudentStatus")}
-          </Typography>
+    <>
+      <Card className="min-w-full">
+        <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
+          {/* cards */}
+          <div className="flex items-start md:justify-between md:items-center flex-col md:flex-row">
+            <Typography component="h2" variant="h6">
+              {t("todaysStudentStatus")}
+            </Typography>
 
-          <Typography component="p" suppressHydrationWarning>
-            {formatDateTime(new Date().toUTCString(), locale)}
-          </Typography>
-        </div>
+            <Typography component="p" suppressHydrationWarning>
+              {formatDateTime(new Date().toUTCString(), locale)}
+            </Typography>
+          </div>
 
-        <div className="flex py-4 gap-4">
-          <Search handleChange={setSearchFilter} />
-          <FormControl sx={{ minWidth: { xs: 80, md: 200 } }} size="small">
-            <Select
-              value={statusFilter}
-              onChange={({ target }) =>
-                setStatusFilter(target.value as AttendanceStatus)
-              }
-              displayEmpty
-              inputProps={{ "aria-label": "Without label" }}
-            >
-              <MenuItem value="">{t("allStatus")}</MenuItem>
-              <MenuItem value={"PRESENT"}>{t("present")}</MenuItem>
-              <MenuItem value={"ABSENT"}>{t("absent")}</MenuItem>
-              <MenuItem value={"MISSING"}>{t("missing")}</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+          <div className="flex py-4 gap-4">
+            <Search handleChange={setSearchFilter} />
+            <FormControl sx={{ minWidth: { xs: 80, md: 200 } }} size="small">
+              <Select
+                value={statusFilter}
+                onChange={({ target }) =>
+                  setStatusFilter(target.value as AttendanceStatus)
+                }
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                <MenuItem value="">{t("allStatus")}</MenuItem>
+                <MenuItem value={"PRESENT"}>{t("present")}</MenuItem>
+                <MenuItem value={"ABSENT"}>{t("absent")}</MenuItem>
+                <MenuItem value={"MISSING"}>{t("missing")}</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
 
-        <Grid container spacing={2} columns={12}>
-          <Grid size={{ xs: 12, lg: 12 }}>
-            <CustomizedDataGrid
-              statusFilter={statusFilter}
-              searchFilter={searchFilter}
-            />
+          <Grid container spacing={2} columns={12}>
+            <Grid size={{ xs: 12, lg: 12 }}>
+              <CustomizedDataGrid
+                statusFilter={statusFilter}
+                searchFilter={searchFilter}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
 
+        <SnackBar />
+      </Card>
       <StudentDetailModal />
-      <SnackBar />
-    </Card>
+    </>
   );
 }

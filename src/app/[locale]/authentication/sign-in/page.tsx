@@ -14,17 +14,14 @@ import AuthContainer from "@/app/components/AuthContainer";
 import Card from "@/app/components/Card";
 import { signIn } from "@/firebase/auth";
 import { useAuth } from "@/app/provider/AuthContext";
-import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { useTranslations } from "next-intl";
 import { setMessageAlert } from "@/app/lib/feature/pageSlice";
 import Loading from "@/app/components/Loading";
-import LocaleSwitcher from "@/app/components/LanguageSelect";
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
   const t = useTranslations("auth");
-  const router = useRouter();
   const { user: authUser, loading, setLoading } = useAuth();
   const { user, queryStatus } = useAppSelector((state) => state.userSlice);
 
