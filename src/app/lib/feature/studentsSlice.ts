@@ -174,6 +174,9 @@ const StudentSlice = createSlice({
     resetStudentList(state) {
       state.students = [];
     },
+    resetStudent(state){
+      state.student = null;
+    },
     setIsStudentDetailModalOpen(state, action) {
       state.isStudentDetailModalOpen = action.payload;
     },
@@ -237,6 +240,7 @@ export const {
   setIsAddStudentModalOpen,
   reInitializeState,
   setIsEditing,
+  resetStudent
 } = StudentSlice.actions;
 
 export default StudentSlice.reducer;
