@@ -107,8 +107,8 @@ export const createStudents = createAsyncThunk(
 
 interface UpdateStudentProps {
   id: string;
-  name: string;
-  classroomId: string;
+  name?: string;
+  classroomId?: string;
   location?: string;
   phoneNumber?: string;
   emergencyContact?: string[];
@@ -174,7 +174,7 @@ const StudentSlice = createSlice({
     resetStudentList(state) {
       state.students = [];
     },
-    resetStudent(state){
+    resetStudent(state) {
       state.student = null;
     },
     setIsStudentDetailModalOpen(state, action) {
@@ -240,7 +240,7 @@ export const {
   setIsAddStudentModalOpen,
   reInitializeState,
   setIsEditing,
-  resetStudent
+  resetStudent,
 } = StudentSlice.actions;
 
 export default StudentSlice.reducer;

@@ -1,34 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  Button,
-  FormControl,
-  Input,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Input, Modal, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import Card from "./Card";
 import {
   createStudents,
+  resetStudent,
   setIsAddStudentModalOpen,
   setIsEditing,
-  setIsStudentDetailModalOpen,
   updateStudents,
 } from "../lib/feature/studentsSlice";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import ProfileImage from "../assets/images/Profile.png";
-import { uploadImage } from "@/firebase/storage";
 import { fetchAttendances } from "../lib/feature/attendanceSlice";
 import { getDate } from "../lib/utils";
 import Loading from "./Loading";
 import Error from "./Error";
 import { Close } from "@mui/icons-material";
 import ClassroomsDropdown from "./ClassroomsDropdown";
+import { useUploadImage } from "../lib/hooks/useUploadImage";
 
 interface StudentInput {
   name?: string;
@@ -46,6 +37,7 @@ interface StudentInput {
 
 function AddOrEditStudentFormModal() {
   const t = useTranslations("dashboard");
+  const { uploadImage, loading, error, progress } = useUploadImage();
   const dispatch = useAppDispatch();
   const [studentInfo, setStudentInfo] = useState<StudentInput>({});
   const classrooms = useAppSelector((state) => state.classroomSlice.classrooms);
@@ -90,6 +82,7 @@ function AddOrEditStudentFormModal() {
       parentPhoneNumber: student?.parent.phoneNumber,
       emergencyContact: student?.emergencyContact[0],
       medicalInfo: student?.medicalInfo[0],
+      profilePicUrl: student?.imageUrl,
     });
 
     setPreview(student?.imageUrl);
@@ -166,7 +159,7 @@ function AddOrEditStudentFormModal() {
     const isValid = validateInput();
     if (!isValid) return;
 
-    const profileImageUrl = await uploadImage({ file });
+    const profileImageUrl = await uploadImage(file);
 
     dispatch(
       createStudents({
@@ -203,24 +196,35 @@ function AddOrEditStudentFormModal() {
     const isValid = validateEditInput();
     if (!isValid) return;
 
-    const profileImageUrl = await uploadImage({ file });
+    const profileImageUrl = await uploadImage(file);
 
-    dispatch(
-      updateStudents({
-        id: student?.id,
-        name,
-        imageUrl: profileImageUrl as string,
-        phoneNumber,
-        location,
-        classroomId: classrooms.find((c) => c.name == classroom)?.id,
-        emergencyContact: [emergencyContact],
-        medicalInfo: [medicalInfo],
-      })
-    ).then(() => {
-      setStudentInfo({});
-      dispatch(setIsAddStudentModalOpen(false));
-      dispatch(setIsEditing(false));
-    });
+    const editStudentInput = {};
+    if (name != student?.name) editStudentInput["name"] = name;
+    if (profileImageUrl != "") editStudentInput["imageUrl"] = profileImageUrl;
+    if (classroom != student?.classroom?.name)
+      editStudentInput["classroom"] = classrooms.find(
+        (c) => c.name == classroom
+      )?.id;
+    if (location != student?.location) editStudentInput["location"] = location;
+    if (phoneNumber != student?.phoneNumber)
+      editStudentInput["phoneNumber"] = phoneNumber;
+    if (emergencyContact != student?.emergencyContact[0])
+      editStudentInput["emergencyContact"] = [emergencyContact];
+    if (medicalInfo != student?.medicalInfo[0])
+      editStudentInput["medicalInfo"] = [medicalInfo];
+
+    if (Object.keys(editStudentInput).length == 0) return;
+
+    console.log("Edit student input values: ", editStudentInput);
+
+    dispatch(updateStudents({ id: student?.id, ...editStudentInput })).then(
+      () => {
+        setStudentInfo({});
+        dispatch(resetStudent());
+        dispatch(setIsAddStudentModalOpen(false));
+        dispatch(setIsEditing(false));
+      }
+    );
   };
 
   const handleFileChange = (event) => {
@@ -469,7 +473,7 @@ function AddOrEditStudentFormModal() {
                   }}
                   disabled={isDisabled}
                   loadingPosition="start"
-                  loading={mutationStatus == "saving"}
+                  loading={mutationStatus == "saving" || loading == true}
                 >
                   {isEditing ? t("editStudent") : t("addStudent")}
                 </Button>
@@ -495,7 +499,7 @@ function AddOrEditStudentFormModal() {
           </Button>
         </Card>
       </Modal>
-      {mutationStatus == "saving" && <Loading />}
+      {(mutationStatus == "saving" || loading == true) && <Loading />}
     </>
   );
 }

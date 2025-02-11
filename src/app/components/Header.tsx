@@ -58,7 +58,7 @@ export default function Header() {
     if (window.location.pathname.includes("/dashboard")) {
       setSelectedPage("dashboard");
     }
-  }, [window?.location?.href]);
+  }, [window?.location?.pathname]);
 
   React.useEffect(() => {
     if (!user || user?.userType != "TEACHER") return;

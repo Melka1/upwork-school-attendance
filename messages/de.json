@@ -81,7 +81,8 @@
     "light": "Hell",
     "dark": "Dunkel",
     "system": "System",
-    "editStudent": "Student bearbeiten"
+    "editStudent": "Student bearbeiten",
+    "errorOccurredWhileUploadingImage": "Beim Hochladen des Bildes ist ein Fehler aufgetreten."
   },
   "LocaleSwitcher": {
     "label": "Sprache ändern",

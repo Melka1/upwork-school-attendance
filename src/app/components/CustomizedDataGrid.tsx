@@ -12,12 +12,14 @@ import {
   fetchStudent,
   setIsStudentDetailModalOpen,
 } from "../lib/feature/studentsSlice";
-import { Button, Chip, CircularProgress, TextField } from "@mui/material";
+import {
+  Button,
+  Chip,
+  Typography,
+} from "@mui/material";
 import Absent from "../assets/svg/Absent";
-import { EAttendanceStatus } from "../lib/enums";
 import {
   createAttendance,
-  updateAttendances,
 } from "../lib/feature/attendanceSlice";
 import { AttendanceStatus } from "@prisma/client";
 import { useTranslations } from "next-intl";
@@ -69,6 +71,20 @@ export default function CustomizedDataGrid({
       sortable: true,
       filterable: false,
       disableColumnMenu: true,
+      renderCell: (params) => {
+        return (
+          <Typography
+            sx={{
+              cursor: "pointer",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {params.value}
+          </Typography>
+        );
+      },
     },
     {
       field: "classroom",

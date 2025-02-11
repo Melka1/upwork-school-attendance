@@ -81,7 +81,8 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System",
-    "editStudent": "Edit Student"
+    "editStudent": "Edit Student",
+    "errorOccurredWhileUploadingImage":"Error occurred while uploading image"
   },
   "LocaleSwitcher": {
     "label": "Change language",

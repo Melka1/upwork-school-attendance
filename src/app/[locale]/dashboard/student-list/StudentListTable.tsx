@@ -160,6 +160,7 @@ function StudentListTable() {
           return (
             <div className="flex h-full min-w-full items-center">
               <ClassroomsDropdown
+                fullWidth
                 value={studentToEdit?.classroomName || ""}
                 setValue={({ target }) =>
                   setStudentToEdit((prev) => ({

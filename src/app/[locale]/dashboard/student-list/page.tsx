@@ -54,7 +54,7 @@ const OpenAddStudentButton = ({ label }: { label: string }) => {
           },
         }}
         onClick={() => {
-          resetStudent();
+          dispatch(resetStudent());
           dispatch(setIsAddStudentModalOpen(true));
         }}
       >
@@ -62,7 +62,7 @@ const OpenAddStudentButton = ({ label }: { label: string }) => {
       </Button>
       <IconButton
         onClick={() => {
-          resetStudent();
+          dispatch(resetStudent());
           dispatch(setIsAddStudentModalOpen(true));
         }}
         sx={{
