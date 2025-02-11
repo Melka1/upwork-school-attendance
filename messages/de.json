@@ -70,7 +70,7 @@
     "name": "Name",
     "enterName": "Namen eingeben",
     "chooseImage": "Bild auswählen",
-    "hasCalledSick": "hat sich krankgemeldet.",
+    "hasCalledSick": "{name} hat sich krankgemeldet.",
     "absentAlert": "Abwesenheitswarnung!",
     "addTeacher": "Lehrer hinzufügen",
     "addNewTeacher": "Neuen Lehrer hinzufügen",
@@ -84,5 +84,17 @@
   "LocaleSwitcher": {
     "label": "Sprache ändern",
     "locale": "{locale, select, de {🇩🇪 Deutsch} en {🇺🇸 English} other {Unbekannt}}"
+  },
+  "common": {
+    "secondAgo": "vor einer Sekunde",
+    "minuteAgo": "vor einer Minute",
+    "minuteAgo_other": "vor {amount} Minuten",
+    "hourAgo": "vor einer Stunde",
+    "hourAgo_other": "vor {amount} Stunden",
+    "dayAgo": "vor einem Tag",
+    "dayAgo_other": "vor {amount} Tagen",
+    "weekAgo": "vor einer Woche",
+    "weekAgo_other": "vor {amount} Wochen",
+    "justNow": "Gerade eben"
   }
 }

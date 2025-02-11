@@ -1,27 +1,54 @@
-export function getTimeAgo(notificationDate: string): string {
+export function getTimeAgo(
+  notificationDate: string,
+  translation?: any
+): string {
   const date = new Date(notificationDate);
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-  const intervals: { unit: string; seconds: number }[] = [
-    { unit: "year", seconds: 31536000 },
-    { unit: "month", seconds: 2592000 },
-    { unit: "week", seconds: 604800 },
-    { unit: "day", seconds: 86400 },
-    { unit: "hour", seconds: 3600 },
-    { unit: "minute", seconds: 60 },
+  const intervals: {
+    unit: string;
+    seconds: number;
+    tOne?: string;
+    tOther?: any;
+  }[] = [
+    {
+      unit: "week",
+      seconds: 604800,
+      tOne: translation("weekAgo"),
+      tOther: (value: string) =>
+        translation("weekAgo_other", { amount: value }),
+    },
+    {
+      unit: "day",
+      seconds: 86400,
+      tOne: translation("dayAgo"),
+      tOther: (value: string) => translation("dayAgo_other", { amount: value }),
+    },
+    {
+      unit: "hour",
+      seconds: 3600,
+      tOne: translation("hourAgo"),
+      tOther: (value: string) =>
+        translation("hourAgo_other", { amount: value }),
+    },
+    {
+      unit: "minute",
+      seconds: 60,
+      tOne: translation("minuteAgo"),
+      tOther: (value: string) =>
+        translation("minuteAgo_other", { amount: value }),
+    },
   ];
 
   for (const interval of intervals) {
     const count = Math.floor(diffInSeconds / interval.seconds);
     if (count >= 1) {
-      return count === 1
-        ? `1 ${interval.unit} ago`
-        : `${count} ${interval.unit}s ago`;
+      return count === 1 ? interval.tOne : interval.tOther(count);
     }
   }
 
-  return "Just now";
+  return translation("justNow");
 }
 
 export function getDate(dateStr?: string) {

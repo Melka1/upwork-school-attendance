@@ -11,7 +11,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "../lib/hooks";
 import { TUser } from "../lib/feature/userSlice";
-import { Attendance, AttendanceStatus } from "@prisma/client";
+import { Attendance, AttendanceStatus, NotificationType } from "@prisma/client";
 import { EMutationStatus } from "../lib/enums";
 import { createAttendance } from "../lib/feature/attendanceSlice";
 import { createNotifications } from "../lib/feature/notificationSlice";
@@ -36,7 +36,7 @@ const ParentCallInSickCard = ({
     (a) => a.studentId == chosenStudent?.id
   );
 
-  const handleCallSick = ({ id, name }: { id: string; name: string }) => {
+  const handleCallSick = ({ id }: { id: string }) => {
     dispatch(
       createAttendance({
         studentId: id,
@@ -46,8 +46,10 @@ const ParentCallInSickCard = ({
     ).then(() => {
       dispatch(
         createNotifications({
-          title: "Absent Alert!",
-          content: name + " has called sick",
+          title: "absentAlert",
+          content: "hasCalledSick",
+          fromId: id,
+          type: NotificationType.INFO,
         })
       );
     });

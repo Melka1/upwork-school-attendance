@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { EMutationStatus, EQueryStatus } from "../enums";
 import httpRequest from "../httpRequest";
-import { Notification } from "@prisma/client";
+import { Notification, NotificationType } from "@prisma/client";
 
 interface FetchNotificationProps {
   isRead?: boolean;
@@ -12,6 +12,10 @@ interface FetchNotificationProps {
 export type TNotification = Omit<Notification, "date"> & {
   recipientId: string;
   date: string;
+  type: NotificationType;
+  from: {
+    name: string;
+  };
 };
 
 export const fetchNotifications = createAsyncThunk(
@@ -44,6 +48,8 @@ export const fetchNotifications = createAsyncThunk(
 interface CreateNotificationInput {
   title: string;
   content: string;
+  fromId?: string;
+  type?: NotificationType;
 }
 
 export const createNotifications = createAsyncThunk(

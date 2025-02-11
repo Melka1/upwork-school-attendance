@@ -4,20 +4,20 @@ import { NextResponse } from "next/server";
 import { UserType } from "@prisma/client";
 
 export async function POST(request: Request) {
-  const { title, content } = await request.json();
+  const { title, content, fromId, type } = await request.json();
 
   try {
     const users = await prisma.user.findMany({
       where: { userType: UserType.TEACHER },
     });
 
-    console.log(users, title);
-
     const response = await prisma.notification.create({
       data: {
         title,
         message: content,
         date: new Date(),
+        fromId,
+        type,
         users: {
           create: [
             ...users.map((u) => ({

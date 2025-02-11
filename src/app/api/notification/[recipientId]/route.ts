@@ -5,9 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ recipientId: string }> }
 ) {
-  const userId = (await params).id;
+  const userId = (await params).recipientId;
   const searchParams = request.nextUrl.searchParams;
   const isRead = JSON.parse(searchParams.get("isRead")) as boolean;
 
@@ -21,7 +21,20 @@ export async function GET(
         isRead: false,
       },
       include: {
-        notification: true,
+        notification: {
+          select: {
+            id: true,
+            title: true,
+            message: true,
+            date: true,
+            type: true,
+            from: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
 

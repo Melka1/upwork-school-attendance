@@ -100,6 +100,8 @@ const NotificationCard = ({
   action: VoidFunction;
 }) => {
   const t = useTranslations("dashboard");
+  console.log(notification);
+  const ct = useTranslations("common");
   return (
     <Card
       variant="outlined"
@@ -112,20 +114,29 @@ const NotificationCard = ({
       <CardContent sx={{}}>
         <div className="flex justify-between ">
           <Typography
+            color={
+              notification.type == "INFO"
+                ? "textPrimary"
+                : notification.type == "ERROR"
+                ? "error"
+                : "warning"
+            }
             gutterBottom
-            sx={{ color: "text.secondary", fontSize: 14, fontWeight: "bold" }}
+            sx={{ fontSize: 14, fontWeight: "bold" }}
           >
-            {notification.title}
+            {t(notification.title as any)}
           </Typography>
           <Typography
             gutterBottom
             sx={{ color: "text.secondary", fontSize: 12 }}
           >
-            {getTimeAgo(notification.date)}
+            {getTimeAgo(notification.date, ct)}
           </Typography>
         </div>
         <Typography variant="body2" sx={{ fontSize: "12px" }}>
-          {notification.message}
+          {t(notification.message as any, {
+            name: notification.from.name,
+          })}
         </Typography>
         <div className="flex justify-end pt-2" onClick={action}>
           <button className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-white bg-blue-600 rounded-full shadow-md hover:bg-blue-700 active:scale-95 transition-all duration-200">

@@ -70,7 +70,7 @@
     "name": "Name",
     "enterName": "Enter name",
     "chooseImage": "Choose Image",
-    "hasCalledSick": "has called sick.",
+    "hasCalledSick": "{name} has called sick.",
     "absentAlert": "Absent alert!",
     "addTeacher": "Add Teacher",
     "addNewTeacher": "Add New Teacher",
@@ -84,5 +84,17 @@
   "LocaleSwitcher": {
     "label": "Change language",
     "locale": "{locale, select, de {🇩🇪 Deutsch} en {🇺🇸 English} other {Unknown}}"
+  },
+  "common": {
+    "secondAgo": "second ago",
+    "minuteAgo": "A minute ago",
+    "minuteAgo_other": "{amount} minutes ago",
+    "hourAgo": "hour ago",
+    "hourAgo_other": "{amount} hours ago",
+    "dayAgo": "day",
+    "dayAgo_other": "{amount} days ago",
+    "weekAgo": "week ago",
+    "weekAgo_other": "{amount} weeks ago",
+    "justNow": "Just Now"
   }
 }

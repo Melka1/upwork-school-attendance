@@ -39,6 +39,8 @@ model Student {
   medicalInfo      String[]
   emergencyContact String[]
   attendance       Attendance[]
+
+  Notification Notification[]
 }
 
 model Parent {
@@ -83,11 +85,14 @@ model Recipient {
 }
 
 model Notification {
-  id      String      @id @default(uuid()) @map("_id")
+  id      String           @id @default(uuid()) @map("_id")
   title   String
   message String
   date    DateTime
   users   Recipient[]
+  from    Student?         @relation(fields: [fromId], references: [id])
+  fromId  String?
+  type    NotificationType @default(INFO)
 }
 
 model Classroom {
@@ -109,4 +114,10 @@ enum UserType {
   STUDENT
   TEACHER
   PARENT
+}
+
+enum NotificationType {
+  INFO
+  WARNING
+  ERROR
 }
