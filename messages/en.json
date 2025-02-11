@@ -96,5 +96,8 @@
     "weekAgo": "week ago",
     "weekAgo_other": "{amount} weeks ago",
     "justNow": "Just Now"
+  },
+  "table":{
+    "rowsPerPage":"Rows per page"
   }
 }

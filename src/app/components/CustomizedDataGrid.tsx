@@ -189,6 +189,11 @@ export default function CustomizedDataGrid({
       filterModel={filterModel}
       sortModel={[{ field: "name", sort: "asc" }]}
       disableRowSelectionOnClick
+      localeText={{
+        MuiTablePagination: {
+          labelRowsPerPage: useTranslations("table")("rowsPerPage"),
+        },
+      }}
     />
   );
 }

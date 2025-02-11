@@ -392,6 +392,11 @@ function StudentListTable() {
                 e.stopPropagation();
               }
             }}
+            localeText={{
+              MuiTablePagination: {
+                labelRowsPerPage: useTranslations("table")("rowsPerPage"),
+              },
+            }}
           />
         </Grid>
       </Grid>

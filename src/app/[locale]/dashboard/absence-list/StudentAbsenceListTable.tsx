@@ -144,6 +144,11 @@ function StudentAbsenceListTable() {
             filterModel={filterModel}
             disableColumnMenu
             disableRowSelectionOnClick
+            localeText={{
+              MuiTablePagination: {
+                labelRowsPerPage: useTranslations("table")("rowsPerPage"),
+              },
+            }}
           />
         </Grid>
       </Grid>

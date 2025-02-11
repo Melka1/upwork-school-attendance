@@ -96,5 +96,8 @@
     "weekAgo": "vor einer Woche",
     "weekAgo_other": "vor {amount} Wochen",
     "justNow": "Gerade eben"
+  },
+  "table": {
+    "rowsPerPage": "Zeilen pro Seite"
   }
 }
