@@ -58,7 +58,7 @@ export default function Header() {
     if (window.location.pathname.includes("/dashboard")) {
       setSelectedPage("dashboard");
     }
-  }, []);
+  }, [window?.location?.href]);
 
   React.useEffect(() => {
     if (!user || user?.userType != "TEACHER") return;
@@ -72,10 +72,11 @@ export default function Header() {
         alignItems={"center"}
         justifyContent={"space-between"}
         sx={{
-          width: "100%",
+          width: { xs: "100%", lg: "80%" },
           maxWidth: { sm: "100%", md: "1700px" },
           py: 1.5,
           px: 2,
+          margin: "auto",
         }}
         spacing={2}
       >

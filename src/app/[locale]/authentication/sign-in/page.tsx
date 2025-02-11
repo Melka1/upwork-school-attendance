@@ -65,7 +65,7 @@ export default function SignIn() {
 
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
+      setEmailErrorMessage(t("pleaseEnterEmailError"));
       isValid = false;
     } else {
       setEmailError(false);
@@ -74,7 +74,7 @@ export default function SignIn() {
 
     if (!password || password.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage(t("passwordLengthError"));
       isValid = false;
     } else {
       setPasswordError(false);
@@ -161,7 +161,7 @@ export default function SignIn() {
             {t("signIn")}
           </Button>
         </Box>
-        <Divider>or</Divider>
+        <Divider>{useTranslations("common")("or")}</Divider>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <Typography sx={{ textAlign: "center" }}>
             {t("don_tHaveAccount")}{" "}

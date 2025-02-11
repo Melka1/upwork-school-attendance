@@ -13,6 +13,7 @@ import { useTranslations } from "next-intl";
 import { getDate } from "../lib/utils";
 import ParentCallInSickCard from "../components/ParentCallInSickCard";
 import StudentCallInSickCard from "../components/StudentCallInSickCard";
+import Error from "../components/Error";
 
 function StudentPage() {
   const t = useTranslations();
@@ -42,6 +43,10 @@ function StudentPage() {
       })
     );
   }, [user, mutationStatus]);
+
+  if (queryStatus == "error") {
+    return <Error errorText={t("dashboard.somethingWentWrong")} />;
+  }
 
   if (
     queryStatus == "loading" ||

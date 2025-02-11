@@ -16,7 +16,9 @@
     "enterPassword": "Enter password",
     "don_tHaveAccount": "Don't have an account?",
     "alreadyHaveAccount": "Already have an account?",
-    "successfullyLoggedIn": "Logged in Successfully "
+    "successfullyLoggedIn": "Logged in Successfully",
+    "pleaseEnterEmailError": "Please enter a valid email address.",
+    "passwordLengthError": "Password must be at least 6 characters long."
   },
   "dashboard": {
     "self": "Dashboard",
@@ -95,9 +97,10 @@
     "dayAgo_other": "{amount} days ago",
     "weekAgo": "week ago",
     "weekAgo_other": "{amount} weeks ago",
-    "justNow": "Just Now"
+    "justNow": "Just Now",
+    "or": "Or"
   },
-  "table":{
-    "rowsPerPage":"Rows per page"
+  "table": {
+    "rowsPerPage": "Rows per page"
   }
 }

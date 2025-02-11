@@ -16,7 +16,9 @@
     "enterPassword": "Passwort eingeben",
     "don_tHaveAccount": "Sie haben kein Konto?",
     "alreadyHaveAccount": "Sie haben bereits ein Konto?",
-    "successfullyLoggedIn": "Erfolgreich eingeloggt"
+    "successfullyLoggedIn": "Erfolgreich eingeloggt",
+    "pleaseEnterEmailError": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "passwordLengthError": "Das Passwort muss mindestens 6 Zeichen lang sein."
   },
   "dashboard": {
     "self": "Armaturenbrett",
@@ -95,7 +97,8 @@
     "dayAgo_other": "vor {amount} Tagen",
     "weekAgo": "vor einer Woche",
     "weekAgo_other": "vor {amount} Wochen",
-    "justNow": "Gerade eben"
+    "justNow": "Gerade eben",
+    "or": "Oder"
   },
   "table": {
     "rowsPerPage": "Zeilen pro Seite"
