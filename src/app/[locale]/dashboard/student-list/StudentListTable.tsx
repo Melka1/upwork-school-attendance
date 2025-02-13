@@ -88,8 +88,6 @@ function StudentListTable() {
     id: false,
   });
 
-  console.log(attendances, students, classrooms);
-
   const columnDef: ColumnDef<Student>[] = [
     {
       accessorKey: "id",
