@@ -24,7 +24,11 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
-import { Student } from "@/app/lib/feature/studentsSlice";
+import {
+  fetchStudent,
+  setIsStudentDetailModalOpen,
+  Student,
+} from "@/app/lib/feature/studentsSlice";
 import { UnfoldMoreOutlined } from "@mui/icons-material";
 import StatusCard from "@/app/components/StatusCard";
 import Absent from "@/app/assets/svg/Absent";
@@ -80,10 +84,18 @@ export default function TodaysStudentStatusTable() {
         );
       },
       cell: ({ row }) => {
+        const id = row.original.id;
         return (
-          <div className="whitespace-nowrap pl-4">
+          <Button
+            sx={{ display: "flex", justifyContent: "start" }}
+            fullWidth
+            onClick={() => {
+              dispatch(fetchStudent({ id }));
+              dispatch(setIsStudentDetailModalOpen(true));
+            }}
+          >
             {row.getValue("name") || "-"}
-          </div>
+          </Button>
         );
       },
     },
