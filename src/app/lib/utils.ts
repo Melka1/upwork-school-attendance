@@ -1,3 +1,6 @@
+import clsx, { ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
 export function getTimeAgo(
   notificationDate: string,
   translation?: any
@@ -77,3 +80,7 @@ export const formatDateTime = (date: string, locale?: string) => {
     })
   );
 };
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}

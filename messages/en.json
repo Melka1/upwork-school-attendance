@@ -82,7 +82,7 @@
     "dark": "Dark",
     "system": "System",
     "editStudent": "Edit Student",
-    "errorOccurredWhileUploadingImage":"Error occurred while uploading image"
+    "errorOccurredWhileUploadingImage": "Error occurred while uploading image"
   },
   "LocaleSwitcher": {
     "label": "Change language",
@@ -94,14 +94,17 @@
     "minuteAgo_other": "{amount} minutes ago",
     "hourAgo": "hour ago",
     "hourAgo_other": "{amount} hours ago",
-    "dayAgo": "day",
+    "dayAgo": "A day ago",
     "dayAgo_other": "{amount} days ago",
     "weekAgo": "week ago",
     "weekAgo_other": "{amount} weeks ago",
     "justNow": "Just Now",
-    "or": "Or"
+    "or": "Or",
+    "loading": "Loading..."
   },
   "table": {
-    "rowsPerPage": "Rows per page"
+    "rowsPerPage": "Rows per page",
+    "page": "Page",
+    "noResults": "No Results"
   }
 }

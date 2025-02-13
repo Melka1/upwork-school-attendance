@@ -2,18 +2,19 @@
 
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import React from "react";
-import StudentListTable from "./StudentListTable";
 import AddOrEditStudentFormModal from "@/app/components/AddOrEditStudentform";
 import { useTranslations } from "next-intl";
 import Card from "@/app/components/Card";
 import SnackBar from "@/app/components/SnackBar";
 import AddTeacherFormModal from "@/app/components/AddTeacherForm";
-import { useAppDispatch } from "@/app/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import {
   setIsAddStudentModalOpen,
   resetStudent,
+  setIsEditing,
 } from "@/app/lib/feature/studentsSlice";
 import { PersonAddAlt } from "@mui/icons-material";
+import StudentListTable from "./StudentListTable";
 
 function StudentListPage() {
   const t = useTranslations("dashboard");
@@ -43,6 +44,14 @@ export default StudentListPage;
 
 const OpenAddStudentButton = ({ label }: { label: string }) => {
   const dispatch = useAppDispatch();
+  const isEditing = useAppSelector((state) => state.studentSlice.isEditing);
+
+  const handleOpenAddStudentModal = () => {
+    isEditing == true && dispatch(setIsEditing(false));
+    dispatch(resetStudent());
+    dispatch(setIsAddStudentModalOpen(true));
+  };
+
   return (
     <>
       <Button
@@ -53,18 +62,12 @@ const OpenAddStudentButton = ({ label }: { label: string }) => {
             sm: "flex",
           },
         }}
-        onClick={() => {
-          dispatch(resetStudent());
-          dispatch(setIsAddStudentModalOpen(true));
-        }}
+        onClick={() => handleOpenAddStudentModal()}
       >
         {label}
       </Button>
       <IconButton
-        onClick={() => {
-          dispatch(resetStudent());
-          dispatch(setIsAddStudentModalOpen(true));
-        }}
+        onClick={() => handleOpenAddStudentModal()}
         sx={{
           display: {
             xs: "flex",
