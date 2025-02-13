@@ -499,7 +499,8 @@ function AddOrEditStudentFormModal() {
           </Button>
         </Card>
       </Modal>
-      {(mutationStatus == "saving" || loading == true) && <Loading />}
+      {(mutationStatus == "saving" || loading == true) &&
+        isModalOpen == true && <Loading />}
     </>
   );
 }

@@ -1,45 +1,55 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prefer-const */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
-import Search from "../../../components/Search";
 import {
   Button,
   FormControl,
-  Grid2 as Grid,
   IconButton,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
+
 import {
-  DataGrid,
-  GridColDef,
-  GridFilterItem,
-  GridFilterModel,
-  GridLogicOperator,
-  GridRowsProp,
-} from "@mui/x-data-grid";
-import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
+  OpenInFull,
+  SaveOutlined,
+  UnfoldMoreOutlined,
+} from "@mui/icons-material";
+import { AttendanceStatus } from "@prisma/client";
+import { useTranslations } from "next-intl";
+import { getDate } from "@/app/lib/utils";
+import ClassroomsDropdown from "@/app/components/ClassroomsDropdown";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
 import {
   fetchStudent,
   fetchStudents,
   setIsAddStudentModalOpen,
   setIsEditing,
+  Student,
   updateStudents,
-} from "../../../lib/feature/studentsSlice";
-import Delete from "../../../assets/svg/Delete";
-import { RenderStatus } from "../../../components/CustomizedDataGrid";
-import { OpenInFull, SaveOutlined } from "@mui/icons-material";
+} from "@/app/lib/feature/studentsSlice";
 import {
   createAttendance,
   fetchAttendances,
-} from "../../../lib/feature/attendanceSlice";
-import { fetchClassrooms } from "../../../lib/feature/classroomSlice";
-import { AttendanceStatus } from "@prisma/client";
-import { useTranslations } from "next-intl";
-import { getDate } from "@/app/lib/utils";
-import ClassroomsDropdown from "@/app/components/ClassroomsDropdown";
+} from "@/app/lib/feature/attendanceSlice";
+import { fetchClassrooms } from "@/app/lib/feature/classroomSlice";
+import Delete from "@/app/assets/svg/Delete";
+import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
+import Search from "@/app/components/Search";
+import TableContent from "@/app/components/TableContent";
+import StatusCard from "@/app/components/StatusCard";
+import Pagination from "@/app/components/Pagination";
 
 interface EditStudentInput {
   id: string;
@@ -51,90 +61,73 @@ interface EditStudentInput {
 function StudentListTable() {
   const t = useTranslations("dashboard");
   const dispatch = useAppDispatch();
-  const { students, mutationStatus, isEditing } = useAppSelector(
+  const { students, mutationStatus, isEditing, status } = useAppSelector(
     (state) => state.studentSlice
   );
-  const { attendances, mutationStatus: attendanceMutationStatus } =
-    useAppSelector((state) => state.attendanceSlice);
-  const { classrooms } = useAppSelector((state) => state.classroomSlice);
-  const [classroomFilter, setClassroomFilter] = useState("");
-  const [searchFilter, setSearchFilter] = useState("");
+  const {
+    attendances,
+    mutationStatus: attendanceMutationStatus,
+    status: attendanceStatus,
+  } = useAppSelector((state) => state.attendanceSlice);
+  const { classrooms, status: classroomStatus } = useAppSelector(
+    (state) => state.classroomSlice
+  );
 
   const [studentToEdit, setStudentToEdit] = useState<EditStudentInput | null>(
     null
   );
 
-  console.log(studentToEdit);
-
-  useEffect(() => {
-    const { date, month, year } = getDate();
-    dispatch(fetchStudents({}));
-    dispatch(fetchAttendances({ date, month, year }));
-    dispatch(fetchClassrooms({}));
-  }, []);
-
-  useEffect(() => {
-    if (mutationStatus != "success") return;
-    dispatch(fetchStudents({}));
-  }, [mutationStatus]);
-
-  useEffect(() => {
-    const { date, month, year } = getDate();
-    if (attendanceMutationStatus != "success") return;
-    dispatch(fetchAttendances({ date, month, year }));
-  }, [attendanceMutationStatus]);
-
-  let filterItems: GridFilterItem[] = [];
-  if (searchFilter)
-    filterItems.push({
-      id: 1,
-      field: "name",
-      operator: "contains",
-      value: searchFilter,
-    });
-  if (classroomFilter)
-    filterItems.push({
-      id: 2,
-      field: "classroom",
-      operator: "equals",
-      value: classroomFilter,
-    });
-
-  const filterModel: GridFilterModel = {
-    items: filterItems,
-    logicOperator: GridLogicOperator.And,
-  };
-
-  const rows: GridRowsProp = students.map((s) => ({
-    id: s.id,
-    name: s.name,
-    classroom: s.classroom.name,
-    status: attendances.find((a) => a.studentId == s.id)?.status as string,
-  }));
-
-  const columns: GridColDef[] = [
+  const [sorting, setSorting] = useState<SortingState>([
     {
-      field: "name",
-      headerName: t("student"),
-      flex: 2,
-      minWidth: 200,
-      sortable: true,
-      filterable: false,
-      renderCell: (params) => {
-        if (isEditing && studentToEdit?.id == params.id) {
+      desc: false,
+      id: "name",
+    },
+  ]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    id: false,
+  });
+
+  console.log(attendances, students, classrooms);
+
+  const columnDef: ColumnDef<Student>[] = [
+    {
+      accessorKey: "id",
+      header: "",
+      cell: "",
+    },
+    {
+      accessorKey: "name",
+      header: ({ column }) => {
+        return (
+          <Button
+            fullWidth
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            size={"small"}
+            color="darker"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              minWidth: "150px",
+            }}
+          >
+            <span className="text-md font-bold">{t("student")}</span>
+            <UnfoldMoreOutlined className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const { id, name } = row.original;
+        if (isEditing && studentToEdit?.id == id) {
           return (
             <div className="flex h-full items-center">
               <TextField
+                id="name"
                 variant="outlined"
                 fullWidth
                 size="small"
-                value={studentToEdit?.name}
-                onKeyDown={(event) => {
-                  if (event.key === " ") {
-                    event.stopPropagation();
-                  }
-                }}
-                onChange={(e) => {
+                defaultValue={studentToEdit?.name || ""}
+                onBlur={(e) => {
                   setStudentToEdit((prev) => ({
                     ...prev,
                     name: e.target.value,
@@ -144,21 +137,22 @@ function StudentListTable() {
             </div>
           );
         }
-        return params.row["name"];
+        return (
+          <div className="whitespace-nowrap pl-4">
+            {row.getValue("name") || "-"}
+          </div>
+        );
       },
     },
     {
-      field: "classroom",
-      headerName: t("class"),
-      flex: 1,
-      minWidth: 150,
-      sortable: false,
-      filterable: true,
-      disableColumnMenu: true,
-      renderCell: (params) => {
-        if (isEditing && studentToEdit?.id == params.id) {
+      accessorKey: "classroom",
+      accessorFn: (row) => row.classroom.name,
+      header: () => <p className="text-muted-foreground">{t("class")}</p>,
+      cell: ({ row }) => {
+        const id = row.original.id;
+        if (isEditing && studentToEdit?.id == id) {
           return (
-            <div className="flex h-full min-w-full items-center">
+            <div className="flex h-full w-full min-w-full items-center">
               <ClassroomsDropdown
                 fullWidth
                 value={studentToEdit?.classroomName || ""}
@@ -172,20 +166,22 @@ function StudentListTable() {
             </div>
           );
         }
-        return params.row["classroom"];
+        return (
+          <div className="whitespace-nowrap text-center">
+            {row.getValue("classroom") || "-"}
+          </div>
+        );
       },
     },
     {
-      field: "status",
-      headerName: t("status"),
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-      minWidth: 150,
-      sortable: false,
-      filterable: true,
-      renderCell: (params) => {
-        if (isEditing && studentToEdit?.id == params.id) {
+      accessorKey: "status",
+      header: () => <p className="text-muted-foreground">{t("status")}</p>,
+      cell: ({ row }) => {
+        const id = row.original.id;
+        const status = attendances.find((a) => a.studentId == id)
+          ?.status as string;
+
+        if (isEditing && studentToEdit?.id == id) {
           return (
             <div className="flex h-full min-w-full items-center">
               <FormControl sx={{ minWidth: "100%" }}>
@@ -210,31 +206,40 @@ function StudentListTable() {
         }
 
         const attendanceTranslation =
-          params.value == "PRESENT"
+          status == "PRESENT"
             ? t("present").toUpperCase()
-            : params.value == "ABSENT"
+            : status == "ABSENT"
             ? t("absent").toUpperCase()
             : t("missing").toUpperCase();
+        return (
+          <div className="flex justify-center">
+            {StatusCard({
+              status: status as AttendanceStatus,
+              label: attendanceTranslation,
+            })}
+          </div>
+        );
+      },
+      filterFn: (row, _, filterValue) => {
+        const id = row.original.id;
+        const status =
+          (attendances.find((a) => a.studentId == id)?.status as string) ||
+          null;
 
-        return RenderStatus({
-          status: params.value as AttendanceStatus,
-          label: attendanceTranslation,
-        });
+        console.log("Filter value:", filterValue, status);
+        return filterValue == null ? true : status == filterValue;
       },
     },
     {
-      field: "action",
-      headerName: t("action"),
-      headerAlign: "center",
-      align: "center",
-      flex: 2,
-      minWidth: 250,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => {
+      accessorKey: "action",
+      header: () => <p className="text-muted-foreground">{t("action")}</p>,
+      cell: ({ row }) => {
+        const { id, name, classroom } = row.original;
+        const status = attendances.find((a) => a.studentId == id)?.status;
+
         return (
-          <div className="flex gap-2 items-center justify-center h-full">
-            {isEditing && studentToEdit?.id == params.id ? (
+          <div className="flex gap-2 items-center justify-center h-full px-4">
+            {isEditing && studentToEdit?.id == id ? (
               <>
                 <Button
                   variant="contained"
@@ -248,21 +253,25 @@ function StudentListTable() {
                   loading={
                     (mutationStatus == "saving" ||
                       attendanceMutationStatus == "saving") &&
-                    params.id == studentToEdit?.id
+                    id == studentToEdit?.id
                   }
                   disabled={
-                    studentToEdit?.name == params.row["name"] &&
-                    studentToEdit?.status == params.row["status"] &&
-                    studentToEdit?.classroomName == params.row["classroom"]
+                    studentToEdit?.name == name &&
+                    studentToEdit?.status == status &&
+                    studentToEdit?.classroomName == classroom.name
                   }
                   onClick={() => {
-                    const { id, name, classroomName, status } = studentToEdit;
+                    const {
+                      name: nameFromInput,
+                      classroomName,
+                      status: statusFromEdit,
+                    } = studentToEdit;
 
                     let promises = [];
 
                     if (
-                      name != params.row["name"] ||
-                      classroomName != params.row["classroom"]
+                      nameFromInput != name ||
+                      classroomName != classroom.name
                     ) {
                       promises.push(
                         dispatch(
@@ -271,23 +280,23 @@ function StudentListTable() {
                             classroomId: classrooms.find(
                               (c) => c.name == classroomName
                             )?.id,
-                            name,
+                            name: nameFromInput,
                           })
                         )
                       );
                     }
 
-                    if (status != params.row["status"]) {
+                    if (statusFromEdit != status) {
                       const previousAttendance = attendances.find(
-                        (a) => a.studentId == params.id
+                        (a) => a.studentId == id
                       );
                       promises.push(
                         dispatch(
                           createAttendance({
-                            studentId: params.id as string,
-                            status,
+                            studentId: id as string,
+                            status: statusFromEdit,
                             attendanceId:
-                              previousAttendance?.id || (params.id as string),
+                              previousAttendance?.id || (id as string),
                           })
                         )
                       );
@@ -305,7 +314,7 @@ function StudentListTable() {
                   color="primary"
                   size="small"
                   onClick={() => {
-                    dispatch(fetchStudent({ id: params.id as string }));
+                    dispatch(fetchStudent({ id: id as string }));
                     dispatch(setIsAddStudentModalOpen(true));
                   }}
                   sx={{ minWidth: "unset" }}
@@ -318,7 +327,7 @@ function StudentListTable() {
                   size="small"
                   onClick={() => {
                     setStudentToEdit(null);
-                    setIsEditing(false);
+                    dispatch(setIsEditing(false));
                   }}
                   sx={{ minWidth: "unset" }}
                 >
@@ -333,10 +342,10 @@ function StudentListTable() {
                 sx={{ fontWeight: "bold" }}
                 onClick={() => {
                   setStudentToEdit({
-                    id: params.id as string,
-                    name: params.row["name"],
-                    classroomName: params.row["classroom"],
-                    status: params.row["status"],
+                    id: id as string,
+                    name,
+                    classroomName: classroom.name,
+                    status,
                   });
                   dispatch(setIsEditing(true));
                 }}
@@ -350,57 +359,69 @@ function StudentListTable() {
     },
   ];
 
+  const table = useReactTable({
+    data: students,
+    columns: columnDef,
+    autoResetPageIndex: false,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+    },
+  });
+
+  useEffect(() => {
+    const { date, month, year } = getDate();
+    dispatch(fetchStudents({}));
+    dispatch(fetchAttendances({ date, month, year }));
+    dispatch(fetchClassrooms({}));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (mutationStatus != "success") return;
+    dispatch(fetchStudents({}));
+  }, [mutationStatus]);
+
+  useEffect(() => {
+    const { date, month, year } = getDate();
+    if (attendanceMutationStatus != "success") return;
+    dispatch(fetchAttendances({ date, month, year }));
+  }, [attendanceMutationStatus]);
+
   return (
     <div>
       <div className="flex py-4 gap-4">
-        <Search handleChange={setSearchFilter} />
+        <Search
+          handleChange={(e) => {
+            table.getColumn("name")?.setFilterValue(e);
+          }}
+        />
         <ClassroomsDropdown
-          value={classroomFilter || ""}
-          setValue={({ target }) => setClassroomFilter(target.value)}
+          value={
+            (table.getColumn("classroom").getFilterValue() as string) || ""
+          }
+          setValue={({ target }) => {
+            table
+              .getColumn("classroom")
+              ?.setFilterValue(target.value == "" ? null : target.value);
+          }}
           includeAllAsChoice
         />
       </div>
 
-      <Grid container spacing={2} columns={12}>
-        <Grid size={{ xs: 12, lg: 12 }}>
-          <DataGrid
-            sx={{
-              "& .MuiDataGrid-cell:focus": {
-                outline: "none",
-              },
-              "& .MuiDataGrid-cell:focus-within": {
-                outline: "none",
-              },
-            }}
-            rows={rows}
-            columns={columns}
-            getRowClassName={(params) =>
-              params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-            }
-            initialState={{
-              pagination: { paginationModel: { pageSize: 10 } },
-            }}
-            sortModel={[{ field: "name", sort: "asc" }]}
-            pageSizeOptions={[10, 20, 50]}
-            disableColumnResize
-            density="standard"
-            filterModel={filterModel}
-            disableColumnMenu
-            disableRowSelectionOnClick
-            onCellKeyDown={(_, e) => {
-              if (e.key == " ") {
-                e.preventDefault();
-                e.stopPropagation();
-              }
-            }}
-            localeText={{
-              MuiTablePagination: {
-                labelRowsPerPage: useTranslations("table")("rowsPerPage"),
-              },
-            }}
-          />
-        </Grid>
-      </Grid>
+      <div className="flex gap-4 flex-col">
+        <div className="rounded-md border border-gray-500/20 flex gap-4 flex-col">
+          <TableContent columnDef={columnDef} table={table} status={status} />
+        </div>
+        <Pagination table={table} />
+      </div>
     </div>
   );
 }

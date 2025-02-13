@@ -7,8 +7,8 @@ import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 
 import { LogoutOutlined, MoreVert } from "@mui/icons-material";
 import { Box, Button, Menu, MenuItem, AppBar, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useRouter, usePathname } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import ColorModeSelect from "@/app/theme/ColorModeSelect";
 import LocaleSwitcher from "@/app/components/LanguageSelect";
 import { useAuth } from "@/app/provider/AuthContext";
@@ -25,15 +25,15 @@ import { useAppDispatch, useAppSelector } from "../lib/hooks";
 export default function Header() {
   const t = useTranslations();
   const router = useRouter();
+  const locale = useLocale();
+  const pathname = usePathname();
   const { logout } = useAuth();
   const dispatch = useAppDispatch();
   const notifications = useAppSelector(
     (state) => state.notificationSlice.notifications
   );
   const user = useAppSelector((state) => state.userSlice.user);
-  const [selectedPage, setSelectedPage] = React.useState<
-    "dashboard" | "student-list" | "absence-list"
-  >();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -43,22 +43,6 @@ export default function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  React.useEffect(() => {
-    if (window.location.pathname.includes("/dashboard/absence-list")) {
-      setSelectedPage("absence-list");
-      return;
-    }
-
-    if (window.location.pathname.includes("/dashboard/student-list")) {
-      setSelectedPage("student-list");
-      return;
-    }
-
-    if (window.location.pathname.includes("/dashboard")) {
-      setSelectedPage("dashboard");
-    }
-  }, [window?.location?.pathname]);
 
   React.useEffect(() => {
     if (!user || user?.userType != "TEACHER") return;
@@ -92,27 +76,18 @@ export default function Header() {
             <>
               <NavigationButton
                 label={t("dashboard.self")}
-                action={() => {
-                  setSelectedPage("dashboard");
-                  router.push("/dashboard/");
-                }}
-                isSelected={selectedPage == "dashboard"}
+                action={() => router.push("/dashboard")}
+                isSelected={pathname === `/${locale}/dashboard`}
               />
               <NavigationButton
                 label={t("dashboard.studentList")}
-                action={() => {
-                  setSelectedPage("student-list");
-                  router.push("/dashboard/student-list");
-                }}
-                isSelected={selectedPage == "student-list"}
+                action={() => router.push("/dashboard/student-list")}
+                isSelected={pathname === `/${locale}/dashboard/student-list`}
               />
               <NavigationButton
                 label={t("dashboard.studentsAbsenceList")}
-                action={() => {
-                  setSelectedPage("absence-list");
-                  router.push("/dashboard/absence-list");
-                }}
-                isSelected={selectedPage == "absence-list"}
+                action={() => router.push("/dashboard/absence-list")}
+                isSelected={pathname === `/${locale}/dashboard/absence-list`}
               />
             </>
           )}

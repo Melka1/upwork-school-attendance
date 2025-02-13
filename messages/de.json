@@ -99,9 +99,12 @@
     "weekAgo": "vor einer Woche",
     "weekAgo_other": "vor {amount} Wochen",
     "justNow": "Gerade eben",
-    "or": "Oder"
+    "or": "Oder",
+    "loading": "Laden..."
   },
   "table": {
-    "rowsPerPage": "Zeilen pro Seite"
+    "rowsPerPage": "Zeilen pro Seite",
+    "page": "Seite",
+    "noResults": "Keine Ergebnisse"
   }
 }

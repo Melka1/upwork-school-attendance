@@ -2,12 +2,12 @@
 
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import StudentListTable from "./StudentAbsenceListTable";
 import AddStudentFormModal from "@/app/components/AddOrEditStudentform";
 import { useTranslations } from "next-intl";
 import Card from "@/app/components/Card";
 import SnackBar from "@/app/components/SnackBar";
 import AddTeacherFormModal from "@/app/components/AddTeacherForm";
+import StudentAbsenceListTable from "./StudentAbsenceListTable";
 
 function AbsenceListPage() {
   const t = useTranslations("dashboard");
@@ -21,7 +21,7 @@ function AbsenceListPage() {
             </Typography>
           </div>
 
-          <StudentListTable />
+          <StudentAbsenceListTable />
           <SnackBar />
         </Box>
       </Card>

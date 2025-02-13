@@ -22,11 +22,16 @@ function ClassroomsDropdown({
   return (
     <FormControl
       sx={{
-        minWidth: { xs: "100px", md: fullWidth ? "100%" : "200px" },
+        minWidth: {
+          xs: "100px",
+          sm: "150px",
+          md: fullWidth ? "100%" : "200px",
+        },
         maxWidth: fullWidth ? "100%" : "250px",
       }}
     >
       <Select
+        fullWidth
         value={value}
         onChange={setValue}
         inputProps={{ "aria-label": "Without label" }}
