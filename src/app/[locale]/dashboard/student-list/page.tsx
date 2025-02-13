@@ -27,7 +27,7 @@ function StudentListPage() {
               {t("studentList")}
             </Typography>
 
-            <OpenAddStudentButton label={t("addStudent")} />
+            <OpenAddStudentButton label={t("addNewStudent")} />
           </div>
 
           <StudentListTable />

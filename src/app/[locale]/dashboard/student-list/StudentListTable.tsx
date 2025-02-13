@@ -308,7 +308,7 @@ function StudentListTable() {
                     });
                   }}
                 >
-                  {t("save")}
+                  {t("save")} {t("student").toLowerCase()}
                 </Button>
                 <IconButton
                   color="primary"
@@ -350,7 +350,7 @@ function StudentListTable() {
                   dispatch(setIsEditing(true));
                 }}
               >
-                {t("edit")}
+                {t("edit")} {t("student").toLowerCase()}
               </Button>
             )}
           </div>
