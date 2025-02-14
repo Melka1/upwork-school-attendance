@@ -60,7 +60,7 @@ function TableContent({
           <TableRow className="min-h-[200px]">
             <TableCell
               colSpan={columnDef.length}
-              className="h-24 text-xl last:text-left"
+              className="h-24 text-base sm:text-xl last:text-left"
             >
               {t("common.loading")}
             </TableCell>
@@ -69,7 +69,7 @@ function TableContent({
           <TableRow>
             <TableCell
               colSpan={columnDef.length}
-              className="h-24 text-xl last:text-left"
+              className="h-24 text-base sm:text-xl last:text-left"
             >
               {t("dashboard.somethingWentWrong")}
             </TableCell>
@@ -78,7 +78,7 @@ function TableContent({
           <TableRow>
             <TableCell
               colSpan={columnDef.length}
-              className="h-24 text-xl last:text-left"
+              className="h-24 text-base sm:text-xl last:text-left"
             >
               {t("table.noResults")}
             </TableCell>

@@ -372,11 +372,11 @@ function AddOrEditStudentFormModal() {
               </div>
               {/* parent information */}
               {!isEditing && (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <Typography
                     component="h2"
                     variant="h6"
-                    className="col-span-2 md:col-span-3"
+                    className="col-span-2"
                   >
                     {t("parentInformation")}
                   </Typography>
