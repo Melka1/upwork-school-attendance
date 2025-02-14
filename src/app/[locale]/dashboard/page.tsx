@@ -13,23 +13,31 @@ import { getDate } from "@/app/lib/utils";
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const { mutationStatus } = useAppSelector((state) => state.attendanceSlice);
+  const { mutationStatus, chosenDate, status } = useAppSelector(
+    (state) => state.attendanceSlice
+  );
   const startDate = useAppSelector(
     (state) => state.schoolSlice.semesterStartDate
   );
 
   useEffect(() => {
     const { date, month, year } = getDate();
-    dispatch(fetchAttendances({ date, month, year, startDate }));
     dispatch(fetchStudents({}));
+    dispatch(fetchAttendances({ date, month, year, startDate }));
   }, []);
 
   useEffect(() => {
-    const { date, month, year } = getDate();
-
+    const { date, month, year } = getDate(chosenDate);
     if (mutationStatus !== "success") return;
     dispatch(fetchAttendances({ date, month, year }));
   }, [mutationStatus]);
+
+  useEffect(() => {
+    console.log(chosenDate);
+    const { date, month, year } = getDate(chosenDate);
+    if (status == "initial") return;
+    dispatch(fetchAttendances({ date, month, year }));
+  }, [chosenDate]);
 
   return <TodaysStudentStatusTable />;
 }

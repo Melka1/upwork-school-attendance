@@ -37,6 +37,7 @@
     "noNewNotifications": "Keine neuen Benachrichtigungen.",
     "markAsRead": "Als gelesen markieren",
     "setAbsent": "Als abwesend markieren",
+    "setPresent": "Als Anwesend Markieren",
     "search": "Suche...",
     "status": "Status",
     "studentDetails": "Schülerdetails",
@@ -82,7 +83,13 @@
     "dark": "Dunkel",
     "system": "System",
     "editStudent": "Student bearbeiten",
-    "errorOccurredWhileUploadingImage": "Beim Hochladen des Bildes ist ein Fehler aufgetreten."
+    "errorOccurredWhileUploadingImage": "Beim Hochladen des Bildes ist ein Fehler aufgetreten.",
+    "studentAttendanceStatus": "Anwesenheitsstatus des Schülers",
+    "deleteStudent": "Schüler löschen",
+    "areYouSureToDelete": "Sind Sie sicher, dass Sie {name} entfernen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deletedSuccessfully": "Sie haben {name} erfolgreich gelöscht",
+    "studentUpdatedSuccessfully": "Schüler erfolgreich aktualisiert",
+    "noChildrenUnderParent": "Derzeit sind keine Kinder unter Ihnen registriert. Bitte kontaktieren Sie den Administrator und versuchen Sie es später erneut!"
   },
   "LocaleSwitcher": {
     "label": "Sprache ändern",
@@ -100,7 +107,9 @@
     "weekAgo_other": "vor {amount} Wochen",
     "justNow": "Gerade eben",
     "or": "Oder",
-    "loading": "Laden..."
+    "loading": "Daten werden geladen, bitte warten...",
+    "yes": "Ja",
+    "no": "Nein"
   },
   "table": {
     "rowsPerPage": "Zeilen pro Seite",

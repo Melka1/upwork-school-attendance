@@ -15,6 +15,7 @@ import {
 } from "@/app/lib/feature/studentsSlice";
 import { PersonAddAlt } from "@mui/icons-material";
 import StudentListTable from "./StudentListTable";
+import DeleteStudentModal from "@/app/components/DeleteStudentModal";
 
 function StudentListPage() {
   const t = useTranslations("dashboard");
@@ -36,6 +37,7 @@ function StudentListPage() {
       </Card>
       <AddOrEditStudentFormModal />
       <AddTeacherFormModal />
+      <DeleteStudentModal />
     </>
   );
 }

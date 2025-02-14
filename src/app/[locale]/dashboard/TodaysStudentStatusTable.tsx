@@ -3,12 +3,20 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Button, FormControl, MenuItem, Select } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputAdornment,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { AttendanceStatus } from "@prisma/client";
 import { useLocale, useTranslations } from "next-intl";
 import Card from "@/app/components/Card";
 import Search from "@/app/components/Search";
-import { formatDateTime } from "@/app/lib/utils";
+import { formatDateForCalendarRange, formatDateTime } from "@/app/lib/utils";
 import StudentDetailModal from "@/app/components/StudentDetailModal";
 import SnackBar from "@/app/components/SnackBar";
 import TableContent from "@/app/components/TableContent";
@@ -29,19 +37,26 @@ import {
   setIsStudentDetailModalOpen,
   Student,
 } from "@/app/lib/feature/studentsSlice";
-import { UnfoldMoreOutlined } from "@mui/icons-material";
+import { CalendarMonth, UnfoldMoreOutlined } from "@mui/icons-material";
 import StatusCard from "@/app/components/StatusCard";
 import Absent from "@/app/assets/svg/Absent";
-import { createAttendance } from "@/app/lib/feature/attendanceSlice";
+import {
+  createAttendance,
+  setChosenDate,
+} from "@/app/lib/feature/attendanceSlice";
 import Pagination from "@/app/components/Pagination";
+import Present from "@/app/assets/svg/Present";
 
 export default function TodaysStudentStatusTable() {
   const t = useTranslations("dashboard");
   const dispatch = useAppDispatch();
   const locale = useLocale();
 
+  const semesterStartDate = useAppSelector(
+    (state) => state.schoolSlice.semesterStartDate
+  );
   const { students, status } = useAppSelector((state) => state.studentSlice);
-  const { attendances, mutationStatus } = useAppSelector(
+  const { attendances, mutationStatus, chosenDate } = useAppSelector(
     (state) => state.attendanceSlice
   );
   const [updatedStudentId, setUpdatedStudentId] = React.useState("");
@@ -156,14 +171,10 @@ export default function TodaysStudentStatusTable() {
           <div className="flex justify-center px-8">
             <Button
               variant="contained"
-              color="error"
-              startIcon={<Absent />}
+              color={status == "ABSENT" ? "success" : "error"}
+              startIcon={status != "ABSENT" ? <Absent /> : <Present />}
               loadingPosition="start"
               loading={mutationStatus == "saving" && id == updatedStudentId}
-              disabled={
-                attendances.find((a) => a.studentId == id)?.status ==
-                AttendanceStatus.ABSENT
-              }
               sx={{ minWidth: "max-content" }}
               onClick={() => {
                 setUpdatedStudentId(id as string);
@@ -171,17 +182,20 @@ export default function TodaysStudentStatusTable() {
                   (a) => a.studentId == id
                 );
                 console.log(status);
-                if (status == AttendanceStatus.ABSENT) return;
                 dispatch(
                   createAttendance({
                     studentId: id as string,
-                    status: AttendanceStatus.ABSENT,
+                    status:
+                      status == "ABSENT"
+                        ? AttendanceStatus.PRESENT
+                        : AttendanceStatus.ABSENT,
                     attendanceId: previousAttendance?.id || (id as string),
+                    date: chosenDate,
                   })
                 );
               }}
             >
-              {t("setAbsent")}
+              {status == "ABSENT" ? t("setPresent") : t("setAbsent")}
             </Button>
           </div>
         );
@@ -214,40 +228,86 @@ export default function TodaysStudentStatusTable() {
           {/* cards */}
           <div className="flex items-start md:justify-between md:items-center flex-col md:flex-row">
             <Typography component="h2" variant="h6">
-              {t("todaysStudentStatus")}
+              {chosenDate != formatDateForCalendarRange(new Date())
+                ? t("studentAttendanceStatus")
+                : t("todaysStudentStatus")}
             </Typography>
 
             <Typography component="p" suppressHydrationWarning>
-              {formatDateTime(new Date().toUTCString(), locale)}
+              {formatDateTime(
+                new Date(chosenDate || Date.now()).toUTCString(),
+                locale
+              )}
             </Typography>
           </div>
 
-          <div className="flex py-4 gap-4">
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            marginY={{ xs: 1, sm: 2 }}
+            gap={{ xs: 1, sm: 2 }}
+          >
             <Search
               handleChange={(e) => {
                 table.getColumn("name")?.setFilterValue(e);
               }}
             />
-            <FormControl sx={{ minWidth: { xs: 80, md: 200 } }} size="small">
-              <Select
-                value={
-                  (table.getColumn("status").getFilterValue() as string) || ""
-                }
-                onChange={({ target }) =>
-                  table
-                    .getColumn("status")
-                    ?.setFilterValue(target.value == "" ? null : target.value)
-                }
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-              >
-                <MenuItem value="">{t("allStatus")}</MenuItem>
-                <MenuItem value={"PRESENT"}>{t("present")}</MenuItem>
-                <MenuItem value={"ABSENT"}>{t("absent")}</MenuItem>
-                <MenuItem value={"MISSING"}>{t("missing")}</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
+            <Stack direction={"row"} gap={{ xs: 1, sm: 2 }}>
+              <FormControl sx={{ minWidth: { xs: 80, md: 200 } }} size="small">
+                <Select
+                  value={
+                    (table.getColumn("status").getFilterValue() as string) || ""
+                  }
+                  onChange={({ target }) =>
+                    table
+                      .getColumn("status")
+                      ?.setFilterValue(target.value == "" ? null : target.value)
+                  }
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                >
+                  <MenuItem value="">{t("allStatus")}</MenuItem>
+                  <MenuItem value={"PRESENT"}>{t("present")}</MenuItem>
+                  <MenuItem value={"ABSENT"}>{t("absent")}</MenuItem>
+                  <MenuItem value={"MISSING"}>{t("missing")}</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl size="small">
+                <TextField
+                  type="date"
+                  size="small"
+                  value={chosenDate}
+                  onChange={({ target }) => {
+                    let date = "";
+                    if (target.value == "") {
+                      date = formatDateForCalendarRange(new Date());
+                    } else {
+                      date = target.value;
+                    }
+                    dispatch(setChosenDate(date));
+                  }}
+                  slotProps={{
+                    htmlInput: {
+                      min: formatDateForCalendarRange(
+                        new Date(semesterStartDate)
+                      ),
+                      max: formatDateForCalendarRange(new Date()),
+                    },
+                    inputLabel: {
+                      shrink: true,
+                    },
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <CalendarMonth fontSize="small" />
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              </FormControl>
+            </Stack>
+          </Stack>
 
           <div className="flex gap-4 flex-col">
             <div className="rounded-md border border-gray-500/20 flex gap-4 flex-col">

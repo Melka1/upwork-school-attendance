@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 
 import {
+  Close,
+  CloseOutlined,
   OpenInFull,
   SaveOutlined,
   UnfoldMoreOutlined,
@@ -34,8 +36,11 @@ import {
 import {
   fetchStudent,
   fetchStudents,
+  resetMutationStatus,
   setIsAddStudentModalOpen,
+  setIsDeleteStudentModalOpen,
   setIsEditing,
+  setStudentIdToDelete,
   Student,
   updateStudents,
 } from "@/app/lib/feature/studentsSlice";
@@ -50,6 +55,7 @@ import Search from "@/app/components/Search";
 import TableContent from "@/app/components/TableContent";
 import StatusCard from "@/app/components/StatusCard";
 import Pagination from "@/app/components/Pagination";
+import { setMessageAlert } from "@/app/lib/feature/pageSlice";
 
 interface EditStudentInput {
   id: string;
@@ -61,9 +67,8 @@ interface EditStudentInput {
 function StudentListTable() {
   const t = useTranslations("dashboard");
   const dispatch = useAppDispatch();
-  const { students, mutationStatus, isEditing, status } = useAppSelector(
-    (state) => state.studentSlice
-  );
+  const { students, mutationStatus, isEditing, status, deletionStatus } =
+    useAppSelector((state) => state.studentSlice);
   const {
     attendances,
     mutationStatus: attendanceMutationStatus,
@@ -236,7 +241,7 @@ function StudentListTable() {
         const status = attendances.find((a) => a.studentId == id)?.status;
 
         return (
-          <div className="flex gap-2 items-center justify-center h-full px-4">
+          <div className="flex gap-2 items-center justify-center h-full px-4 min-w-max">
             {isEditing && studentToEdit?.id == id ? (
               <>
                 <Button
@@ -245,6 +250,7 @@ function StudentListTable() {
                   color="darker"
                   sx={{
                     fontWeight: "bold",
+                    minWidth: "max-content",
                   }}
                   startIcon={<SaveOutlined />}
                   loadingPosition="start"
@@ -319,9 +325,8 @@ function StudentListTable() {
                 >
                   <OpenInFull color="inherit" fontSize="small" />
                 </IconButton>
-                <Button
-                  variant="contained"
-                  color="error"
+                <IconButton
+                  color="primary"
                   size="small"
                   onClick={() => {
                     setStudentToEdit(null);
@@ -329,27 +334,41 @@ function StudentListTable() {
                   }}
                   sx={{ minWidth: "unset" }}
                 >
+                  <Close color="inherit" fontSize="small" />
+                </IconButton>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  size="small"
+                  sx={{ fontWeight: "bold" }}
+                  onClick={() => {
+                    setStudentToEdit({
+                      id: id as string,
+                      name,
+                      classroomName: classroom.name,
+                      status,
+                    });
+                    dispatch(setIsEditing(true));
+                  }}
+                >
+                  {t("edit")} {t("student").toLowerCase()}
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  size="small"
+                  onClick={() => {
+                    dispatch(setStudentIdToDelete(id));
+                    dispatch(setIsDeleteStudentModalOpen(true));
+                  }}
+                  sx={{ minWidth: "unset" }}
+                >
                   <Delete color="white" fontSize={16} />
                 </Button>
               </>
-            ) : (
-              <Button
-                variant="outlined"
-                color="error"
-                size="small"
-                sx={{ fontWeight: "bold" }}
-                onClick={() => {
-                  setStudentToEdit({
-                    id: id as string,
-                    name,
-                    classroomName: classroom.name,
-                    status,
-                  });
-                  dispatch(setIsEditing(true));
-                }}
-              >
-                {t("edit")} {t("student").toLowerCase()}
-              </Button>
             )}
           </div>
         );
@@ -380,12 +399,22 @@ function StudentListTable() {
     dispatch(fetchStudents({}));
     dispatch(fetchAttendances({ date, month, year }));
     dispatch(fetchClassrooms({}));
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
-    if (mutationStatus != "success") return;
-    dispatch(fetchStudents({}));
-  }, [mutationStatus]);
+    if (mutationStatus == "success") {
+      dispatch(
+        setMessageAlert({
+          message: t("studentUpdatedSuccessfully"),
+          alertType: "success",
+        })
+      );
+      dispatch(resetMutationStatus());
+    }
+
+    if (mutationStatus == "success" || deletionStatus == "success")
+      dispatch(fetchStudents({}));
+  }, [mutationStatus, deletionStatus]);
 
   useEffect(() => {
     const { date, month, year } = getDate();

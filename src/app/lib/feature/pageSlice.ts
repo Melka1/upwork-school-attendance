@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+interface Alert {
+  alertType: "error" | "success" | "warning";
+  message: string;
+}
+
 type PageState = {
-  messageAlert: {
-    alertType: "error" | "success" | "warning";
-    message: string;
-  } | null;
+  messageAlert: Alert | null;
   currentPage: string;
 };
 

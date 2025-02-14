@@ -3,6 +3,7 @@ import { EAttendanceStatus, EMutationStatus, EQueryStatus } from "../enums";
 import httpRequest from "../httpRequest";
 import { logger } from "../logger";
 import { Attendance, AttendanceStatus } from "@prisma/client";
+import { formatDateForCalendarRange } from "../utils";
 
 interface CreateAttendanceProps {
   date?: string;
@@ -100,12 +101,14 @@ type AttendanceState = {
   status: EQueryStatus;
   mutationStatus: EMutationStatus;
   attendances: Attendance[];
+  chosenDate: string;
 };
 
 const initialState: AttendanceState = {
   status: "initial",
   mutationStatus: "initial",
   attendances: [],
+  chosenDate: formatDateForCalendarRange(new Date()),
 };
 
 const AttendanceSlice = createSlice({
@@ -115,6 +118,9 @@ const AttendanceSlice = createSlice({
     resetAttendanceState(state) {
       state.attendances = [];
       state.mutationStatus = "initial";
+    },
+    setChosenDate(state, action) {
+      state.chosenDate = action.payload;
     },
   },
   extraReducers(builder) {
@@ -150,6 +156,6 @@ const AttendanceSlice = createSlice({
   },
 });
 
-export const { resetAttendanceState } = AttendanceSlice.actions;
+export const { resetAttendanceState, setChosenDate } = AttendanceSlice.actions;
 
 export default AttendanceSlice.reducer;

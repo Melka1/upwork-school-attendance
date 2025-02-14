@@ -37,6 +37,7 @@
     "noNewNotifications": "No new notifications.",
     "markAsRead": "Mark as read",
     "setAbsent": "Set Absent",
+    "setPresent": "Set Present",
     "search": "Search...",
     "status": "Status",
     "studentDetails": "Student Details",
@@ -82,7 +83,13 @@
     "dark": "Dark",
     "system": "System",
     "editStudent": "Edit Student",
-    "errorOccurredWhileUploadingImage": "Error occurred while uploading image"
+    "errorOccurredWhileUploadingImage": "Error occurred while uploading image",
+    "studentAttendanceStatus": "Student Attendance Status",
+    "deleteStudent": "Delete Student",
+    "areYouSureToDelete": "Are you sure you want to remove {name}? This action cannot be undone.",
+    "deletedSuccessfully": "You have successfully deleted {name}",
+    "studentUpdatedSuccessfully": "Student updated successfully",
+    "noChildrenUnderParent": "Currently there are no children registered under you, please contact the admin and try again later!"
   },
   "LocaleSwitcher": {
     "label": "Change language",
@@ -100,7 +107,9 @@
     "weekAgo_other": "{amount} weeks ago",
     "justNow": "Just Now",
     "or": "Or",
-    "loading": "Loading..."
+    "loading": "Loading data, please wait...",
+    "yes": "Yes",
+    "no": "No"
   },
   "table": {
     "rowsPerPage": "Rows per page",

@@ -63,7 +63,7 @@ model Teacher {
 
 model Attendance {
   id        String           @id @default(uuid()) @map("_id")
-  student   Student          @relation(fields: [studentId], references: [id])
+  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentId String
   date      Int
   month     Int
