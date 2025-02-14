@@ -263,7 +263,9 @@ export default function TodaysStudentStatusTable() {
                       ?.setFilterValue(target.value == "" ? null : target.value)
                   }
                   displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
+                  inputProps={{
+                    "aria-label": "filter students by attendance status",
+                  }}
                 >
                   <MenuItem value="">{t("allStatus")}</MenuItem>
                   <MenuItem value={"PRESENT"}>{t("present")}</MenuItem>
@@ -277,6 +279,7 @@ export default function TodaysStudentStatusTable() {
                   type="date"
                   size="small"
                   value={chosenDate}
+                  aria-label="Select date to fetch attendance records"
                   onChange={({ target }) => {
                     let date = "";
                     if (target.value == "") {

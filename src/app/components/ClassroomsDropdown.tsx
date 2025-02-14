@@ -34,7 +34,7 @@ function ClassroomsDropdown({
         fullWidth
         value={value}
         onChange={setValue}
-        inputProps={{ "aria-label": "Without label" }}
+        inputProps={{ "aria-label": "filter students by classroom" }}
         label="Classroom"
         renderValue={
           !includeAllAsChoice

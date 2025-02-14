@@ -27,7 +27,7 @@ export default function Search({
           </InputAdornment>
         }
         inputProps={{
-          "aria-label": "search",
+          "aria-label": "search for students by name",
         }}
         onChange={({ target }) => handleChange(target.value)}
       />

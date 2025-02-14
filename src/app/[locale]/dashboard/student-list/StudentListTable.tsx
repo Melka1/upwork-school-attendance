@@ -13,7 +13,6 @@ import {
 
 import {
   Close,
-  CloseOutlined,
   OpenInFull,
   SaveOutlined,
   UnfoldMoreOutlined,

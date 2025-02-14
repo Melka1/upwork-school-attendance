@@ -116,6 +116,7 @@ const ParentCallInSickCard = ({
                 onClick={() => handleCallSick(chosenStudent)}
                 loading={status == "saving"}
                 disabled={isDisabled}
+                aria-label="call in sick"
                 sx={{
                   bgcolor: isDisabled
                     ? isDarkMode

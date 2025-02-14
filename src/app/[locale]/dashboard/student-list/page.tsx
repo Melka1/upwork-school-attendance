@@ -58,6 +58,7 @@ const OpenAddStudentButton = ({ label }: { label: string }) => {
     <>
       <Button
         variant="outlined"
+        aria-label="Add students"
         sx={{
           display: {
             xs: "none",
@@ -69,6 +70,7 @@ const OpenAddStudentButton = ({ label }: { label: string }) => {
         {label}
       </Button>
       <IconButton
+        aria-label="Add students"
         onClick={() => handleOpenAddStudentModal()}
         sx={{
           display: {
