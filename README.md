@@ -22,7 +22,7 @@ A full-stack web application that enables teachers to manage classes, track stud
 |-------------|-------------------------------------|
 | Frontend    | [Next.js 15 (App Router)](https://nextjs.org/) |
 | Styling     | [TailwindCSS](https://tailwindcss.com/) |
-|             | [MaterialUI].(https://mui.com/material-ui/) |
+|             | [MaterialUI].(https://mui.com/material-ui/). |
 | Auth        | [Firebase Auth](https://firebase.com/) |
 | Backend     | [Prisma ORM](https://www.prisma.io/) |
 | Database    | [PostgreSQL](https://www.postgresql.org/) via Supabase |
