@@ -1,4 +1,4 @@
-# 🏫 Upwork School Attendance System
+# 🏫 School Attendance System
 
 A full-stack web application that enables teachers to manage classes, track student attendance, and view attendance reports. Built with **Next.js 15 App Router**, **Prisma**, **PostgreSQL**, and **TailwindCSS**, and powered by **Firebase** for authentication.
 
@@ -11,7 +11,7 @@ A full-stack web application that enables teachers to manage classes, track stud
 - 👨‍🎓 **Student Management** (Add students to specific classes)
 - 📅 **Attendance Tracking** (Mark students present/absent)
 - 📊 **Attendance History** (View and filter attendance records)
-- 🎨 **Responsive UI** using TailwindCSS
+- 🎨 **Responsive UI** using TailwindCSS and Material UI
 - 🧠 **Type-safe Database Access** via Prisma
 
 ---
@@ -22,6 +22,7 @@ A full-stack web application that enables teachers to manage classes, track stud
 |-------------|-------------------------------------|
 | Frontend    | [Next.js 15 (App Router)](https://nextjs.org/) |
 | Styling     | [TailwindCSS](https://tailwindcss.com/) |
+|             | [MaterialUI].(https://mui.com/material-ui/) |
 | Auth        | [Firebase Auth](https://firebase.com/) |
 | Backend     | [Prisma ORM](https://www.prisma.io/) |
 | Database    | [PostgreSQL](https://www.postgresql.org/) via Supabase |
